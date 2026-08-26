@@ -32,11 +32,12 @@ func (t *Pager[R, T]) Next(ctx context.Context) (*T, bool, error) {
 		// There's more
 		t.nextRequest()
 
-		var err error
-		t.result, err = t.f(ctx, *t.request)
+		result, err := t.f(ctx, *t.request)
 		if err != nil {
 			return nil, false, err
 		}
+		t.result = result
+		t.skip += t.top
 		if len(t.result) == 0 {
 			t.atEnd = true
 			return nil, false, nil
@@ -54,8 +55,6 @@ func (t *Pager[R, T]) nextRequest() {
 	r := reflect.ValueOf(t.request)
 	r.Elem().FieldByName("Top").Set(reflect.ValueOf(t.top))
 	r.Elem().FieldByName("Skip").Set(reflect.ValueOf(t.skip))
-
-	t.skip += t.top
 }
 
 func (t *Pager[R, T]) All(ctx context.Context) ([]T, error) {

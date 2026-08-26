@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestGeneratedListProjects(t *testing.T) {
@@ -80,6 +81,77 @@ func TestGeneratedDeleteProjectEscapesPathParameter(t *testing.T) {
 	client := NewClient(server.URL, nil)
 	if err := client.DeleteProject(context.Background(), DeleteProjectRequest{ID: "a/b"}); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestGeneratedGetIssueDecodesRichResponse(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet || r.URL.EscapedPath() != "/issues/DEMO-1" {
+			t.Errorf("request = %s %s", r.Method, r.URL.EscapedPath())
+		}
+		if got := r.URL.Query().Get("fields"); got != "id,summary,project,tags,customFields,visibility" {
+			t.Errorf("fields = %q", got)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		io.WriteString(w, `{
+			"$type":"Issue",
+			"id":"issue-1",
+			"summary":"Rich response",
+			"description":null,
+			"isDraft":false,
+			"commentsCount":2,
+			"created":1787740496789,
+			"project":{"$type":"Project","id":"project-1","name":"Demo"},
+			"tags":[{"$type":"IssueTag","id":"tag-1","name":"backend"}],
+			"customFields":[{"$type":"SimpleIssueCustomField","id":"field-1","name":"Estimate","value":3.5}],
+			"visibility":{"$type":"UnlimitedVisibility","id":"visibility-1"},
+			"unsupported":{"nested":[true,null]}
+		}`)
+	}))
+	defer server.Close()
+
+	client := NewClient(server.URL, nil)
+	issue, err := client.GetIssue(context.Background(), GetIssueRequest{
+		ID:     "DEMO-1",
+		Fields: "id,summary,project,tags,customFields,visibility",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if issue.Id == nil || *issue.Id != "issue-1" || issue.Summary == nil || *issue.Summary != "Rich response" {
+		t.Fatalf("issue identity = %#v", issue)
+	}
+	if issue.Description != nil || issue.IsDraft == nil || *issue.IsDraft || issue.CommentsCount == nil || *issue.CommentsCount != 2 {
+		t.Fatalf("issue scalar fields = %#v", issue)
+	}
+	if issue.Created == nil || !issue.Created.Equal(time.UnixMilli(1787740496789).UTC()) {
+		t.Fatalf("created = %#v", issue.Created)
+	}
+	if issue.Project == nil || issue.Project.Name == nil || *issue.Project.Name != "Demo" {
+		t.Fatalf("project = %#v", issue.Project)
+	}
+	if len(issue.Tags) != 1 {
+		t.Fatalf("tags = %#v", issue.Tags)
+	}
+	tag, ok := issue.Tags[0].(*IssueTag)
+	if !ok || tag.Name == nil || *tag.Name != "backend" {
+		t.Fatalf("tag = %#v", issue.Tags[0])
+	}
+	if len(issue.CustomFields) != 1 {
+		t.Fatalf("custom fields = %#v", issue.CustomFields)
+	}
+	field, ok := issue.CustomFields[0].(*SimpleIssueCustomField)
+	if !ok || field.Value == nil {
+		t.Fatalf("custom field = %#v", issue.CustomFields[0])
+	}
+	value, ok := (*field.Value).(float64)
+	if !ok || value != 3.5 {
+		t.Fatalf("custom field value = %#v", *field.Value)
+	}
+	visibility, ok := issue.Visibility.(*UnlimitedVisibility)
+	if !ok || visibility.Id == nil || *visibility.Id != "visibility-1" {
+		t.Fatalf("visibility = %#v", issue.Visibility)
 	}
 }
 

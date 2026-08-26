@@ -292,7 +292,7 @@ func (j *Reader) NextObject() (map[string]interface{}, error) {
 }
 
 func (j *Reader) NextList() ([]interface{}, error) {
-	var result []interface{}
+	result := make([]interface{}, 0)
 	err := j.NextListDo(func(r *Reader) error {
 		val, err := r.NextValue()
 		if err != nil {

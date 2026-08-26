@@ -45,7 +45,7 @@ func DetermineTypeDiscriminator(r *Reader, s string) (string, error) {
 			// Found it
 			d, err := r.Expect(String)
 			if err != nil {
-				return "", nil
+				return "", err
 			}
 
 			return d.StringValue, nil

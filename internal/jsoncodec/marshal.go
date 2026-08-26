@@ -92,6 +92,10 @@ func (m *Marshaler) ObjectStart() error {
 }
 
 func (m *Marshaler) ObjectEnd() error {
+	if m.stack.IsEmpty() || m.stack.Tail.E != StateObject || m.state == StateObjectKey {
+		return fmt.Errorf("unexpected object end token")
+	}
+
 	_, err := m.w.Write([]byte("}"))
 	if err != nil {
 		return err
@@ -127,7 +131,7 @@ func (m *Marshaler) ArrayEnd() error {
 }
 
 func (m *Marshaler) WriteKey(s string) error {
-	if m.stack.Tail.E != StateObject {
+	if m.stack.IsEmpty() || m.stack.Tail.E != StateObject {
 		return fmt.Errorf("unexpected object key")
 	}
 

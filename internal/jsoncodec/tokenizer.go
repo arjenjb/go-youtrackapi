@@ -6,6 +6,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
+	"unicode/utf16"
 )
 
 type TokenType int
@@ -83,24 +84,20 @@ func (j *StreamingJsonTokenizer) AtEnd() bool {
 }
 
 func (j *StreamingJsonTokenizer) Next() (*Token, error) {
-	peek, err := j.r.Peek(1)
-	if err == io.EOF {
-		return j.newToken(EOF), nil
-	} else if err != nil {
-		return nil, err
-	}
-	c := rune(peek[0])
-
-	// Skip whitespace
-	for isWhitespace(c) {
-		_, err = j.r.Discard(1)
-		if err != nil {
+	var c rune
+	for {
+		peek, err := j.r.Peek(1)
+		if err == io.EOF {
+			return j.newToken(EOF), nil
+		} else if err != nil {
 			return nil, err
 		}
-
-		peek, err = j.r.Peek(1)
 		c = rune(peek[0])
-		if err != nil {
+		if !isWhitespace(c) {
+			break
+		}
+
+		if _, err := j.r.Discard(1); err != nil {
 			return nil, err
 		}
 	}
@@ -111,22 +108,22 @@ func (j *StreamingJsonTokenizer) Next() (*Token, error) {
 
 	switch rune(c) {
 	case '[':
-		_, err = j.r.Discard(1)
+		_, err := j.r.Discard(1)
 		return &Token{Type: ArrayBegin}, err
 	case ']':
-		_, err = j.r.Discard(1)
+		_, err := j.r.Discard(1)
 		return &Token{Type: ArrayClose}, err
 	case '{':
-		_, err = j.r.Discard(1)
+		_, err := j.r.Discard(1)
 		return &Token{Type: ObjectBegin}, err
 	case '}':
-		_, err = j.r.Discard(1)
+		_, err := j.r.Discard(1)
 		return &Token{Type: ObjectClose}, err
 	case ',':
-		_, err = j.r.Discard(1)
+		_, err := j.r.Discard(1)
 		return &Token{Type: Comma}, err
 	case ':':
-		_, err = j.r.Discard(1)
+		_, err := j.r.Discard(1)
 		return &Token{Type: Colon}, err
 	case '"':
 		return j.nextString()
@@ -197,7 +194,29 @@ func (j *StreamingJsonTokenizer) nextString() (*Token, error) {
 				if err != nil {
 					return nil, err
 				}
-				buf.WriteRune(rune(hex))
+				value := rune(hex)
+				if 0xD800 <= value && value <= 0xDBFF {
+					slash, _, err := j.r.ReadRune()
+					if err != nil {
+						return nil, err
+					}
+					u, _, err := j.r.ReadRune()
+					if err != nil {
+						return nil, err
+					}
+					if slash != '\\' || u != 'u' {
+						return nil, fmt.Errorf("expected low surrogate after high surrogate")
+					}
+					low, err := j.nextUnicodeChar()
+					if err != nil {
+						return nil, err
+					}
+					if low < 0xDC00 || low > 0xDFFF {
+						return nil, fmt.Errorf("expected low surrogate after high surrogate")
+					}
+					value = utf16.DecodeRune(value, rune(low))
+				}
+				buf.WriteRune(value)
 
 			case 'n':
 				buf.WriteRune('\n')
@@ -232,14 +251,14 @@ func (j *StreamingJsonTokenizer) nextString() (*Token, error) {
 }
 
 func (j *StreamingJsonTokenizer) nextNumber() (*Token, error) {
-	neg := false
+	literal := strings.Builder{}
 	c, err := j.peekRune()
 	if err != nil {
 		return nil, err
 	}
 
 	if c == '-' {
-		neg = true
+		literal.WriteRune(c)
 		j.r.Discard(1)
 	}
 
@@ -247,42 +266,78 @@ func (j *StreamingJsonTokenizer) nextNumber() (*Token, error) {
 	if err != nil {
 		return nil, err
 	}
+	if base == "" {
+		return nil, fmt.Errorf("expected digit in number")
+	}
+	if len(base) > 1 && base[0] == '0' {
+		return nil, fmt.Errorf("leading zero in number")
+	}
+	literal.WriteString(base)
 
 	c, err = j.peekRune()
 	if err != nil {
 		return nil, err
 	}
+	isFloat := false
 	if c == '.' {
+		isFloat = true
+		literal.WriteRune(c)
 		j.r.Discard(1)
 		fraction, err := j.nextNumbers()
 		if err != nil {
 			return nil, err
 		}
+		if fraction == "" {
+			return nil, fmt.Errorf("expected digit after decimal point")
+		}
+		literal.WriteString(fraction)
+	}
 
-		float, err := strconv.ParseFloat(fmt.Sprintf("%s.%s", base, fraction), 64)
+	c, err = j.peekRune()
+	if err != nil {
+		return nil, err
+	}
+	if c == 'e' || c == 'E' {
+		isFloat = true
+		literal.WriteRune(c)
+		j.r.Discard(1)
+
+		c, err = j.peekRune()
 		if err != nil {
 			return nil, err
 		}
-
-		if neg {
-			float = -float
+		if c == '+' || c == '-' {
+			literal.WriteRune(c)
+			j.r.Discard(1)
 		}
 
+		exponent, err := j.nextNumbers()
+		if err != nil {
+			return nil, err
+		}
+		if exponent == "" {
+			return nil, fmt.Errorf("expected digit in exponent")
+		}
+		literal.WriteString(exponent)
+	}
+
+	if isFloat {
+		float, err := strconv.ParseFloat(literal.String(), 64)
+		if err != nil {
+			return nil, err
+		}
 		tok := j.newToken(Float)
 		tok.FloatValue = float
 		return tok, nil
-	} else {
-		n, err := strconv.ParseInt(base, 10, 64)
-		if err != nil {
-			return nil, err
-		}
-		if neg {
-			n = -n
-		}
-		tok := j.newToken(Int)
-		tok.IntValue = int(n)
-		return tok, nil
 	}
+
+	n, err := strconv.ParseInt(literal.String(), 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	tok := j.newToken(Int)
+	tok.IntValue = int(n)
+	return tok, nil
 }
 
 func (j *StreamingJsonTokenizer) peekRune() (rune, error) {
@@ -319,27 +374,20 @@ func (j *StreamingJsonTokenizer) nextNumbers() (string, error) {
 
 func (j *StreamingJsonTokenizer) nextUnicodeChar() (int, error) {
 	i := 0
-	n := 0
-	for n < 4 {
-		c, err := j.peekRune()
-		if err == io.EOF {
-			return i, nil
-		} else if err != nil {
-			return 0, err
+	for n := 0; n < 4; n++ {
+		c, _, err := j.r.ReadRune()
+		if err != nil {
+			return 0, fmt.Errorf("incomplete unicode escape: %w", err)
 		}
 		if c >= '0' && c <= '9' {
 			i = (i << 4) + int(c-'0')
-			j.r.Discard(1)
 		} else if c >= 'a' && c <= 'f' {
 			i = (i << 4) + int(c-'a'+10)
-			j.r.Discard(1)
 		} else if c >= 'A' && c <= 'F' {
 			i = (i << 4) + int(c-'A'+10)
-			j.r.Discard(1)
 		} else {
-			break
+			return 0, fmt.Errorf("invalid character %q in unicode escape", c)
 		}
-		n++
 	}
 
 	return i, nil
