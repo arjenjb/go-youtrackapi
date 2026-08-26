@@ -1,4 +1,4 @@
-package youtrackapi
+package jsoncodec
 
 import (
 	"bufio"
@@ -119,31 +119,31 @@ func NewBufferingJsonTokenizer(tok PeekableTokenizerInterface) *RewindableJsonTo
 	}
 }
 
-type JSONReader struct {
+type Reader struct {
 	t *RewindableJsonTokenizer
 }
 
-func NewJsonReader(r io.Reader) *JSONReader {
+func NewReader(r io.Reader) *Reader {
 	tok := NewBufferingJsonTokenizer(
 		&JsonBufferingTokenizer{
 			tok: &StreamingJsonTokenizer{
 				r: bufio.NewReader(r),
 			}})
 
-	return &JSONReader{
+	return &Reader{
 		t: tok,
 	}
 }
 
-func (j *JSONReader) Buffer() {
+func (j *Reader) Buffer() {
 	j.t.Buffer()
 }
 
-func (j *JSONReader) Rewind() {
+func (j *Reader) Rewind() {
 	j.t.Rewind()
 }
 
-func (j *JSONReader) Next() (*Token, error) {
+func (j *Reader) Next() (*Token, error) {
 	t, err := j.t.Next()
 	if err != nil {
 		return nil, err
@@ -151,7 +151,7 @@ func (j *JSONReader) Next() (*Token, error) {
 	return t, nil
 }
 
-func (j *JSONReader) Expect(begin TokenType) (*Token, error) {
+func (j *Reader) Expect(begin TokenType) (*Token, error) {
 	t, err := j.Next()
 	if err != nil {
 		return nil, err
@@ -163,7 +163,7 @@ func (j *JSONReader) Expect(begin TokenType) (*Token, error) {
 	return t, nil
 }
 
-func (j *JSONReader) NextObjectDo(f func(key string, r *JSONReader) error) error {
+func (j *Reader) NextObjectDo(f func(key string, r *Reader) error) error {
 	if _, err := j.Expect(ObjectBegin); err != nil {
 		return err
 	}
@@ -209,7 +209,7 @@ func (j *JSONReader) NextObjectDo(f func(key string, r *JSONReader) error) error
 	return nil
 }
 
-func (j *JSONReader) NextOptionalString() (*string, error) {
+func (j *Reader) NextOptionalString() (*string, error) {
 	tkn, err := j.Next()
 	if err != nil {
 		return nil, err
@@ -222,7 +222,7 @@ func (j *JSONReader) NextOptionalString() (*string, error) {
 	}
 }
 
-func (j *JSONReader) NextOptionalFloat64() (*float64, error) {
+func (j *Reader) NextOptionalFloat64() (*float64, error) {
 	tkn, err := j.Next()
 	if err != nil {
 		return nil, err
@@ -238,7 +238,7 @@ func (j *JSONReader) NextOptionalFloat64() (*float64, error) {
 	}
 }
 
-func (j *JSONReader) NextOptionalValue() (*any, error) {
+func (j *Reader) NextOptionalValue() (*any, error) {
 	value, err := j.NextValue()
 	if err != nil || value == nil {
 		return nil, err
@@ -246,7 +246,7 @@ func (j *JSONReader) NextOptionalValue() (*any, error) {
 	return &value, nil
 }
 
-func (j *JSONReader) NextValue() (interface{}, error) {
+func (j *Reader) NextValue() (interface{}, error) {
 	tkn, err := j.Peek()
 	if err != nil {
 		return nil, err
@@ -278,9 +278,9 @@ func (j *JSONReader) NextValue() (interface{}, error) {
 	}
 }
 
-func (j *JSONReader) NextObject() (map[string]interface{}, error) {
+func (j *Reader) NextObject() (map[string]interface{}, error) {
 	result := map[string]interface{}{}
-	err := j.NextObjectDo(func(key string, r *JSONReader) error {
+	err := j.NextObjectDo(func(key string, r *Reader) error {
 		val, err := r.NextValue()
 		if err != nil {
 			return err
@@ -291,9 +291,9 @@ func (j *JSONReader) NextObject() (map[string]interface{}, error) {
 	return result, err
 }
 
-func (j *JSONReader) NextList() ([]interface{}, error) {
+func (j *Reader) NextList() ([]interface{}, error) {
 	var result []interface{}
-	err := j.NextListDo(func(r *JSONReader) error {
+	err := j.NextListDo(func(r *Reader) error {
 		val, err := r.NextValue()
 		if err != nil {
 			return err
@@ -305,7 +305,7 @@ func (j *JSONReader) NextList() ([]interface{}, error) {
 	return result, err
 }
 
-func (j *JSONReader) NextListDo(f func(r *JSONReader) error) error {
+func (j *Reader) NextListDo(f func(r *Reader) error) error {
 	if _, err := j.Expect(ArrayBegin); err != nil {
 		return err
 	}
@@ -341,7 +341,7 @@ func (j *JSONReader) NextListDo(f func(r *JSONReader) error) error {
 	}
 }
 
-func (j *JSONReader) NextOptionalBool() (*bool, error) {
+func (j *Reader) NextOptionalBool() (*bool, error) {
 	tkn, err := j.Next()
 	if err != nil {
 		return nil, err
@@ -354,7 +354,7 @@ func (j *JSONReader) NextOptionalBool() (*bool, error) {
 	}
 }
 
-func (j *JSONReader) NextOptionalInt() (*int, error) {
+func (j *Reader) NextOptionalInt() (*int, error) {
 	tkn, err := j.Next()
 	if err != nil {
 		return nil, err
@@ -367,6 +367,6 @@ func (j *JSONReader) NextOptionalInt() (*int, error) {
 	}
 }
 
-func (j *JSONReader) Peek() (*Token, error) {
+func (j *Reader) Peek() (*Token, error) {
 	return j.t.Peek()
 }

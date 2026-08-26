@@ -1,4 +1,4 @@
-package youtrackapi
+package jsoncodec
 
 import (
 	"strings"
@@ -9,7 +9,7 @@ import (
 
 func TestMarshallerString(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	err := m.WriteString("x")
 	require.NoError(t, err)
 
@@ -18,7 +18,7 @@ func TestMarshallerString(t *testing.T) {
 
 func TestMarshallerBool(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	err := m.WriteBool(true)
 	require.NoError(t, err)
 
@@ -27,7 +27,7 @@ func TestMarshallerBool(t *testing.T) {
 
 func TestMarshallerArrayEmpty(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	err := m.ArrayStart()
 	require.NoError(t, err)
 	err = m.ArrayEnd()
@@ -38,7 +38,7 @@ func TestMarshallerArrayEmpty(t *testing.T) {
 
 func TestMarshallerArraySingleElement(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	err := m.ArrayStart()
 	require.NoError(t, err)
 	err = m.WriteBool(true)
@@ -51,7 +51,7 @@ func TestMarshallerArraySingleElement(t *testing.T) {
 
 func TestMarshallerArrayTwoElements(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	err := m.ArrayStart()
 	require.NoError(t, err)
 	err = m.WriteBool(true)
@@ -66,7 +66,7 @@ func TestMarshallerArrayTwoElements(t *testing.T) {
 
 func TestMarshallerNestedArray(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	m.ArrayStart()
 	m.ArrayStart()
 	m.ArrayStart()
@@ -80,7 +80,7 @@ func TestMarshallerNestedArray(t *testing.T) {
 
 func TestMarshallerEmptyObject(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	m.ObjectStart()
 	m.ObjectEnd()
 
@@ -89,7 +89,7 @@ func TestMarshallerEmptyObject(t *testing.T) {
 
 func TestMarshallerObjectSingleKey(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	m.ObjectStart()
 	m.WriteKey("a")
 	m.WriteBool(true)
@@ -100,7 +100,7 @@ func TestMarshallerObjectSingleKey(t *testing.T) {
 
 func TestMarshallerObjectMultipleKeys(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	m.ObjectStart()
 	m.WriteKey("a")
 	m.WriteBool(true)
@@ -122,7 +122,7 @@ func TestMarshallerObjectMultipleKeys(t *testing.T) {
 
 func TestMarshallerArrayOfObjects(t *testing.T) {
 	buff := strings.Builder{}
-	m := NewJsonMarshaler(&buff)
+	m := NewMarshaler(&buff)
 	m.ArrayStart()
 	m.ObjectStart()
 	m.ObjectEnd()

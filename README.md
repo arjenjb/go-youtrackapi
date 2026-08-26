@@ -23,7 +23,7 @@ The repository includes the YouTrack 2026.2 OpenAPI document and semantic overri
 generator. Run:
 
 ```sh
-go generate ./model
+go generate ./internal/codegen
 ```
 
 The generated models and client methods are committed so consumers do not need the generator.

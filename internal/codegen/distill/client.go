@@ -353,6 +353,8 @@ func renderClient(endpoints []*endpoint, source string) []byte {
 	fmt.Fprintln(&out, "\t\"net/http\"")
 	fmt.Fprintln(&out, "\t\"net/url\"")
 	fmt.Fprintln(&out, "\t\"strconv\"")
+	fmt.Fprintln(&out)
+	fmt.Fprintln(&out, "\t\"github.com/arjenjb/go-youtrackapi/internal/jsoncodec\"")
 	fmt.Fprintln(&out, ")")
 	fmt.Fprintln(&out)
 	for _, endpoint := range endpoints {
@@ -402,7 +404,7 @@ func renderEndpoint(out *bytes.Buffer, endpoint *endpoint) {
 	switch endpoint.Body.Shape {
 	case bodyJSON:
 		fmt.Fprintln(out, "\tvar body bytes.Buffer")
-		fmt.Fprintf(out, "\tif err := marshal%s(NewJsonMarshaler(&body), r.%s); err != nil {\n", endpoint.Body.TypeName, endpoint.Body.TypeName)
+		fmt.Fprintf(out, "\tif err := marshal%s(jsoncodec.NewMarshaler(&body), r.%s); err != nil {\n", endpoint.Body.TypeName, endpoint.Body.TypeName)
 		renderErrorReturn(out, endpoint.Response, "err")
 		fmt.Fprintln(out, "\t}")
 		fmt.Fprintf(out, "\treq := c.makeRequestWithBody(ctx, http.Method%s, path, values, body.Bytes())\n", exportedName(strings.ToLower(endpoint.HTTPMethod)))

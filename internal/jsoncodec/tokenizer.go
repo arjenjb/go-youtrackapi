@@ -1,4 +1,4 @@
-package youtrackapi
+package jsoncodec
 
 import (
 	"bufio"

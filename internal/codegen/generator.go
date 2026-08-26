@@ -1,8 +1,8 @@
-package model
+package codegen
 
 import (
 	"fmt"
-	. "github.com/arjenjb/go-youtrackapi/bst"
+	. "github.com/arjenjb/go-youtrackapi/internal/codegen/bst"
 	"go/ast"
 	"go/token"
 	"strings"
@@ -61,6 +61,7 @@ func (g Generator) Generate() (*ast.File, error) {
 			Tok: token.IMPORT,
 			Specs: []ast.Spec{
 				&ast.ImportSpec{Path: String("fmt")},
+				&ast.ImportSpec{Path: String("github.com/arjenjb/go-youtrackapi/internal/jsoncodec")},
 				&ast.ImportSpec{Path: String("time")},
 				&ast.ImportSpec{Path: String("log/slog")},
 			},
@@ -212,7 +213,7 @@ func (g *Generator) generateStructUnmarshaler(each *StructDescriptor) error {
 				Type: &ast.FuncType{
 					Params: FieldList(
 						Field(key, Ident("string")),
-						Field(r, Type{Name: "JSONReader", Kind: TypeBuiltin}.Ptr().Ast()),
+						Field(r, Type{Name: "Reader", Package: "jsoncodec", Kind: TypeStruct}.Ptr().Ast()),
 					),
 					Results: FieldList(Field(nil, Ident("error"))),
 				},
@@ -243,7 +244,7 @@ func (g *Generator) generateStructUnmarshaler(each *StructDescriptor) error {
 			Func:       0,
 			TypeParams: nil,
 			Params: FieldList(
-				Field(ast.NewIdent("r"), Type{Name: "JSONReader", Kind: TypeStruct}.Ptr().Ast())),
+				Field(ast.NewIdent("r"), Type{Name: "Reader", Package: "jsoncodec", Kind: TypeStruct}.Ptr().Ast())),
 			Results: FieldList(
 				Field(nil, t.Ptr().Ast()),
 				Field(nil, ErrorType.Ast()),
@@ -457,6 +458,9 @@ func (g Generator) generateFieldUnmarshaler_interface(f *FieldDescriptor) (ast.S
 }
 
 func (g Generator) generateFieldUnmarshaler_struct(t Type) (ast.Expr, error) {
+	if t.Package == "time" {
+		return Call(Select(Ident("jsoncodec"), Ident("UnmarshalTime")), ast.NewIdent("r")), nil
+	}
 	return Call(Ident("unmarshal"+t.Name), ast.NewIdent("r")), nil
 }
 
@@ -480,11 +484,11 @@ func (g Generator) generateFieldUnmarshalExpression(t *TypeDescriptor) (ast.Expr
 		s := g.document.structByName(t.Elems[0].Name)
 		isAbstract := s != nil && s.Abstract
 
-		f := ast.NewIdent("unmarshalList")
+		f := Select(Ident("jsoncodec"), Ident("UnmarshalList"))
 		elemType := g.generateType(t.Elems[0]).Ast()
 
 		if isAbstract {
-			f = ast.NewIdent("unmarshalAbstractList")
+			f = Select(Ident("jsoncodec"), Ident("UnmarshalAbstractList"))
 		} else {
 			elemType = Ptr(elemType)
 		}
@@ -495,7 +499,7 @@ func (g Generator) generateFieldUnmarshalExpression(t *TypeDescriptor) (ast.Expr
 			&ast.FuncLit{
 				Type: &ast.FuncType{
 					Params: FieldList(
-						Field(Ident("r"), Ptr(Ident("JSONReader")))),
+						Field(Ident("r"), Ptr(Select(Ident("jsoncodec"), Ident("Reader"))))),
 					Results: FieldList(
 						Field(nil, elemType),
 						Field(nil, Ident("error"))),
@@ -582,7 +586,7 @@ func (g *Generator) generateInterfaceUnmarshaller(s *StructDescriptor, children 
 
 	body := Block(
 		MultiDefine([]ast.Expr{varT, varErr}, []ast.Expr{Call(
-			Ident("determineTypeDiscriminator"),
+			Select(Ident("jsoncodec"), Ident("DetermineTypeDiscriminator")),
 			varReader,
 			String("$type"),
 		)}),
@@ -599,7 +603,7 @@ func (g *Generator) generateInterfaceUnmarshaller(s *StructDescriptor, children 
 		Name: ast.NewIdent("unmarshal" + s.Name),
 		Type: &ast.FuncType{
 			Params: FieldList(
-				Field(Ident("r"), Ptr(Ident("JSONReader"))),
+				Field(Ident("r"), Ptr(Select(Ident("jsoncodec"), Ident("Reader")))),
 			),
 			Results: FieldList(
 				Field(nil, Ident(s.Name)),
@@ -657,7 +661,7 @@ func (g *Generator) generateInterfaceMarshaller(s *StructDescriptor, subtypes []
 	f := &ast.FuncDecl{
 		Name: Ident("marshal" + s.Name),
 		Type: &ast.FuncType{Params: FieldList(
-			Field(writerVar, Ptr(Ident("JsonMarshaler"))),
+			Field(writerVar, Ptr(Select(Ident("jsoncodec"), Ident("Marshaler")))),
 			Field(valVar, Ident(s.Name)),
 		),
 			Results: FieldList(Field(nil, Ident("error")))},
@@ -718,7 +722,7 @@ func (g *Generator) generateStructMarshaler(s *StructDescriptor) error {
 	f := &ast.FuncDecl{
 		Name: Ident("marshal" + s.Name),
 		Type: &ast.FuncType{Params: FieldList(
-			Field(writerVar, Ptr(Ident("JsonMarshaler"))),
+			Field(writerVar, Ptr(Select(Ident("jsoncodec"), Ident("Marshaler")))),
 			Field(valVar, Ident(s.Name)),
 		),
 			Results: FieldList(Field(nil, Ident("error")))},
@@ -764,6 +768,13 @@ func (g Generator) generateFieldMarshalExpr(field *FieldDescriptor, valVar *ast.
 		}
 
 	case TypeStruct:
+		if t.Package == "time" {
+			return Call(
+				Select(Ident("jsoncodec"), Ident("MarshalTime")),
+				writerVar,
+				Ptr(Select(valVar, Ident(g.title(field.Name)))),
+			)
+		}
 		return Call(
 			Ident("marshal"+t.Name),
 			writerVar,
@@ -778,11 +789,15 @@ func (g Generator) generateFieldMarshalExpr(field *FieldDescriptor, valVar *ast.
 		)
 
 	case TypeSlice:
+		marshalElement := ast.Expr(Ident("marshal" + t.Elem.Name))
+		if t.Elem.Kind == TypeBuiltin || t.Elem.Package == "time" {
+			marshalElement = Select(Ident("jsoncodec"), Ident("Marshal"+g.title(t.Elem.Name)))
+		}
 		return Call(
-			Ident("marshalList"),
+			Select(Ident("jsoncodec"), Ident("MarshalList")),
 			writerVar,
 			Select(valVar, Ident(g.title(field.Name))),
-			Ident("marshal"+t.Elem.Name),
+			marshalElement,
 		)
 
 	default:

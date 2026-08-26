@@ -1,4 +1,4 @@
-package model
+package codegen
 
 import "github.com/arjenjb/go-youtrackapi/internal/util"
 

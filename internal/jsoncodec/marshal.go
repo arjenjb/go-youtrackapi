@@ -1,4 +1,4 @@
-package youtrackapi
+package jsoncodec
 
 import (
 	"encoding/json"
@@ -18,21 +18,21 @@ const (
 	StateValue
 )
 
-type JsonMarshaler struct {
+type Marshaler struct {
 	stack util.LinkedList[State]
 	state State
 	w     io.Writer
 }
 
-func NewJsonMarshaler(w io.Writer) *JsonMarshaler {
-	return &JsonMarshaler{
+func NewMarshaler(w io.Writer) *Marshaler {
+	return &Marshaler{
 		stack: util.LinkedList[State]{},
 		state: StateBegin,
 		w:     w,
 	}
 }
 
-func (m *JsonMarshaler) WriteString(s string) error {
+func (m *Marshaler) WriteString(s string) error {
 	if err := m.newValue(); err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func (m *JsonMarshaler) WriteString(s string) error {
 	return m.writeString(s)
 }
 
-func (m *JsonMarshaler) WriteBool(b bool) error {
+func (m *Marshaler) WriteBool(b bool) error {
 	if err := m.newValue(); err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (m *JsonMarshaler) WriteBool(b bool) error {
 	}
 }
 
-func (m *JsonMarshaler) WriteNull() error {
+func (m *Marshaler) WriteNull() error {
 	if err := m.newValue(); err != nil {
 		return err
 	}
@@ -65,19 +65,19 @@ func (m *JsonMarshaler) WriteNull() error {
 	return err
 }
 
-func (m *JsonMarshaler) WriteInt(i int) error {
+func (m *Marshaler) WriteInt(i int) error {
 	return m.writeValue(i)
 }
 
-func (m *JsonMarshaler) WriteFloat64(f float64) error {
+func (m *Marshaler) WriteFloat64(f float64) error {
 	return m.writeValue(f)
 }
 
-func (m *JsonMarshaler) WriteValue(value any) error {
+func (m *Marshaler) WriteValue(value any) error {
 	return m.writeValue(value)
 }
 
-func (m *JsonMarshaler) ObjectStart() error {
+func (m *Marshaler) ObjectStart() error {
 	if err := m.newValue(); err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (m *JsonMarshaler) ObjectStart() error {
 	return nil
 }
 
-func (m *JsonMarshaler) ObjectEnd() error {
+func (m *Marshaler) ObjectEnd() error {
 	_, err := m.w.Write([]byte("}"))
 	if err != nil {
 		return err
@@ -102,7 +102,7 @@ func (m *JsonMarshaler) ObjectEnd() error {
 	return nil
 }
 
-func (m *JsonMarshaler) ArrayStart() error {
+func (m *Marshaler) ArrayStart() error {
 	if err := m.newValue(); err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func (m *JsonMarshaler) ArrayStart() error {
 	return err
 }
 
-func (m *JsonMarshaler) ArrayEnd() error {
+func (m *Marshaler) ArrayEnd() error {
 	if m.stack.IsEmpty() || m.stack.Tail.E != StateArray {
 		return fmt.Errorf("unexpected array end token")
 	}
@@ -126,7 +126,7 @@ func (m *JsonMarshaler) ArrayEnd() error {
 	return nil
 }
 
-func (m *JsonMarshaler) WriteKey(s string) error {
+func (m *Marshaler) WriteKey(s string) error {
 	if m.stack.Tail.E != StateObject {
 		return fmt.Errorf("unexpected object key")
 	}
@@ -158,7 +158,7 @@ func (m *JsonMarshaler) WriteKey(s string) error {
 }
 
 // Write a basic value, string, bool, nil, float or int
-func (m *JsonMarshaler) newValue() error {
+func (m *Marshaler) newValue() error {
 	if m.stack.IsEmpty() {
 		switch m.state {
 		case StateBegin:
@@ -196,7 +196,7 @@ func (m *JsonMarshaler) newValue() error {
 	}
 }
 
-func (m *JsonMarshaler) writeValue(val any) error {
+func (m *Marshaler) writeValue(val any) error {
 	if err := m.newValue(); err != nil {
 		return err
 	}
@@ -209,7 +209,7 @@ func (m *JsonMarshaler) writeValue(val any) error {
 	return err
 }
 
-func (m *JsonMarshaler) writeString(s string) error {
+func (m *Marshaler) writeString(s string) error {
 	data, err := json.Marshal(s)
 	if err != nil {
 		return err

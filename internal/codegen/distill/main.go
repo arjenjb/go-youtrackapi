@@ -20,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/arjenjb/go-youtrackapi/model"
+	"github.com/arjenjb/go-youtrackapi/internal/codegen"
 )
 
 type openAPIDocument struct {
@@ -143,7 +143,7 @@ func parseOpenAPI(input []byte) (openAPIDocument, error) {
 	return document, nil
 }
 
-func distillModel(document openAPIDocument, config overrides) (*model.Document, error) {
+func distillModel(document openAPIDocument, config overrides) (*codegen.Document, error) {
 	abstract := make(map[string]bool, len(config.AbstractTypes))
 	for _, name := range config.AbstractTypes {
 		if _, ok := document.Components.Schemas[name]; !ok {
@@ -153,7 +153,7 @@ func distillModel(document openAPIDocument, config overrides) (*model.Document, 
 	}
 
 	typeNames := sortedKeys(document.Components.Schemas)
-	result := &model.Document{}
+	result := &codegen.Document{}
 	seenOverrides := make(map[string]bool, len(config.FieldTypes))
 	for _, name := range typeNames {
 		s := document.Components.Schemas[name]
@@ -163,7 +163,7 @@ func distillModel(document openAPIDocument, config overrides) (*model.Document, 
 		}
 
 		fieldNames := sortedKeys(properties)
-		typeDescriptor := &model.StructDescriptor{
+		typeDescriptor := &codegen.StructDescriptor{
 			Name:        name,
 			Description: normalizeDescription(schemaDescriptionFor(name, document.Components.Schemas, nil)),
 			Extends:     extends,
@@ -183,7 +183,7 @@ func distillModel(document openAPIDocument, config overrides) (*model.Document, 
 				fieldType = replacement
 				seenOverrides[overrideName] = true
 			}
-			fieldDescriptor := &model.FieldDescriptor{
+			fieldDescriptor := &codegen.FieldDescriptor{
 				Name:        fieldName,
 				Description: normalizeDescription(property.Description),
 				Enum:        append([]string(nil), property.Enum...),
@@ -279,14 +279,14 @@ func normalizeDescription(description string) string {
 	return strings.Join(paragraphs, "\n")
 }
 
-func modelTypeDescriptor(name string) *model.TypeDescriptor {
+func modelTypeDescriptor(name string) *codegen.TypeDescriptor {
 	if elementName, ok := strings.CutPrefix(name, "[]"); ok {
-		return &model.TypeDescriptor{
-			Kind:  model.TypeDescriptorKindList,
-			Elems: []*model.TypeDescriptor{modelTypeDescriptor(elementName)},
+		return &codegen.TypeDescriptor{
+			Kind:  codegen.TypeDescriptorKindList,
+			Elems: []*codegen.TypeDescriptor{modelTypeDescriptor(elementName)},
 		}
 	}
-	return &model.TypeDescriptor{Kind: model.TypeDescriptorKindBasic, Name: name}
+	return &codegen.TypeDescriptor{Kind: codegen.TypeDescriptorKindBasic, Name: name}
 }
 
 func flattenSchema(s schema) (string, map[string]schema, error) {
@@ -352,8 +352,8 @@ func referenceName(ref string) (string, error) {
 	return name, nil
 }
 
-func renderModelGo(document *model.Document, source string) ([]byte, error) {
-	node, err := model.NewGenerator(document).Generate()
+func renderModelGo(document *codegen.Document, source string) ([]byte, error) {
+	node, err := codegen.NewGenerator(document).Generate()
 	if err != nil {
 		return nil, fmt.Errorf("generate model: %w", err)
 	}

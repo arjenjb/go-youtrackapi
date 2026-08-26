@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+
+	"github.com/arjenjb/go-youtrackapi/internal/jsoncodec"
 )
 
 // ListActivityItemsRequest contains parameters for ListActivityItems.
@@ -229,7 +231,7 @@ func (c *Client) CreateBuildBundle(ctx context.Context, r CreateBuildBundleReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalBuildBundle(NewJsonMarshaler(&body), r.BuildBundle); err != nil {
+	if err := marshalBuildBundle(jsoncodec.NewMarshaler(&body), r.BuildBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -283,7 +285,7 @@ func (c *Client) UpdateBuildBundle(ctx context.Context, r UpdateBuildBundleReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalBuildBundle(NewJsonMarshaler(&body), r.BuildBundle); err != nil {
+	if err := marshalBuildBundle(jsoncodec.NewMarshaler(&body), r.BuildBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -363,7 +365,7 @@ func (c *Client) CreateBuildBundleElement(ctx context.Context, r CreateBuildBund
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalBuildBundleElement(NewJsonMarshaler(&body), r.BuildBundleElement); err != nil {
+	if err := marshalBuildBundleElement(jsoncodec.NewMarshaler(&body), r.BuildBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -423,7 +425,7 @@ func (c *Client) UpdateBuildBundleElement(ctx context.Context, r UpdateBuildBund
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalBuildBundleElement(NewJsonMarshaler(&body), r.BuildBundleElement); err != nil {
+	if err := marshalBuildBundleElement(jsoncodec.NewMarshaler(&body), r.BuildBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -502,7 +504,7 @@ func (c *Client) CreateEnumBundle(ctx context.Context, r CreateEnumBundleRequest
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalEnumBundle(NewJsonMarshaler(&body), r.EnumBundle); err != nil {
+	if err := marshalEnumBundle(jsoncodec.NewMarshaler(&body), r.EnumBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -556,7 +558,7 @@ func (c *Client) UpdateEnumBundle(ctx context.Context, r UpdateEnumBundleRequest
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalEnumBundle(NewJsonMarshaler(&body), r.EnumBundle); err != nil {
+	if err := marshalEnumBundle(jsoncodec.NewMarshaler(&body), r.EnumBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -636,7 +638,7 @@ func (c *Client) CreateEnumBundleElement(ctx context.Context, r CreateEnumBundle
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalEnumBundleElement(NewJsonMarshaler(&body), r.EnumBundleElement); err != nil {
+	if err := marshalEnumBundleElement(jsoncodec.NewMarshaler(&body), r.EnumBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -696,7 +698,7 @@ func (c *Client) UpdateEnumBundleElement(ctx context.Context, r UpdateEnumBundle
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalEnumBundleElement(NewJsonMarshaler(&body), r.EnumBundleElement); err != nil {
+	if err := marshalEnumBundleElement(jsoncodec.NewMarshaler(&body), r.EnumBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -775,7 +777,7 @@ func (c *Client) CreateOwnedBundle(ctx context.Context, r CreateOwnedBundleReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalOwnedBundle(NewJsonMarshaler(&body), r.OwnedBundle); err != nil {
+	if err := marshalOwnedBundle(jsoncodec.NewMarshaler(&body), r.OwnedBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -829,7 +831,7 @@ func (c *Client) UpdateOwnedBundle(ctx context.Context, r UpdateOwnedBundleReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalOwnedBundle(NewJsonMarshaler(&body), r.OwnedBundle); err != nil {
+	if err := marshalOwnedBundle(jsoncodec.NewMarshaler(&body), r.OwnedBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -909,7 +911,7 @@ func (c *Client) CreateOwnedBundleElement(ctx context.Context, r CreateOwnedBund
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalOwnedBundleElement(NewJsonMarshaler(&body), r.OwnedBundleElement); err != nil {
+	if err := marshalOwnedBundleElement(jsoncodec.NewMarshaler(&body), r.OwnedBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -969,7 +971,7 @@ func (c *Client) UpdateOwnedBundleElement(ctx context.Context, r UpdateOwnedBund
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalOwnedBundleElement(NewJsonMarshaler(&body), r.OwnedBundleElement); err != nil {
+	if err := marshalOwnedBundleElement(jsoncodec.NewMarshaler(&body), r.OwnedBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1048,7 +1050,7 @@ func (c *Client) CreateStateBundle(ctx context.Context, r CreateStateBundleReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalStateBundle(NewJsonMarshaler(&body), r.StateBundle); err != nil {
+	if err := marshalStateBundle(jsoncodec.NewMarshaler(&body), r.StateBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1102,7 +1104,7 @@ func (c *Client) UpdateStateBundle(ctx context.Context, r UpdateStateBundleReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalStateBundle(NewJsonMarshaler(&body), r.StateBundle); err != nil {
+	if err := marshalStateBundle(jsoncodec.NewMarshaler(&body), r.StateBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1182,7 +1184,7 @@ func (c *Client) CreateStateBundleElement(ctx context.Context, r CreateStateBund
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalStateBundleElement(NewJsonMarshaler(&body), r.StateBundleElement); err != nil {
+	if err := marshalStateBundleElement(jsoncodec.NewMarshaler(&body), r.StateBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1242,7 +1244,7 @@ func (c *Client) UpdateStateBundleElement(ctx context.Context, r UpdateStateBund
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalStateBundleElement(NewJsonMarshaler(&body), r.StateBundleElement); err != nil {
+	if err := marshalStateBundleElement(jsoncodec.NewMarshaler(&body), r.StateBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1319,7 +1321,7 @@ func (c *Client) CreateUserBundle(ctx context.Context, r CreateUserBundleRequest
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUserBundle(NewJsonMarshaler(&body), r.UserBundle); err != nil {
+	if err := marshalUserBundle(jsoncodec.NewMarshaler(&body), r.UserBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1371,7 +1373,7 @@ func (c *Client) UpdateUserBundle(ctx context.Context, r UpdateUserBundleRequest
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUserBundle(NewJsonMarshaler(&body), r.UserBundle); err != nil {
+	if err := marshalUserBundle(jsoncodec.NewMarshaler(&body), r.UserBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1489,7 +1491,7 @@ func (c *Client) CreateUserGroupAtAdminCustomFieldSettingsBundlesUserByIDGroups(
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUserGroup(NewJsonMarshaler(&body), r.UserGroup); err != nil {
+	if err := marshalUserGroup(jsoncodec.NewMarshaler(&body), r.UserGroup); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1604,7 +1606,7 @@ func (c *Client) CreateUserAtAdminCustomFieldSettingsBundlesUserByIDIndividuals(
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUser(NewJsonMarshaler(&body), r.User); err != nil {
+	if err := marshalUser(jsoncodec.NewMarshaler(&body), r.User); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1715,7 +1717,7 @@ func (c *Client) CreateVersionBundle(ctx context.Context, r CreateVersionBundleR
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalVersionBundle(NewJsonMarshaler(&body), r.VersionBundle); err != nil {
+	if err := marshalVersionBundle(jsoncodec.NewMarshaler(&body), r.VersionBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1771,7 +1773,7 @@ func (c *Client) UpdateVersionBundle(ctx context.Context, r UpdateVersionBundleR
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalVersionBundle(NewJsonMarshaler(&body), r.VersionBundle); err != nil {
+	if err := marshalVersionBundle(jsoncodec.NewMarshaler(&body), r.VersionBundle); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1854,7 +1856,7 @@ func (c *Client) CreateVersionBundleElement(ctx context.Context, r CreateVersion
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalVersionBundleElement(NewJsonMarshaler(&body), r.VersionBundleElement); err != nil {
+	if err := marshalVersionBundleElement(jsoncodec.NewMarshaler(&body), r.VersionBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1916,7 +1918,7 @@ func (c *Client) UpdateVersionBundleElement(ctx context.Context, r UpdateVersion
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalVersionBundleElement(NewJsonMarshaler(&body), r.VersionBundleElement); err != nil {
+	if err := marshalVersionBundleElement(jsoncodec.NewMarshaler(&body), r.VersionBundleElement); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -1996,7 +1998,7 @@ func (c *Client) CreateCustomField(ctx context.Context, r CreateCustomFieldReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalCustomField(NewJsonMarshaler(&body), r.CustomField); err != nil {
+	if err := marshalCustomField(jsoncodec.NewMarshaler(&body), r.CustomField); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2050,7 +2052,7 @@ func (c *Client) UpdateCustomField(ctx context.Context, r UpdateCustomFieldReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalCustomField(NewJsonMarshaler(&body), r.CustomField); err != nil {
+	if err := marshalCustomField(jsoncodec.NewMarshaler(&body), r.CustomField); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2119,7 +2121,7 @@ func (c *Client) UpdateCustomFieldDefaults(ctx context.Context, r UpdateCustomFi
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalCustomFieldDefaults(NewJsonMarshaler(&body), r.CustomFieldDefaults); err != nil {
+	if err := marshalCustomFieldDefaults(jsoncodec.NewMarshaler(&body), r.CustomFieldDefaults); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2290,7 +2292,7 @@ func (c *Client) UpdateDatabaseBackupSettings(ctx context.Context, r UpdateDatab
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalDatabaseBackupSettings(NewJsonMarshaler(&body), r.DatabaseBackupSettings); err != nil {
+	if err := marshalDatabaseBackupSettings(jsoncodec.NewMarshaler(&body), r.DatabaseBackupSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2359,7 +2361,7 @@ func (c *Client) UpdateGlobalSettings(ctx context.Context, r UpdateGlobalSetting
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalGlobalSettings(NewJsonMarshaler(&body), r.GlobalSettings); err != nil {
+	if err := marshalGlobalSettings(jsoncodec.NewMarshaler(&body), r.GlobalSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2407,7 +2409,7 @@ func (c *Client) UpdateAppearanceSettings(ctx context.Context, r UpdateAppearanc
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalAppearanceSettings(NewJsonMarshaler(&body), r.AppearanceSettings); err != nil {
+	if err := marshalAppearanceSettings(jsoncodec.NewMarshaler(&body), r.AppearanceSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2455,7 +2457,7 @@ func (c *Client) UpdateLicense(ctx context.Context, r UpdateLicenseRequest) (*Li
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalLicense(NewJsonMarshaler(&body), r.License); err != nil {
+	if err := marshalLicense(jsoncodec.NewMarshaler(&body), r.License); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2503,7 +2505,7 @@ func (c *Client) UpdateLocaleSettings(ctx context.Context, r UpdateLocaleSetting
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalLocaleSettings(NewJsonMarshaler(&body), r.LocaleSettings); err != nil {
+	if err := marshalLocaleSettings(jsoncodec.NewMarshaler(&body), r.LocaleSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2553,7 +2555,7 @@ func (c *Client) UpdateNotificationSettings(ctx context.Context, r UpdateNotific
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalNotificationSettings(NewJsonMarshaler(&body), r.NotificationSettings); err != nil {
+	if err := marshalNotificationSettings(jsoncodec.NewMarshaler(&body), r.NotificationSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2601,7 +2603,7 @@ func (c *Client) UpdateRestCorsSettings(ctx context.Context, r UpdateRestCorsSet
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalRestCorsSettings(NewJsonMarshaler(&body), r.RestCorsSettings); err != nil {
+	if err := marshalRestCorsSettings(jsoncodec.NewMarshaler(&body), r.RestCorsSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2649,7 +2651,7 @@ func (c *Client) UpdateSystemSettings(ctx context.Context, r UpdateSystemSetting
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalSystemSettings(NewJsonMarshaler(&body), r.SystemSettings); err != nil {
+	if err := marshalSystemSettings(jsoncodec.NewMarshaler(&body), r.SystemSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2707,7 +2709,7 @@ func (c *Client) CreateOrganization(ctx context.Context, r CreateOrganizationReq
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalOrganization(NewJsonMarshaler(&body), r.Organization); err != nil {
+	if err := marshalOrganization(jsoncodec.NewMarshaler(&body), r.Organization); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2759,7 +2761,7 @@ func (c *Client) UpdateOrganization(ctx context.Context, r UpdateOrganizationReq
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalOrganization(NewJsonMarshaler(&body), r.Organization); err != nil {
+	if err := marshalOrganization(jsoncodec.NewMarshaler(&body), r.Organization); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2842,7 +2844,7 @@ func (c *Client) CreateProject(ctx context.Context, r CreateProjectRequest) (*Pr
 		values.Set("template", r.Template)
 	}
 	var body bytes.Buffer
-	if err := marshalProject(NewJsonMarshaler(&body), r.Project); err != nil {
+	if err := marshalProject(jsoncodec.NewMarshaler(&body), r.Project); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -2896,7 +2898,7 @@ func (c *Client) UpdateProject(ctx context.Context, r UpdateProjectRequest) (*Pr
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalProject(NewJsonMarshaler(&body), r.Project); err != nil {
+	if err := marshalProject(jsoncodec.NewMarshaler(&body), r.Project); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3008,7 +3010,7 @@ func (c *Client) CreateProjectCustomField(ctx context.Context, r CreateProjectCu
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalProjectCustomField(NewJsonMarshaler(&body), r.ProjectCustomField); err != nil {
+	if err := marshalProjectCustomField(jsoncodec.NewMarshaler(&body), r.ProjectCustomField); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3064,7 +3066,7 @@ func (c *Client) UpdateProjectCustomField(ctx context.Context, r UpdateProjectCu
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalProjectCustomField(NewJsonMarshaler(&body), r.ProjectCustomField); err != nil {
+	if err := marshalProjectCustomField(jsoncodec.NewMarshaler(&body), r.ProjectCustomField); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3162,7 +3164,7 @@ func (c *Client) CreateIssueAtAdminProjectsByIDIssues(ctx context.Context, r Cre
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssue(NewJsonMarshaler(&body), r.Issue); err != nil {
+	if err := marshalIssue(jsoncodec.NewMarshaler(&body), r.Issue); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3228,7 +3230,7 @@ func (c *Client) UpdateIssueAtAdminProjectsByIDIssuesByIssueID(ctx context.Conte
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssue(NewJsonMarshaler(&body), r.Issue); err != nil {
+	if err := marshalIssue(jsoncodec.NewMarshaler(&body), r.Issue); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3301,7 +3303,7 @@ func (c *Client) UpdateProjectTeam(ctx context.Context, r UpdateProjectTeamReque
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalProjectTeam(NewJsonMarshaler(&body), r.ProjectTeam); err != nil {
+	if err := marshalProjectTeam(jsoncodec.NewMarshaler(&body), r.ProjectTeam); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3365,7 +3367,7 @@ func (c *Client) CreateUserGroupAtAdminProjectsByIDTeamGroups(ctx context.Contex
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUserGroup(NewJsonMarshaler(&body), r.UserGroup); err != nil {
+	if err := marshalUserGroup(jsoncodec.NewMarshaler(&body), r.UserGroup); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3447,7 +3449,7 @@ func (c *Client) CreateUserAtAdminProjectsByIDTeamOwnUsers(ctx context.Context, 
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUser(NewJsonMarshaler(&body), r.User); err != nil {
+	if err := marshalUser(jsoncodec.NewMarshaler(&body), r.User); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3554,7 +3556,7 @@ func (c *Client) UpdateProjectTimeTrackingSettings(ctx context.Context, r Update
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalProjectTimeTrackingSettings(NewJsonMarshaler(&body), r.ProjectTimeTrackingSettings); err != nil {
+	if err := marshalProjectTimeTrackingSettings(jsoncodec.NewMarshaler(&body), r.ProjectTimeTrackingSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3620,7 +3622,7 @@ func (c *Client) CreateWorkItemTypeAtAdminProjectsByIDTimeTrackingSettingsWorkIt
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalWorkItemType(NewJsonMarshaler(&body), r.WorkItemType); err != nil {
+	if err := marshalWorkItemType(jsoncodec.NewMarshaler(&body), r.WorkItemType); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3769,7 +3771,7 @@ func (c *Client) CreateWorkItemType(ctx context.Context, r CreateWorkItemTypeReq
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalWorkItemType(NewJsonMarshaler(&body), r.WorkItemType); err != nil {
+	if err := marshalWorkItemType(jsoncodec.NewMarshaler(&body), r.WorkItemType); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3821,7 +3823,7 @@ func (c *Client) UpdateWorkItemType(ctx context.Context, r UpdateWorkItemTypeReq
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalWorkItemType(NewJsonMarshaler(&body), r.WorkItemType); err != nil {
+	if err := marshalWorkItemType(jsoncodec.NewMarshaler(&body), r.WorkItemType); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3885,7 +3887,7 @@ func (c *Client) UpdateWorkTimeSettings(ctx context.Context, r UpdateWorkTimeSet
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalWorkTimeSettings(NewJsonMarshaler(&body), r.WorkTimeSettings); err != nil {
+	if err := marshalWorkTimeSettings(jsoncodec.NewMarshaler(&body), r.WorkTimeSettings); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -3949,7 +3951,7 @@ func (c *Client) CreateAgile(ctx context.Context, r CreateAgileRequest) (*Agile,
 		values.Set("template", r.Template)
 	}
 	var body bytes.Buffer
-	if err := marshalAgile(NewJsonMarshaler(&body), r.Agile); err != nil {
+	if err := marshalAgile(jsoncodec.NewMarshaler(&body), r.Agile); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4001,7 +4003,7 @@ func (c *Client) UpdateAgile(ctx context.Context, r UpdateAgileRequest) (*Agile,
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalAgile(NewJsonMarshaler(&body), r.Agile); err != nil {
+	if err := marshalAgile(jsoncodec.NewMarshaler(&body), r.Agile); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4087,7 +4089,7 @@ func (c *Client) CreateSprint(ctx context.Context, r CreateSprintRequest) (*Spri
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalSprint(NewJsonMarshaler(&body), r.Sprint); err != nil {
+	if err := marshalSprint(jsoncodec.NewMarshaler(&body), r.Sprint); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4143,7 +4145,7 @@ func (c *Client) UpdateSprint(ctx context.Context, r UpdateSprintRequest) (*Spri
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalSprint(NewJsonMarshaler(&body), r.Sprint); err != nil {
+	if err := marshalSprint(jsoncodec.NewMarshaler(&body), r.Sprint); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4235,7 +4237,7 @@ func (c *Client) CreateArticle(ctx context.Context, r CreateArticleRequest) (*Ar
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalArticle(NewJsonMarshaler(&body), r.Article); err != nil {
+	if err := marshalArticle(jsoncodec.NewMarshaler(&body), r.Article); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4297,7 +4299,7 @@ func (c *Client) UpdateArticle(ctx context.Context, r UpdateArticleRequest) (*Ar
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalArticle(NewJsonMarshaler(&body), r.Article); err != nil {
+	if err := marshalArticle(jsoncodec.NewMarshaler(&body), r.Article); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4383,7 +4385,7 @@ func (c *Client) CreateArticleAttachment(ctx context.Context, r CreateArticleAtt
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalArticleAttachment(NewJsonMarshaler(&body), r.ArticleAttachment); err != nil {
+	if err := marshalArticleAttachment(jsoncodec.NewMarshaler(&body), r.ArticleAttachment); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4439,7 +4441,7 @@ func (c *Client) UpdateArticleAttachment(ctx context.Context, r UpdateArticleAtt
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalArticleAttachment(NewJsonMarshaler(&body), r.ArticleAttachment); err != nil {
+	if err := marshalArticleAttachment(jsoncodec.NewMarshaler(&body), r.ArticleAttachment); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4531,7 +4533,7 @@ func (c *Client) CreateArticleAtArticlesByIDChildArticles(ctx context.Context, r
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalArticle(NewJsonMarshaler(&body), r.Article); err != nil {
+	if err := marshalArticle(jsoncodec.NewMarshaler(&body), r.Article); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4601,7 +4603,7 @@ func (c *Client) UpdateArticleAtArticlesByIDChildArticlesByArticleID(ctx context
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalArticle(NewJsonMarshaler(&body), r.Article); err != nil {
+	if err := marshalArticle(jsoncodec.NewMarshaler(&body), r.Article); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4696,7 +4698,7 @@ func (c *Client) CreateArticleComment(ctx context.Context, r CreateArticleCommen
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalArticleComment(NewJsonMarshaler(&body), r.ArticleComment); err != nil {
+	if err := marshalArticleComment(jsoncodec.NewMarshaler(&body), r.ArticleComment); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4760,7 +4762,7 @@ func (c *Client) UpdateArticleComment(ctx context.Context, r UpdateArticleCommen
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalArticleComment(NewJsonMarshaler(&body), r.ArticleComment); err != nil {
+	if err := marshalArticleComment(jsoncodec.NewMarshaler(&body), r.ArticleComment); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4844,7 +4846,7 @@ func (c *Client) CreateReaction(ctx context.Context, r CreateReactionRequest) (*
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalReaction(NewJsonMarshaler(&body), r.Reaction); err != nil {
+	if err := marshalReaction(jsoncodec.NewMarshaler(&body), r.Reaction); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -4979,7 +4981,7 @@ func (c *Client) CreateTagAtArticlesByIDTags(ctx context.Context, r CreateTagAtA
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalTag(NewJsonMarshaler(&body), r.Tag); err != nil {
+	if err := marshalTag(jsoncodec.NewMarshaler(&body), r.Tag); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5104,7 +5106,7 @@ func (c *Client) UpdateAssignedRole(ctx context.Context, r UpdateAssignedRoleReq
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalAssignedRole(NewJsonMarshaler(&body), r.AssignedRole); err != nil {
+	if err := marshalAssignedRole(jsoncodec.NewMarshaler(&body), r.AssignedRole); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5153,7 +5155,7 @@ func (c *Client) CreateCommandList(ctx context.Context, r CreateCommandListReque
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalCommandList(NewJsonMarshaler(&body), r.CommandList); err != nil {
+	if err := marshalCommandList(jsoncodec.NewMarshaler(&body), r.CommandList); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5181,7 +5183,7 @@ func (c *Client) CreateCommandListAtCommandsAssist(ctx context.Context, r Create
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalCommandList(NewJsonMarshaler(&body), r.CommandList); err != nil {
+	if err := marshalCommandList(jsoncodec.NewMarshaler(&body), r.CommandList); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5240,7 +5242,7 @@ func (c *Client) CreateUserGroup(ctx context.Context, r CreateUserGroupRequest) 
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUserGroup(NewJsonMarshaler(&body), r.UserGroup); err != nil {
+	if err := marshalUserGroup(jsoncodec.NewMarshaler(&body), r.UserGroup); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5288,7 +5290,7 @@ func (c *Client) UpdateUserGroup(ctx context.Context, r UpdateUserGroupRequest) 
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUserGroup(NewJsonMarshaler(&body), r.UserGroup); err != nil {
+	if err := marshalUserGroup(jsoncodec.NewMarshaler(&body), r.UserGroup); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5367,7 +5369,7 @@ func (c *Client) UpdateUserAtGroupsByIDOwnUsersByUserID(ctx context.Context, r U
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUser(NewJsonMarshaler(&body), r.User); err != nil {
+	if err := marshalUser(jsoncodec.NewMarshaler(&body), r.User); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5491,7 +5493,7 @@ func (c *Client) CreateIssueLinkType(ctx context.Context, r CreateIssueLinkTypeR
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalIssueLinkType(NewJsonMarshaler(&body), r.IssueLinkType); err != nil {
+	if err := marshalIssueLinkType(jsoncodec.NewMarshaler(&body), r.IssueLinkType); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5543,7 +5545,7 @@ func (c *Client) UpdateIssueLinkType(ctx context.Context, r UpdateIssueLinkTypeR
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalIssueLinkType(NewJsonMarshaler(&body), r.IssueLinkType); err != nil {
+	if err := marshalIssueLinkType(jsoncodec.NewMarshaler(&body), r.IssueLinkType); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5646,7 +5648,7 @@ func (c *Client) CreateIssue(ctx context.Context, r CreateIssueRequest) (*Issue,
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssue(NewJsonMarshaler(&body), r.Issue); err != nil {
+	if err := marshalIssue(jsoncodec.NewMarshaler(&body), r.Issue); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -5706,7 +5708,7 @@ func (c *Client) UpdateIssue(ctx context.Context, r UpdateIssueRequest) (*Issue,
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssue(NewJsonMarshaler(&body), r.Issue); err != nil {
+	if err := marshalIssue(jsoncodec.NewMarshaler(&body), r.Issue); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6011,7 +6013,7 @@ func (c *Client) UpdateIssueAttachment(ctx context.Context, r UpdateIssueAttachm
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalIssueAttachment(NewJsonMarshaler(&body), r.IssueAttachment); err != nil {
+	if err := marshalIssueAttachment(jsoncodec.NewMarshaler(&body), r.IssueAttachment); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6104,7 +6106,7 @@ func (c *Client) CreateIssueComment(ctx context.Context, r CreateIssueCommentReq
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssueComment(NewJsonMarshaler(&body), r.IssueComment); err != nil {
+	if err := marshalIssueComment(jsoncodec.NewMarshaler(&body), r.IssueComment); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6168,7 +6170,7 @@ func (c *Client) UpdateIssueComment(ctx context.Context, r UpdateIssueCommentReq
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssueComment(NewJsonMarshaler(&body), r.IssueComment); err != nil {
+	if err := marshalIssueComment(jsoncodec.NewMarshaler(&body), r.IssueComment); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6256,7 +6258,7 @@ func (c *Client) CreateReactionAtIssuesByIDCommentsByIssueCommentIDReactions(ctx
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalReaction(NewJsonMarshaler(&body), r.Reaction); err != nil {
+	if err := marshalReaction(jsoncodec.NewMarshaler(&body), r.Reaction); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6404,7 +6406,7 @@ func (c *Client) UpdateIssueCustomField(ctx context.Context, r UpdateIssueCustom
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssueCustomField(NewJsonMarshaler(&body), r.IssueCustomField); err != nil {
+	if err := marshalIssueCustomField(jsoncodec.NewMarshaler(&body), r.IssueCustomField); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6539,7 +6541,7 @@ func (c *Client) CreateIssueAtIssuesByIDLinksByIssueLinkIDIssues(ctx context.Con
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssue(NewJsonMarshaler(&body), r.Issue); err != nil {
+	if err := marshalIssue(jsoncodec.NewMarshaler(&body), r.Issue); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6625,7 +6627,7 @@ func (c *Client) UpdateProjectAtIssuesByIDProject(ctx context.Context, r UpdateP
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalProject(NewJsonMarshaler(&body), r.Project); err != nil {
+	if err := marshalProject(jsoncodec.NewMarshaler(&body), r.Project); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6722,7 +6724,7 @@ func (c *Client) CreateTagAtIssuesByIDTags(ctx context.Context, r CreateTagAtIss
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalTag(NewJsonMarshaler(&body), r.Tag); err != nil {
+	if err := marshalTag(jsoncodec.NewMarshaler(&body), r.Tag); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6863,7 +6865,7 @@ func (c *Client) CreateIssueWorkItem(ctx context.Context, r CreateIssueWorkItemR
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssueWorkItem(NewJsonMarshaler(&body), r.IssueWorkItem); err != nil {
+	if err := marshalIssueWorkItem(jsoncodec.NewMarshaler(&body), r.IssueWorkItem); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -6931,7 +6933,7 @@ func (c *Client) UpdateIssueWorkItem(ctx context.Context, r UpdateIssueWorkItemR
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalIssueWorkItem(NewJsonMarshaler(&body), r.IssueWorkItem); err != nil {
+	if err := marshalIssueWorkItem(jsoncodec.NewMarshaler(&body), r.IssueWorkItem); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7015,7 +7017,7 @@ func (c *Client) CreateVcsChange(ctx context.Context, r CreateVcsChangeRequest) 
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalVcsChange(NewJsonMarshaler(&body), r.VcsChange); err != nil {
+	if err := marshalVcsChange(jsoncodec.NewMarshaler(&body), r.VcsChange); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7075,7 +7077,7 @@ func (c *Client) UpdateVcsChange(ctx context.Context, r UpdateVcsChangeRequest) 
 		values.Set("muteUpdateNotifications", strconv.FormatBool(r.MuteUpdateNotifications))
 	}
 	var body bytes.Buffer
-	if err := marshalVcsChange(NewJsonMarshaler(&body), r.VcsChange); err != nil {
+	if err := marshalVcsChange(jsoncodec.NewMarshaler(&body), r.VcsChange); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7118,7 +7120,7 @@ func (c *Client) CreateIssueCountResponse(ctx context.Context, r CreateIssueCoun
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalIssueCountResponse(NewJsonMarshaler(&body), r.IssueCountResponse); err != nil {
+	if err := marshalIssueCountResponse(jsoncodec.NewMarshaler(&body), r.IssueCountResponse); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7201,7 +7203,7 @@ func (c *Client) CreateRole(ctx context.Context, r CreateRoleRequest) (*Role, er
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalRole(NewJsonMarshaler(&body), r.Role); err != nil {
+	if err := marshalRole(jsoncodec.NewMarshaler(&body), r.Role); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7249,7 +7251,7 @@ func (c *Client) UpdateRole(ctx context.Context, r UpdateRoleRequest) (*Role, er
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalRole(NewJsonMarshaler(&body), r.Role); err != nil {
+	if err := marshalRole(jsoncodec.NewMarshaler(&body), r.Role); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7323,7 +7325,7 @@ func (c *Client) CreateSavedQuery(ctx context.Context, r CreateSavedQueryRequest
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalSavedQuery(NewJsonMarshaler(&body), r.SavedQuery); err != nil {
+	if err := marshalSavedQuery(jsoncodec.NewMarshaler(&body), r.SavedQuery); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7377,7 +7379,7 @@ func (c *Client) UpdateSavedQuery(ctx context.Context, r UpdateSavedQueryRequest
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalSavedQuery(NewJsonMarshaler(&body), r.SavedQuery); err != nil {
+	if err := marshalSavedQuery(jsoncodec.NewMarshaler(&body), r.SavedQuery); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7420,7 +7422,7 @@ func (c *Client) CreateSearchSuggestions(ctx context.Context, r CreateSearchSugg
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalSearchSuggestions(NewJsonMarshaler(&body), r.SearchSuggestions); err != nil {
+	if err := marshalSearchSuggestions(jsoncodec.NewMarshaler(&body), r.SearchSuggestions); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7486,7 +7488,7 @@ func (c *Client) CreateTag(ctx context.Context, r CreateTagRequest) (Tag, error)
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalTag(NewJsonMarshaler(&body), r.Tag); err != nil {
+	if err := marshalTag(jsoncodec.NewMarshaler(&body), r.Tag); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7540,7 +7542,7 @@ func (c *Client) UpdateTag(ctx context.Context, r UpdateTagRequest) (Tag, error)
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalTag(NewJsonMarshaler(&body), r.Tag); err != nil {
+	if err := marshalTag(jsoncodec.NewMarshaler(&body), r.Tag); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7655,7 +7657,7 @@ func (c *Client) CreateUser(ctx context.Context, r CreateUserRequest) (*User, er
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUser(NewJsonMarshaler(&body), r.User); err != nil {
+	if err := marshalUser(jsoncodec.NewMarshaler(&body), r.User); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7724,7 +7726,7 @@ func (c *Client) UpdateUser(ctx context.Context, r UpdateUserRequest) (*User, er
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalUser(NewJsonMarshaler(&body), r.User); err != nil {
+	if err := marshalUser(jsoncodec.NewMarshaler(&body), r.User); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7778,7 +7780,7 @@ func (c *Client) UpdateGeneralUserProfile(ctx context.Context, r UpdateGeneralUs
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalGeneralUserProfile(NewJsonMarshaler(&body), r.GeneralUserProfile); err != nil {
+	if err := marshalGeneralUserProfile(jsoncodec.NewMarshaler(&body), r.GeneralUserProfile); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7830,7 +7832,7 @@ func (c *Client) UpdateNotificationsUserProfile(ctx context.Context, r UpdateNot
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalNotificationsUserProfile(NewJsonMarshaler(&body), r.NotificationsUserProfile); err != nil {
+	if err := marshalNotificationsUserProfile(jsoncodec.NewMarshaler(&body), r.NotificationsUserProfile); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())
@@ -7882,7 +7884,7 @@ func (c *Client) UpdateTimeTrackingUserProfile(ctx context.Context, r UpdateTime
 		values.Set("fields", r.Fields)
 	}
 	var body bytes.Buffer
-	if err := marshalTimeTrackingUserProfile(NewJsonMarshaler(&body), r.TimeTrackingUserProfile); err != nil {
+	if err := marshalTimeTrackingUserProfile(jsoncodec.NewMarshaler(&body), r.TimeTrackingUserProfile); err != nil {
 		return nil, err
 	}
 	req := c.makeRequestWithBody(ctx, http.MethodPost, path, values, body.Bytes())

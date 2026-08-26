@@ -5,6 +5,7 @@ package youtrackapi
 
 import (
 	"fmt"
+	"github.com/arjenjb/go-youtrackapi/internal/jsoncodec"
 	"log/slog"
 	"time"
 )
@@ -12,8 +13,8 @@ import (
 type AccessScope interface {
 }
 
-func unmarshalAccessScope(r *JSONReader) (AccessScope, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalAccessScope(r *jsoncodec.Reader) (AccessScope, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +29,7 @@ func unmarshalAccessScope(r *JSONReader) (AccessScope, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalAccessScope(w *JsonMarshaler, v AccessScope) error {
+func marshalAccessScope(w *jsoncodec.Marshaler, v AccessScope) error {
 	switch vt := v.(type) {
 	case GlobalScope:
 		return marshalGlobalScope(w, vt)
@@ -44,8 +45,8 @@ func marshalAccessScope(w *JsonMarshaler, v AccessScope) error {
 type ActivityItem interface {
 }
 
-func unmarshalActivityItem(r *JSONReader) (ActivityItem, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalActivityItem(r *jsoncodec.Reader) (ActivityItem, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +109,7 @@ func unmarshalActivityItem(r *JSONReader) (ActivityItem, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalActivityItem(w *JsonMarshaler, v ActivityItem) error {
+func marshalActivityItem(w *jsoncodec.Marshaler, v ActivityItem) error {
 	switch vt := v.(type) {
 	case AttachmentActivityItem:
 		return marshalAttachmentActivityItem(w, vt)
@@ -161,8 +162,8 @@ func marshalActivityItem(w *JsonMarshaler, v ActivityItem) error {
 type BaseArticle interface {
 }
 
-func unmarshalBaseArticle(r *JSONReader) (BaseArticle, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalBaseArticle(r *jsoncodec.Reader) (BaseArticle, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +174,7 @@ func unmarshalBaseArticle(r *JSONReader) (BaseArticle, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalBaseArticle(w *JsonMarshaler, v BaseArticle) error {
+func marshalBaseArticle(w *jsoncodec.Marshaler, v BaseArticle) error {
 	switch vt := v.(type) {
 	case Article:
 		return marshalArticle(w, vt)
@@ -187,8 +188,8 @@ type BaseBundle interface {
 	Bundle
 }
 
-func unmarshalBaseBundle(r *JSONReader) (BaseBundle, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalBaseBundle(r *jsoncodec.Reader) (BaseBundle, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +208,7 @@ func unmarshalBaseBundle(r *JSONReader) (BaseBundle, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalBaseBundle(w *JsonMarshaler, v BaseBundle) error {
+func marshalBaseBundle(w *jsoncodec.Marshaler, v BaseBundle) error {
 	switch vt := v.(type) {
 	case BuildBundle:
 		return marshalBuildBundle(w, vt)
@@ -228,8 +229,8 @@ func marshalBaseBundle(w *JsonMarshaler, v BaseBundle) error {
 type BaseWorkItem interface {
 }
 
-func unmarshalBaseWorkItem(r *JSONReader) (BaseWorkItem, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalBaseWorkItem(r *jsoncodec.Reader) (BaseWorkItem, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -240,7 +241,7 @@ func unmarshalBaseWorkItem(r *JSONReader) (BaseWorkItem, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalBaseWorkItem(w *JsonMarshaler, v BaseWorkItem) error {
+func marshalBaseWorkItem(w *jsoncodec.Marshaler, v BaseWorkItem) error {
 	switch vt := v.(type) {
 	case IssueWorkItem:
 		return marshalIssueWorkItem(w, vt)
@@ -252,8 +253,8 @@ func marshalBaseWorkItem(w *JsonMarshaler, v BaseWorkItem) error {
 type Bundle interface {
 }
 
-func unmarshalBundle(r *JSONReader) (Bundle, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalBundle(r *jsoncodec.Reader) (Bundle, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -276,7 +277,7 @@ func unmarshalBundle(r *JSONReader) (Bundle, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalBundle(w *JsonMarshaler, v Bundle) error {
+func marshalBundle(w *jsoncodec.Marshaler, v Bundle) error {
 	switch vt := v.(type) {
 	case UserBundle:
 		return marshalUserBundle(w, vt)
@@ -300,8 +301,8 @@ type BundleCustomFieldDefaults interface {
 	CustomFieldDefaults
 }
 
-func unmarshalBundleCustomFieldDefaults(r *JSONReader) (BundleCustomFieldDefaults, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalBundleCustomFieldDefaults(r *jsoncodec.Reader) (BundleCustomFieldDefaults, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +321,7 @@ func unmarshalBundleCustomFieldDefaults(r *JSONReader) (BundleCustomFieldDefault
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalBundleCustomFieldDefaults(w *JsonMarshaler, v BundleCustomFieldDefaults) error {
+func marshalBundleCustomFieldDefaults(w *jsoncodec.Marshaler, v BundleCustomFieldDefaults) error {
 	switch vt := v.(type) {
 	case BuildBundleCustomFieldDefaults:
 		return marshalBuildBundleCustomFieldDefaults(w, vt)
@@ -341,8 +342,8 @@ func marshalBundleCustomFieldDefaults(w *JsonMarshaler, v BundleCustomFieldDefau
 type BundleElement interface {
 }
 
-func unmarshalBundleElement(r *JSONReader) (BundleElement, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalBundleElement(r *jsoncodec.Reader) (BundleElement, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -363,7 +364,7 @@ func unmarshalBundleElement(r *JSONReader) (BundleElement, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalBundleElement(w *JsonMarshaler, v BundleElement) error {
+func marshalBundleElement(w *jsoncodec.Marshaler, v BundleElement) error {
 	switch vt := v.(type) {
 	case BuildBundleElement:
 		return marshalBuildBundleElement(w, vt)
@@ -386,8 +387,8 @@ type BundleProjectCustomField interface {
 	ProjectCustomField
 }
 
-func unmarshalBundleProjectCustomField(r *JSONReader) (BundleProjectCustomField, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalBundleProjectCustomField(r *jsoncodec.Reader) (BundleProjectCustomField, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -408,7 +409,7 @@ func unmarshalBundleProjectCustomField(r *JSONReader) (BundleProjectCustomField,
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalBundleProjectCustomField(w *JsonMarshaler, v BundleProjectCustomField) error {
+func marshalBundleProjectCustomField(w *jsoncodec.Marshaler, v BundleProjectCustomField) error {
 	switch vt := v.(type) {
 	case BuildProjectCustomField:
 		return marshalBuildProjectCustomField(w, vt)
@@ -432,8 +433,8 @@ func marshalBundleProjectCustomField(w *JsonMarshaler, v BundleProjectCustomFiel
 type ChangesProcessor interface {
 }
 
-func unmarshalChangesProcessor(r *JSONReader) (ChangesProcessor, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalChangesProcessor(r *jsoncodec.Reader) (ChangesProcessor, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -462,7 +463,7 @@ func unmarshalChangesProcessor(r *JSONReader) (ChangesProcessor, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalChangesProcessor(w *JsonMarshaler, v ChangesProcessor) error {
+func marshalChangesProcessor(w *jsoncodec.Marshaler, v ChangesProcessor) error {
 	switch vt := v.(type) {
 	case JenkinsChangesProcessor:
 		return marshalJenkinsChangesProcessor(w, vt)
@@ -491,8 +492,8 @@ func marshalChangesProcessor(w *JsonMarshaler, v ChangesProcessor) error {
 type ColorCoding interface {
 }
 
-func unmarshalColorCoding(r *JSONReader) (ColorCoding, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalColorCoding(r *jsoncodec.Reader) (ColorCoding, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -505,7 +506,7 @@ func unmarshalColorCoding(r *JSONReader) (ColorCoding, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalColorCoding(w *JsonMarshaler, v ColorCoding) error {
+func marshalColorCoding(w *jsoncodec.Marshaler, v ColorCoding) error {
 	switch vt := v.(type) {
 	case FieldBasedColorCoding:
 		return marshalFieldBasedColorCoding(w, vt)
@@ -520,8 +521,8 @@ func marshalColorCoding(w *JsonMarshaler, v ColorCoding) error {
 type CommandVisibility interface {
 }
 
-func unmarshalCommandVisibility(r *JSONReader) (CommandVisibility, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalCommandVisibility(r *jsoncodec.Reader) (CommandVisibility, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -534,7 +535,7 @@ func unmarshalCommandVisibility(r *JSONReader) (CommandVisibility, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalCommandVisibility(w *JsonMarshaler, v CommandVisibility) error {
+func marshalCommandVisibility(w *jsoncodec.Marshaler, v CommandVisibility) error {
 	switch vt := v.(type) {
 	case CommandLimitedVisibility:
 		return marshalCommandLimitedVisibility(w, vt)
@@ -551,8 +552,8 @@ type CreatedDeletedActivityItem interface {
 	ActivityItem
 }
 
-func unmarshalCreatedDeletedActivityItem(r *JSONReader) (CreatedDeletedActivityItem, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalCreatedDeletedActivityItem(r *jsoncodec.Reader) (CreatedDeletedActivityItem, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -573,7 +574,7 @@ func unmarshalCreatedDeletedActivityItem(r *JSONReader) (CreatedDeletedActivityI
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalCreatedDeletedActivityItem(w *JsonMarshaler, v CreatedDeletedActivityItem) error {
+func marshalCreatedDeletedActivityItem(w *jsoncodec.Marshaler, v CreatedDeletedActivityItem) error {
 	switch vt := v.(type) {
 	case AttachmentActivityItem:
 		return marshalAttachmentActivityItem(w, vt)
@@ -597,8 +598,8 @@ type CustomFieldActivityItem interface {
 	ActivityItem
 }
 
-func unmarshalCustomFieldActivityItem(r *JSONReader) (CustomFieldActivityItem, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalCustomFieldActivityItem(r *jsoncodec.Reader) (CustomFieldActivityItem, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -609,7 +610,7 @@ func unmarshalCustomFieldActivityItem(r *JSONReader) (CustomFieldActivityItem, e
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalCustomFieldActivityItem(w *JsonMarshaler, v CustomFieldActivityItem) error {
+func marshalCustomFieldActivityItem(w *jsoncodec.Marshaler, v CustomFieldActivityItem) error {
 	switch vt := v.(type) {
 	case TextCustomFieldActivityItem:
 		return marshalTextCustomFieldActivityItem(w, vt)
@@ -622,8 +623,8 @@ func marshalCustomFieldActivityItem(w *JsonMarshaler, v CustomFieldActivityItem)
 type CustomFieldCondition interface {
 }
 
-func unmarshalCustomFieldCondition(r *JSONReader) (CustomFieldCondition, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalCustomFieldCondition(r *jsoncodec.Reader) (CustomFieldCondition, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -634,7 +635,7 @@ func unmarshalCustomFieldCondition(r *JSONReader) (CustomFieldCondition, error) 
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalCustomFieldCondition(w *JsonMarshaler, v CustomFieldCondition) error {
+func marshalCustomFieldCondition(w *jsoncodec.Marshaler, v CustomFieldCondition) error {
 	switch vt := v.(type) {
 	case FieldBasedCondition:
 		return marshalFieldBasedCondition(w, vt)
@@ -646,8 +647,8 @@ func marshalCustomFieldCondition(w *JsonMarshaler, v CustomFieldCondition) error
 type CustomFieldDefaults interface {
 }
 
-func unmarshalCustomFieldDefaults(r *JSONReader) (CustomFieldDefaults, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalCustomFieldDefaults(r *jsoncodec.Reader) (CustomFieldDefaults, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -670,7 +671,7 @@ func unmarshalCustomFieldDefaults(r *JSONReader) (CustomFieldDefaults, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalCustomFieldDefaults(w *JsonMarshaler, v CustomFieldDefaults) error {
+func marshalCustomFieldDefaults(w *jsoncodec.Marshaler, v CustomFieldDefaults) error {
 	switch vt := v.(type) {
 	case UserCustomFieldDefaults:
 		return marshalUserCustomFieldDefaults(w, vt)
@@ -693,8 +694,8 @@ func marshalCustomFieldDefaults(w *JsonMarshaler, v CustomFieldDefaults) error {
 type DatabaseAttributeValue interface {
 }
 
-func unmarshalDatabaseAttributeValue(r *JSONReader) (DatabaseAttributeValue, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalDatabaseAttributeValue(r *jsoncodec.Reader) (DatabaseAttributeValue, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -707,7 +708,7 @@ func unmarshalDatabaseAttributeValue(r *JSONReader) (DatabaseAttributeValue, err
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalDatabaseAttributeValue(w *JsonMarshaler, v DatabaseAttributeValue) error {
+func marshalDatabaseAttributeValue(w *jsoncodec.Marshaler, v DatabaseAttributeValue) error {
 	switch vt := v.(type) {
 	case AgileColumnFieldValue:
 		return marshalAgileColumnFieldValue(w, vt)
@@ -724,8 +725,8 @@ type DatabaseMultiValueIssueCustomField interface {
 	IssueCustomField
 }
 
-func unmarshalDatabaseMultiValueIssueCustomField(r *JSONReader) (DatabaseMultiValueIssueCustomField, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalDatabaseMultiValueIssueCustomField(r *jsoncodec.Reader) (DatabaseMultiValueIssueCustomField, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -746,7 +747,7 @@ func unmarshalDatabaseMultiValueIssueCustomField(r *JSONReader) (DatabaseMultiVa
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalDatabaseMultiValueIssueCustomField(w *JsonMarshaler, v DatabaseMultiValueIssueCustomField) error {
+func marshalDatabaseMultiValueIssueCustomField(w *jsoncodec.Marshaler, v DatabaseMultiValueIssueCustomField) error {
 	switch vt := v.(type) {
 	case MultiBuildIssueCustomField:
 		return marshalMultiBuildIssueCustomField(w, vt)
@@ -770,8 +771,8 @@ type DatabaseSingleValueIssueCustomField interface {
 	IssueCustomField
 }
 
-func unmarshalDatabaseSingleValueIssueCustomField(r *JSONReader) (DatabaseSingleValueIssueCustomField, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalDatabaseSingleValueIssueCustomField(r *jsoncodec.Reader) (DatabaseSingleValueIssueCustomField, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -796,7 +797,7 @@ func unmarshalDatabaseSingleValueIssueCustomField(r *JSONReader) (DatabaseSingle
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalDatabaseSingleValueIssueCustomField(w *JsonMarshaler, v DatabaseSingleValueIssueCustomField) error {
+func marshalDatabaseSingleValueIssueCustomField(w *jsoncodec.Marshaler, v DatabaseSingleValueIssueCustomField) error {
 	switch vt := v.(type) {
 	case SingleBuildIssueCustomField:
 		return marshalSingleBuildIssueCustomField(w, vt)
@@ -824,8 +825,8 @@ func marshalDatabaseSingleValueIssueCustomField(w *JsonMarshaler, v DatabaseSing
 type FilterField interface {
 }
 
-func unmarshalFilterField(r *JSONReader) (FilterField, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalFilterField(r *jsoncodec.Reader) (FilterField, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -838,7 +839,7 @@ func unmarshalFilterField(r *JSONReader) (FilterField, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalFilterField(w *JsonMarshaler, v FilterField) error {
+func marshalFilterField(w *jsoncodec.Marshaler, v FilterField) error {
 	switch vt := v.(type) {
 	case CustomFilterField:
 		return marshalCustomFilterField(w, vt)
@@ -852,8 +853,8 @@ func marshalFilterField(w *JsonMarshaler, v FilterField) error {
 type IssueCustomField interface {
 }
 
-func unmarshalIssueCustomField(r *JSONReader) (IssueCustomField, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalIssueCustomField(r *jsoncodec.Reader) (IssueCustomField, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -902,7 +903,7 @@ func unmarshalIssueCustomField(r *JSONReader) (IssueCustomField, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalIssueCustomField(w *JsonMarshaler, v IssueCustomField) error {
+func marshalIssueCustomField(w *jsoncodec.Marshaler, v IssueCustomField) error {
 	switch vt := v.(type) {
 	case PeriodIssueCustomField:
 		return marshalPeriodIssueCustomField(w, vt)
@@ -949,8 +950,8 @@ func marshalIssueCustomField(w *JsonMarshaler, v IssueCustomField) error {
 type IssueFolder interface {
 }
 
-func unmarshalIssueFolder(r *JSONReader) (IssueFolder, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalIssueFolder(r *jsoncodec.Reader) (IssueFolder, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -971,7 +972,7 @@ func unmarshalIssueFolder(r *JSONReader) (IssueFolder, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalIssueFolder(w *JsonMarshaler, v IssueFolder) error {
+func marshalIssueFolder(w *jsoncodec.Marshaler, v IssueFolder) error {
 	switch vt := v.(type) {
 	case Project:
 		return marshalProject(w, vt)
@@ -991,8 +992,8 @@ type LocalizableBundleElement interface {
 	BundleElement
 }
 
-func unmarshalLocalizableBundleElement(r *JSONReader) (LocalizableBundleElement, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalLocalizableBundleElement(r *jsoncodec.Reader) (LocalizableBundleElement, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1005,7 +1006,7 @@ func unmarshalLocalizableBundleElement(r *JSONReader) (LocalizableBundleElement,
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalLocalizableBundleElement(w *JsonMarshaler, v LocalizableBundleElement) error {
+func marshalLocalizableBundleElement(w *jsoncodec.Marshaler, v LocalizableBundleElement) error {
 	switch vt := v.(type) {
 	case EnumBundleElement:
 		return marshalEnumBundleElement(w, vt)
@@ -1022,8 +1023,8 @@ type MultiValueActivityItem interface {
 	ActivityItem
 }
 
-func unmarshalMultiValueActivityItem(r *JSONReader) (MultiValueActivityItem, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalMultiValueActivityItem(r *jsoncodec.Reader) (MultiValueActivityItem, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1050,7 +1051,7 @@ func unmarshalMultiValueActivityItem(r *JSONReader) (MultiValueActivityItem, err
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalMultiValueActivityItem(w *JsonMarshaler, v MultiValueActivityItem) error {
+func marshalMultiValueActivityItem(w *jsoncodec.Marshaler, v MultiValueActivityItem) error {
 	switch vt := v.(type) {
 	case CommentAttachmentsActivityItem:
 		return marshalCommentAttachmentsActivityItem(w, vt)
@@ -1076,8 +1077,8 @@ func marshalMultiValueActivityItem(w *JsonMarshaler, v MultiValueActivityItem) e
 type ProjectCustomField interface {
 }
 
-func unmarshalProjectCustomField(r *JSONReader) (ProjectCustomField, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalProjectCustomField(r *jsoncodec.Reader) (ProjectCustomField, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1108,7 +1109,7 @@ func unmarshalProjectCustomField(r *JSONReader) (ProjectCustomField, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalProjectCustomField(w *JsonMarshaler, v ProjectCustomField) error {
+func marshalProjectCustomField(w *jsoncodec.Marshaler, v ProjectCustomField) error {
 	switch vt := v.(type) {
 	case GroupProjectCustomField:
 		return marshalGroupProjectCustomField(w, vt)
@@ -1141,8 +1142,8 @@ type SimpleValueActivityItem interface {
 	SingleValueActivityItem
 }
 
-func unmarshalSimpleValueActivityItem(r *JSONReader) (SimpleValueActivityItem, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalSimpleValueActivityItem(r *jsoncodec.Reader) (SimpleValueActivityItem, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1157,7 +1158,7 @@ func unmarshalSimpleValueActivityItem(r *JSONReader) (SimpleValueActivityItem, e
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalSimpleValueActivityItem(w *JsonMarshaler, v SimpleValueActivityItem) error {
+func marshalSimpleValueActivityItem(w *jsoncodec.Marshaler, v SimpleValueActivityItem) error {
 	switch vt := v.(type) {
 	case IssueResolvedActivityItem:
 		return marshalIssueResolvedActivityItem(w, vt)
@@ -1175,8 +1176,8 @@ type SingleValueActivityItem interface {
 	ActivityItem
 }
 
-func unmarshalSingleValueActivityItem(r *JSONReader) (SingleValueActivityItem, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalSingleValueActivityItem(r *jsoncodec.Reader) (SingleValueActivityItem, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1199,7 +1200,7 @@ func unmarshalSingleValueActivityItem(r *JSONReader) (SingleValueActivityItem, e
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalSingleValueActivityItem(w *JsonMarshaler, v SingleValueActivityItem) error {
+func marshalSingleValueActivityItem(w *jsoncodec.Marshaler, v SingleValueActivityItem) error {
 	switch vt := v.(type) {
 	case ProjectActivityItem:
 		return marshalProjectActivityItem(w, vt)
@@ -1222,8 +1223,8 @@ func marshalSingleValueActivityItem(w *JsonMarshaler, v SingleValueActivityItem)
 type SwimlaneSettings interface {
 }
 
-func unmarshalSwimlaneSettings(r *JSONReader) (SwimlaneSettings, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalSwimlaneSettings(r *jsoncodec.Reader) (SwimlaneSettings, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1236,7 +1237,7 @@ func unmarshalSwimlaneSettings(r *JSONReader) (SwimlaneSettings, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalSwimlaneSettings(w *JsonMarshaler, v SwimlaneSettings) error {
+func marshalSwimlaneSettings(w *jsoncodec.Marshaler, v SwimlaneSettings) error {
 	switch vt := v.(type) {
 	case AttributeBasedSwimlaneSettings:
 		return marshalAttributeBasedSwimlaneSettings(w, vt)
@@ -1252,8 +1253,8 @@ type Tag interface {
 	WatchFolder
 }
 
-func unmarshalTag(r *JSONReader) (Tag, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalTag(r *jsoncodec.Reader) (Tag, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1264,7 +1265,7 @@ func unmarshalTag(r *JSONReader) (Tag, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalTag(w *JsonMarshaler, v Tag) error {
+func marshalTag(w *jsoncodec.Marshaler, v Tag) error {
 	switch vt := v.(type) {
 	case IssueTag:
 		return marshalIssueTag(w, vt)
@@ -1279,8 +1280,8 @@ type VcsHostingChangesProcessor interface {
 	ChangesProcessor
 }
 
-func unmarshalVcsHostingChangesProcessor(r *JSONReader) (VcsHostingChangesProcessor, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalVcsHostingChangesProcessor(r *jsoncodec.Reader) (VcsHostingChangesProcessor, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1303,7 +1304,7 @@ func unmarshalVcsHostingChangesProcessor(r *JSONReader) (VcsHostingChangesProces
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalVcsHostingChangesProcessor(w *JsonMarshaler, v VcsHostingChangesProcessor) error {
+func marshalVcsHostingChangesProcessor(w *jsoncodec.Marshaler, v VcsHostingChangesProcessor) error {
 	switch vt := v.(type) {
 	case BitBucketChangesProcessor:
 		return marshalBitBucketChangesProcessor(w, vt)
@@ -1329,8 +1330,8 @@ type VcsHostingServer interface {
 	VcsServer
 }
 
-func unmarshalVcsHostingServer(r *JSONReader) (VcsHostingServer, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalVcsHostingServer(r *jsoncodec.Reader) (VcsHostingServer, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1353,7 +1354,7 @@ func unmarshalVcsHostingServer(r *JSONReader) (VcsHostingServer, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalVcsHostingServer(w *JsonMarshaler, v VcsHostingServer) error {
+func marshalVcsHostingServer(w *jsoncodec.Marshaler, v VcsHostingServer) error {
 	switch vt := v.(type) {
 	case BitBucketServer:
 		return marshalBitBucketServer(w, vt)
@@ -1378,8 +1379,8 @@ func marshalVcsHostingServer(w *JsonMarshaler, v VcsHostingServer) error {
 type VcsServer interface {
 }
 
-func unmarshalVcsServer(r *JSONReader) (VcsServer, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalVcsServer(r *jsoncodec.Reader) (VcsServer, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1408,7 +1409,7 @@ func unmarshalVcsServer(r *JSONReader) (VcsServer, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalVcsServer(w *JsonMarshaler, v VcsServer) error {
+func marshalVcsServer(w *jsoncodec.Marshaler, v VcsServer) error {
 	switch vt := v.(type) {
 	case JenkinsServer:
 		return marshalJenkinsServer(w, vt)
@@ -1437,8 +1438,8 @@ func marshalVcsServer(w *JsonMarshaler, v VcsServer) error {
 type Visibility interface {
 }
 
-func unmarshalVisibility(r *JSONReader) (Visibility, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalVisibility(r *jsoncodec.Reader) (Visibility, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1451,7 +1452,7 @@ func unmarshalVisibility(r *JSONReader) (Visibility, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalVisibility(w *JsonMarshaler, v Visibility) error {
+func marshalVisibility(w *jsoncodec.Marshaler, v Visibility) error {
 	switch vt := v.(type) {
 	case LimitedVisibility:
 		return marshalLimitedVisibility(w, vt)
@@ -1469,8 +1470,8 @@ type VisibilityActivityItem interface {
 	MultiValueActivityItem
 }
 
-func unmarshalVisibilityActivityItem(r *JSONReader) (VisibilityActivityItem, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalVisibilityActivityItem(r *jsoncodec.Reader) (VisibilityActivityItem, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1483,7 +1484,7 @@ func unmarshalVisibilityActivityItem(r *JSONReader) (VisibilityActivityItem, err
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalVisibilityActivityItem(w *JsonMarshaler, v VisibilityActivityItem) error {
+func marshalVisibilityActivityItem(w *jsoncodec.Marshaler, v VisibilityActivityItem) error {
 	switch vt := v.(type) {
 	case VisibilityGroupActivityItem:
 		return marshalVisibilityGroupActivityItem(w, vt)
@@ -1499,8 +1500,8 @@ type WatchFolder interface {
 	IssueFolder
 }
 
-func unmarshalWatchFolder(r *JSONReader) (WatchFolder, error) {
-	t, err := determineTypeDiscriminator(r, "$type")
+func unmarshalWatchFolder(r *jsoncodec.Reader) (WatchFolder, error) {
+	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
 	if err != nil {
 		return nil, err
 	}
@@ -1517,7 +1518,7 @@ func unmarshalWatchFolder(r *JSONReader) (WatchFolder, error) {
 		return nil, fmt.Errorf("unknown type %s", t)
 	}
 }
-func marshalWatchFolder(w *JsonMarshaler, v WatchFolder) error {
+func marshalWatchFolder(w *jsoncodec.Marshaler, v WatchFolder) error {
 	switch vt := v.(type) {
 	case SavedQuery:
 		return marshalSavedQuery(w, vt)
@@ -1534,7 +1535,7 @@ type ActivityCategory struct {
 	Id *string
 }
 
-func unmarshalActivityCategory(r *JSONReader) (*ActivityCategory, error) {
+func unmarshalActivityCategory(r *jsoncodec.Reader) (*ActivityCategory, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -1544,7 +1545,7 @@ func unmarshalActivityCategory(r *JSONReader) (*ActivityCategory, error) {
 		return nil, nil
 	}
 	result := &ActivityCategory{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -1562,7 +1563,7 @@ func unmarshalActivityCategory(r *JSONReader) (*ActivityCategory, error) {
 	}
 	return result, nil
 }
-func marshalActivityCategory(w *JsonMarshaler, v ActivityCategory) error {
+func marshalActivityCategory(w *jsoncodec.Marshaler, v ActivityCategory) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -1593,7 +1594,7 @@ type ActivityCursorPage struct {
 	Reverse      *bool
 }
 
-func unmarshalActivityCursorPage(r *JSONReader) (*ActivityCursorPage, error) {
+func unmarshalActivityCursorPage(r *jsoncodec.Reader) (*ActivityCursorPage, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -1603,11 +1604,11 @@ func unmarshalActivityCursorPage(r *JSONReader) (*ActivityCursorPage, error) {
 		return nil, nil
 	}
 	result := &ActivityCursorPage{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "activities":
-			result.Activities, err = unmarshalAbstractList(r, func(r *JSONReader) (ActivityItem, error) {
+			result.Activities, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (ActivityItem, error) {
 				return unmarshalActivityItem(r)
 			})
 		case "afterCursor":
@@ -1635,7 +1636,7 @@ func unmarshalActivityCursorPage(r *JSONReader) (*ActivityCursorPage, error) {
 	}
 	return result, nil
 }
-func marshalActivityCursorPage(w *JsonMarshaler, v ActivityCursorPage) error {
+func marshalActivityCursorPage(w *jsoncodec.Marshaler, v ActivityCursorPage) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -1646,7 +1647,7 @@ func marshalActivityCursorPage(w *JsonMarshaler, v ActivityCursorPage) error {
 		if err = w.WriteKey("activities"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Activities, marshalActivityItem); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Activities, marshalActivityItem); err != nil {
 			return err
 		}
 	}
@@ -1728,7 +1729,7 @@ type Agile struct {
 	VisibleForProjectBased   *bool
 }
 
-func unmarshalAgile(r *JSONReader) (*Agile, error) {
+func unmarshalAgile(r *jsoncodec.Reader) (*Agile, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -1738,7 +1739,7 @@ func unmarshalAgile(r *JSONReader) (*Agile, error) {
 		return nil, nil
 	}
 	result := &Agile{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "colorCoding":
@@ -1762,13 +1763,13 @@ func unmarshalAgile(r *JSONReader) (*Agile, error) {
 		case "owner":
 			result.Owner, err = unmarshalUser(r)
 		case "projects":
-			result.Projects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.Projects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "readSharingSettings":
 			result.ReadSharingSettings, err = unmarshalAgileSharingSettings(r)
 		case "sprints":
-			result.Sprints, err = unmarshalList(r, func(r *JSONReader) (*Sprint, error) {
+			result.Sprints, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Sprint, error) {
 				return unmarshalSprint(r)
 			})
 		case "sprintsSettings":
@@ -1800,7 +1801,7 @@ func unmarshalAgile(r *JSONReader) (*Agile, error) {
 	}
 	return result, nil
 }
-func marshalAgile(w *JsonMarshaler, v Agile) error {
+func marshalAgile(w *jsoncodec.Marshaler, v Agile) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -1891,7 +1892,7 @@ func marshalAgile(w *JsonMarshaler, v Agile) error {
 		if err = w.WriteKey("projects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Projects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Projects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -1907,7 +1908,7 @@ func marshalAgile(w *JsonMarshaler, v Agile) error {
 		if err = w.WriteKey("sprints"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Sprints, marshalSprint); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Sprints, marshalSprint); err != nil {
 			return err
 		}
 	}
@@ -1992,7 +1993,7 @@ type AgileColumn struct {
 	WipLimit     *WIPLimit
 }
 
-func unmarshalAgileColumn(r *JSONReader) (*AgileColumn, error) {
+func unmarshalAgileColumn(r *jsoncodec.Reader) (*AgileColumn, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -2002,11 +2003,11 @@ func unmarshalAgileColumn(r *JSONReader) (*AgileColumn, error) {
 		return nil, nil
 	}
 	result := &AgileColumn{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "fieldValues":
-			result.FieldValues, err = unmarshalList(r, func(r *JSONReader) (*AgileColumnFieldValue, error) {
+			result.FieldValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*AgileColumnFieldValue, error) {
 				return unmarshalAgileColumnFieldValue(r)
 			})
 		case "id":
@@ -2034,7 +2035,7 @@ func unmarshalAgileColumn(r *JSONReader) (*AgileColumn, error) {
 	}
 	return result, nil
 }
-func marshalAgileColumn(w *JsonMarshaler, v AgileColumn) error {
+func marshalAgileColumn(w *jsoncodec.Marshaler, v AgileColumn) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -2045,7 +2046,7 @@ func marshalAgileColumn(w *JsonMarshaler, v AgileColumn) error {
 		if err = w.WriteKey("fieldValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.FieldValues, marshalAgileColumnFieldValue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.FieldValues, marshalAgileColumnFieldValue); err != nil {
 			return err
 		}
 	}
@@ -2110,7 +2111,7 @@ type AgileColumnFieldValue struct {
 	Name       *string
 }
 
-func unmarshalAgileColumnFieldValue(r *JSONReader) (*AgileColumnFieldValue, error) {
+func unmarshalAgileColumnFieldValue(r *jsoncodec.Reader) (*AgileColumnFieldValue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -2120,7 +2121,7 @@ func unmarshalAgileColumnFieldValue(r *JSONReader) (*AgileColumnFieldValue, erro
 		return nil, nil
 	}
 	result := &AgileColumnFieldValue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -2142,7 +2143,7 @@ func unmarshalAgileColumnFieldValue(r *JSONReader) (*AgileColumnFieldValue, erro
 	}
 	return result, nil
 }
-func marshalAgileColumnFieldValue(w *JsonMarshaler, v AgileColumnFieldValue) error {
+func marshalAgileColumnFieldValue(w *jsoncodec.Marshaler, v AgileColumnFieldValue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -2186,7 +2187,7 @@ type AgileSharingSettings struct {
 	PermittedUsers  []User
 }
 
-func unmarshalAgileSharingSettings(r *JSONReader) (*AgileSharingSettings, error) {
+func unmarshalAgileSharingSettings(r *jsoncodec.Reader) (*AgileSharingSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -2196,17 +2197,17 @@ func unmarshalAgileSharingSettings(r *JSONReader) (*AgileSharingSettings, error)
 		return nil, nil
 	}
 	result := &AgileSharingSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "permittedGroups":
-			result.PermittedGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.PermittedGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "permittedUsers":
-			result.PermittedUsers, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.PermittedUsers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -2222,7 +2223,7 @@ func unmarshalAgileSharingSettings(r *JSONReader) (*AgileSharingSettings, error)
 	}
 	return result, nil
 }
-func marshalAgileSharingSettings(w *JsonMarshaler, v AgileSharingSettings) error {
+func marshalAgileSharingSettings(w *jsoncodec.Marshaler, v AgileSharingSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -2241,7 +2242,7 @@ func marshalAgileSharingSettings(w *JsonMarshaler, v AgileSharingSettings) error
 		if err = w.WriteKey("permittedGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -2249,7 +2250,7 @@ func marshalAgileSharingSettings(w *JsonMarshaler, v AgileSharingSettings) error
 		if err = w.WriteKey("permittedUsers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedUsers, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedUsers, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -2268,7 +2269,7 @@ type AgileStatus struct {
 	Warnings []string
 }
 
-func unmarshalAgileStatus(r *JSONReader) (*AgileStatus, error) {
+func unmarshalAgileStatus(r *jsoncodec.Reader) (*AgileStatus, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -2278,11 +2279,11 @@ func unmarshalAgileStatus(r *JSONReader) (*AgileStatus, error) {
 		return nil, nil
 	}
 	result := &AgileStatus{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "errors":
-			result.Errors, err = unmarshalList(r, func(r *JSONReader) (*string, error) {
+			result.Errors, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*string, error) {
 				return r.NextOptionalString()
 			})
 		case "hasJobs":
@@ -2292,7 +2293,7 @@ func unmarshalAgileStatus(r *JSONReader) (*AgileStatus, error) {
 		case "valid":
 			result.Valid, err = r.NextOptionalBool()
 		case "warnings":
-			result.Warnings, err = unmarshalList(r, func(r *JSONReader) (*string, error) {
+			result.Warnings, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*string, error) {
 				return r.NextOptionalString()
 			})
 		case "$type":
@@ -2308,7 +2309,7 @@ func unmarshalAgileStatus(r *JSONReader) (*AgileStatus, error) {
 	}
 	return result, nil
 }
-func marshalAgileStatus(w *JsonMarshaler, v AgileStatus) error {
+func marshalAgileStatus(w *jsoncodec.Marshaler, v AgileStatus) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -2319,7 +2320,7 @@ func marshalAgileStatus(w *JsonMarshaler, v AgileStatus) error {
 		if err = w.WriteKey("errors"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Errors, marshalstring); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Errors, jsoncodec.MarshalString); err != nil {
 			return err
 		}
 	}
@@ -2351,7 +2352,7 @@ func marshalAgileStatus(w *JsonMarshaler, v AgileStatus) error {
 		if err = w.WriteKey("warnings"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Warnings, marshalstring); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Warnings, jsoncodec.MarshalString); err != nil {
 			return err
 		}
 	}
@@ -2372,7 +2373,7 @@ type AllUsersGroup struct {
 	UsersCount    *int
 }
 
-func unmarshalAllUsersGroup(r *JSONReader) (*AllUsersGroup, error) {
+func unmarshalAllUsersGroup(r *jsoncodec.Reader) (*AllUsersGroup, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -2382,7 +2383,7 @@ func unmarshalAllUsersGroup(r *JSONReader) (*AllUsersGroup, error) {
 		return nil, nil
 	}
 	result := &AllUsersGroup{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "allUsersGroup":
@@ -2396,7 +2397,7 @@ func unmarshalAllUsersGroup(r *JSONReader) (*AllUsersGroup, error) {
 		case "ringId":
 			result.RingId, err = r.NextOptionalString()
 		case "users":
-			result.Users, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Users, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "usersCount":
@@ -2414,7 +2415,7 @@ func unmarshalAllUsersGroup(r *JSONReader) (*AllUsersGroup, error) {
 	}
 	return result, nil
 }
-func marshalAllUsersGroup(w *JsonMarshaler, v AllUsersGroup) error {
+func marshalAllUsersGroup(w *jsoncodec.Marshaler, v AllUsersGroup) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -2465,7 +2466,7 @@ func marshalAllUsersGroup(w *JsonMarshaler, v AllUsersGroup) error {
 		if err = w.WriteKey("users"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Users, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Users, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -2490,7 +2491,7 @@ type AppearanceSettings struct {
 	TimeZone        *TimeZoneDescriptor
 }
 
-func unmarshalAppearanceSettings(r *JSONReader) (*AppearanceSettings, error) {
+func unmarshalAppearanceSettings(r *jsoncodec.Reader) (*AppearanceSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -2500,7 +2501,7 @@ func unmarshalAppearanceSettings(r *JSONReader) (*AppearanceSettings, error) {
 		return nil, nil
 	}
 	result := &AppearanceSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "dateFieldFormat":
@@ -2524,7 +2525,7 @@ func unmarshalAppearanceSettings(r *JSONReader) (*AppearanceSettings, error) {
 	}
 	return result, nil
 }
-func marshalAppearanceSettings(w *JsonMarshaler, v AppearanceSettings) error {
+func marshalAppearanceSettings(w *jsoncodec.Marshaler, v AppearanceSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -2593,7 +2594,7 @@ type Article struct {
 	UpdatedBy       *User
 }
 
-func unmarshalArticle(r *JSONReader) (*Article, error) {
+func unmarshalArticle(r *jsoncodec.Reader) (*Article, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -2603,11 +2604,11 @@ func unmarshalArticle(r *JSONReader) (*Article, error) {
 		return nil, nil
 	}
 	result := &Article{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "attachments":
-			result.Attachments, err = unmarshalList(r, func(r *JSONReader) (*ArticleAttachment, error) {
+			result.Attachments, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*ArticleAttachment, error) {
 				return unmarshalArticleAttachment(r)
 			})
 		case "content":
@@ -2621,15 +2622,15 @@ func unmarshalArticle(r *JSONReader) (*Article, error) {
 		case "visibility":
 			result.Visibility, err = unmarshalVisibility(r)
 		case "childArticles":
-			result.ChildArticles, err = unmarshalList(r, func(r *JSONReader) (*Article, error) {
+			result.ChildArticles, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Article, error) {
 				return unmarshalArticle(r)
 			})
 		case "comments":
-			result.Comments, err = unmarshalList(r, func(r *JSONReader) (*ArticleComment, error) {
+			result.Comments, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*ArticleComment, error) {
 				return unmarshalArticleComment(r)
 			})
 		case "created":
-			result.Created, err = unmarshalTime(r)
+			result.Created, err = jsoncodec.UnmarshalTime(r)
 		case "externalArticle":
 			result.ExternalArticle, err = unmarshalExternalArticle(r)
 		case "hasChildren":
@@ -2643,17 +2644,17 @@ func unmarshalArticle(r *JSONReader) (*Article, error) {
 		case "parentArticle":
 			result.ParentArticle, err = unmarshalArticle(r)
 		case "pinnedComments":
-			result.PinnedComments, err = unmarshalList(r, func(r *JSONReader) (*ArticleComment, error) {
+			result.PinnedComments, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*ArticleComment, error) {
 				return unmarshalArticleComment(r)
 			})
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "tags":
-			result.Tags, err = unmarshalAbstractList(r, func(r *JSONReader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "updated":
-			result.Updated, err = unmarshalTime(r)
+			result.Updated, err = jsoncodec.UnmarshalTime(r)
 		case "updatedBy":
 			result.UpdatedBy, err = unmarshalUser(r)
 		case "$type":
@@ -2669,7 +2670,7 @@ func unmarshalArticle(r *JSONReader) (*Article, error) {
 	}
 	return result, nil
 }
-func marshalArticle(w *JsonMarshaler, v Article) error {
+func marshalArticle(w *jsoncodec.Marshaler, v Article) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -2680,7 +2681,7 @@ func marshalArticle(w *JsonMarshaler, v Article) error {
 		if err = w.WriteKey("attachments"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Attachments, marshalArticleAttachment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Attachments, marshalArticleAttachment); err != nil {
 			return err
 		}
 	}
@@ -2728,7 +2729,7 @@ func marshalArticle(w *JsonMarshaler, v Article) error {
 		if err = w.WriteKey("childArticles"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.ChildArticles, marshalArticle); err != nil {
+		if err = jsoncodec.MarshalList(w, v.ChildArticles, marshalArticle); err != nil {
 			return err
 		}
 	}
@@ -2736,7 +2737,7 @@ func marshalArticle(w *JsonMarshaler, v Article) error {
 		if err = w.WriteKey("comments"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Comments, marshalArticleComment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Comments, marshalArticleComment); err != nil {
 			return err
 		}
 	}
@@ -2744,7 +2745,7 @@ func marshalArticle(w *JsonMarshaler, v Article) error {
 		if err = w.WriteKey("created"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Created); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Created); err != nil {
 			return err
 		}
 	}
@@ -2800,7 +2801,7 @@ func marshalArticle(w *JsonMarshaler, v Article) error {
 		if err = w.WriteKey("pinnedComments"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PinnedComments, marshalArticleComment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PinnedComments, marshalArticleComment); err != nil {
 			return err
 		}
 	}
@@ -2816,7 +2817,7 @@ func marshalArticle(w *JsonMarshaler, v Article) error {
 		if err = w.WriteKey("tags"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Tags, marshalTag); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Tags, marshalTag); err != nil {
 			return err
 		}
 	}
@@ -2824,7 +2825,7 @@ func marshalArticle(w *JsonMarshaler, v Article) error {
 		if err = w.WriteKey("updated"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Updated); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Updated); err != nil {
 			return err
 		}
 	}
@@ -2862,7 +2863,7 @@ type ArticleAttachment struct {
 	Visibility    Visibility
 }
 
-func unmarshalArticleAttachment(r *JSONReader) (*ArticleAttachment, error) {
+func unmarshalArticleAttachment(r *jsoncodec.Reader) (*ArticleAttachment, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -2872,7 +2873,7 @@ func unmarshalArticleAttachment(r *JSONReader) (*ArticleAttachment, error) {
 		return nil, nil
 	}
 	result := &ArticleAttachment{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "article":
@@ -2886,7 +2887,7 @@ func unmarshalArticleAttachment(r *JSONReader) (*ArticleAttachment, error) {
 		case "comment":
 			result.Comment, err = unmarshalArticleComment(r)
 		case "created":
-			result.Created, err = unmarshalTime(r)
+			result.Created, err = jsoncodec.UnmarshalTime(r)
 		case "draft":
 			result.Draft, err = r.NextOptionalBool()
 		case "extension":
@@ -2904,7 +2905,7 @@ func unmarshalArticleAttachment(r *JSONReader) (*ArticleAttachment, error) {
 		case "size":
 			result.Size, err = r.NextOptionalInt()
 		case "updated":
-			result.Updated, err = unmarshalTime(r)
+			result.Updated, err = jsoncodec.UnmarshalTime(r)
 		case "url":
 			result.Url, err = r.NextOptionalString()
 		case "visibility":
@@ -2922,7 +2923,7 @@ func unmarshalArticleAttachment(r *JSONReader) (*ArticleAttachment, error) {
 	}
 	return result, nil
 }
-func marshalArticleAttachment(w *JsonMarshaler, v ArticleAttachment) error {
+func marshalArticleAttachment(w *jsoncodec.Marshaler, v ArticleAttachment) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -2973,7 +2974,7 @@ func marshalArticleAttachment(w *JsonMarshaler, v ArticleAttachment) error {
 		if err = w.WriteKey("created"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Created); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Created); err != nil {
 			return err
 		}
 	}
@@ -3045,7 +3046,7 @@ func marshalArticleAttachment(w *JsonMarshaler, v ArticleAttachment) error {
 		if err = w.WriteKey("updated"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Updated); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Updated); err != nil {
 			return err
 		}
 	}
@@ -3084,7 +3085,7 @@ type ArticleComment struct {
 	Visibility  Visibility
 }
 
-func unmarshalArticleComment(r *JSONReader) (*ArticleComment, error) {
+func unmarshalArticleComment(r *jsoncodec.Reader) (*ArticleComment, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3094,31 +3095,31 @@ func unmarshalArticleComment(r *JSONReader) (*ArticleComment, error) {
 		return nil, nil
 	}
 	result := &ArticleComment{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "article":
 			result.Article, err = unmarshalArticle(r)
 		case "attachments":
-			result.Attachments, err = unmarshalList(r, func(r *JSONReader) (*ArticleAttachment, error) {
+			result.Attachments, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*ArticleAttachment, error) {
 				return unmarshalArticleAttachment(r)
 			})
 		case "author":
 			result.Author, err = unmarshalUser(r)
 		case "created":
-			result.Created, err = unmarshalTime(r)
+			result.Created, err = jsoncodec.UnmarshalTime(r)
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "pinned":
 			result.Pinned, err = r.NextOptionalBool()
 		case "reactions":
-			result.Reactions, err = unmarshalList(r, func(r *JSONReader) (*Reaction, error) {
+			result.Reactions, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Reaction, error) {
 				return unmarshalReaction(r)
 			})
 		case "text":
 			result.Text, err = r.NextOptionalString()
 		case "updated":
-			result.Updated, err = unmarshalTime(r)
+			result.Updated, err = jsoncodec.UnmarshalTime(r)
 		case "visibility":
 			result.Visibility, err = unmarshalVisibility(r)
 		case "$type":
@@ -3134,7 +3135,7 @@ func unmarshalArticleComment(r *JSONReader) (*ArticleComment, error) {
 	}
 	return result, nil
 }
-func marshalArticleComment(w *JsonMarshaler, v ArticleComment) error {
+func marshalArticleComment(w *jsoncodec.Marshaler, v ArticleComment) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -3153,7 +3154,7 @@ func marshalArticleComment(w *JsonMarshaler, v ArticleComment) error {
 		if err = w.WriteKey("attachments"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Attachments, marshalArticleAttachment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Attachments, marshalArticleAttachment); err != nil {
 			return err
 		}
 	}
@@ -3169,7 +3170,7 @@ func marshalArticleComment(w *JsonMarshaler, v ArticleComment) error {
 		if err = w.WriteKey("created"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Created); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Created); err != nil {
 			return err
 		}
 	}
@@ -3193,7 +3194,7 @@ func marshalArticleComment(w *JsonMarshaler, v ArticleComment) error {
 		if err = w.WriteKey("reactions"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Reactions, marshalReaction); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Reactions, marshalReaction); err != nil {
 			return err
 		}
 	}
@@ -3209,7 +3210,7 @@ func marshalArticleComment(w *JsonMarshaler, v ArticleComment) error {
 		if err = w.WriteKey("updated"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Updated); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Updated); err != nil {
 			return err
 		}
 	}
@@ -3234,7 +3235,7 @@ type AssignedRole struct {
 	Scope  AccessScope
 }
 
-func unmarshalAssignedRole(r *JSONReader) (*AssignedRole, error) {
+func unmarshalAssignedRole(r *jsoncodec.Reader) (*AssignedRole, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3244,7 +3245,7 @@ func unmarshalAssignedRole(r *JSONReader) (*AssignedRole, error) {
 		return nil, nil
 	}
 	result := &AssignedRole{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "holder":
@@ -3268,7 +3269,7 @@ func unmarshalAssignedRole(r *JSONReader) (*AssignedRole, error) {
 	}
 	return result, nil
 }
-func marshalAssignedRole(w *JsonMarshaler, v AssignedRole) error {
+func marshalAssignedRole(w *jsoncodec.Marshaler, v AssignedRole) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -3326,7 +3327,7 @@ type AttachmentActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalAttachmentActivityItem(r *JSONReader) (*AttachmentActivityItem, error) {
+func unmarshalAttachmentActivityItem(r *jsoncodec.Reader) (*AttachmentActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3336,11 +3337,11 @@ func unmarshalAttachmentActivityItem(r *JSONReader) (*AttachmentActivityItem, er
 		return nil, nil
 	}
 	result := &AttachmentActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*IssueAttachment, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueAttachment, error) {
 				return unmarshalIssueAttachment(r)
 			})
 		case "author":
@@ -3352,7 +3353,7 @@ func unmarshalAttachmentActivityItem(r *JSONReader) (*AttachmentActivityItem, er
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*IssueAttachment, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueAttachment, error) {
 				return unmarshalIssueAttachment(r)
 			})
 		case "target":
@@ -3360,7 +3361,7 @@ func unmarshalAttachmentActivityItem(r *JSONReader) (*AttachmentActivityItem, er
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -3374,7 +3375,7 @@ func unmarshalAttachmentActivityItem(r *JSONReader) (*AttachmentActivityItem, er
 	}
 	return result, nil
 }
-func marshalAttachmentActivityItem(w *JsonMarshaler, v AttachmentActivityItem) error {
+func marshalAttachmentActivityItem(w *jsoncodec.Marshaler, v AttachmentActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -3385,7 +3386,7 @@ func marshalAttachmentActivityItem(w *JsonMarshaler, v AttachmentActivityItem) e
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalIssueAttachment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalIssueAttachment); err != nil {
 			return err
 		}
 	}
@@ -3425,7 +3426,7 @@ func marshalAttachmentActivityItem(w *JsonMarshaler, v AttachmentActivityItem) e
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalIssueAttachment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalIssueAttachment); err != nil {
 			return err
 		}
 	}
@@ -3449,7 +3450,7 @@ func marshalAttachmentActivityItem(w *JsonMarshaler, v AttachmentActivityItem) e
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -3467,7 +3468,7 @@ type AttributeBasedSwimlaneSettings struct {
 	Values  []SwimlaneEntityAttributeValue
 }
 
-func unmarshalAttributeBasedSwimlaneSettings(r *JSONReader) (*AttributeBasedSwimlaneSettings, error) {
+func unmarshalAttributeBasedSwimlaneSettings(r *jsoncodec.Reader) (*AttributeBasedSwimlaneSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3477,7 +3478,7 @@ func unmarshalAttributeBasedSwimlaneSettings(r *JSONReader) (*AttributeBasedSwim
 		return nil, nil
 	}
 	result := &AttributeBasedSwimlaneSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "enabled":
@@ -3487,7 +3488,7 @@ func unmarshalAttributeBasedSwimlaneSettings(r *JSONReader) (*AttributeBasedSwim
 		case "field":
 			result.Field, err = unmarshalFilterField(r)
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*SwimlaneEntityAttributeValue, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*SwimlaneEntityAttributeValue, error) {
 				return unmarshalSwimlaneEntityAttributeValue(r)
 			})
 		case "$type":
@@ -3503,7 +3504,7 @@ func unmarshalAttributeBasedSwimlaneSettings(r *JSONReader) (*AttributeBasedSwim
 	}
 	return result, nil
 }
-func marshalAttributeBasedSwimlaneSettings(w *JsonMarshaler, v AttributeBasedSwimlaneSettings) error {
+func marshalAttributeBasedSwimlaneSettings(w *jsoncodec.Marshaler, v AttributeBasedSwimlaneSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -3538,7 +3539,7 @@ func marshalAttributeBasedSwimlaneSettings(w *JsonMarshaler, v AttributeBasedSwi
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalSwimlaneEntityAttributeValue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalSwimlaneEntityAttributeValue); err != nil {
 			return err
 		}
 	}
@@ -3555,7 +3556,7 @@ type BackupError struct {
 	Id           *string
 }
 
-func unmarshalBackupError(r *JSONReader) (*BackupError, error) {
+func unmarshalBackupError(r *jsoncodec.Reader) (*BackupError, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3565,11 +3566,11 @@ func unmarshalBackupError(r *JSONReader) (*BackupError, error) {
 		return nil, nil
 	}
 	result := &BackupError{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "date":
-			result.Date, err = unmarshalTime(r)
+			result.Date, err = jsoncodec.UnmarshalTime(r)
 		case "errorMessage":
 			result.ErrorMessage, err = r.NextOptionalString()
 		case "id":
@@ -3587,7 +3588,7 @@ func unmarshalBackupError(r *JSONReader) (*BackupError, error) {
 	}
 	return result, nil
 }
-func marshalBackupError(w *JsonMarshaler, v BackupError) error {
+func marshalBackupError(w *jsoncodec.Marshaler, v BackupError) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -3598,7 +3599,7 @@ func marshalBackupError(w *JsonMarshaler, v BackupError) error {
 		if err = w.WriteKey("date"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Date); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Date); err != nil {
 			return err
 		}
 	}
@@ -3632,7 +3633,7 @@ type BackupFile struct {
 	Size         *int
 }
 
-func unmarshalBackupFile(r *JSONReader) (*BackupFile, error) {
+func unmarshalBackupFile(r *jsoncodec.Reader) (*BackupFile, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3642,11 +3643,11 @@ func unmarshalBackupFile(r *JSONReader) (*BackupFile, error) {
 		return nil, nil
 	}
 	result := &BackupFile{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "creationDate":
-			result.CreationDate, err = unmarshalTime(r)
+			result.CreationDate, err = jsoncodec.UnmarshalTime(r)
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "link":
@@ -3668,7 +3669,7 @@ func unmarshalBackupFile(r *JSONReader) (*BackupFile, error) {
 	}
 	return result, nil
 }
-func marshalBackupFile(w *JsonMarshaler, v BackupFile) error {
+func marshalBackupFile(w *jsoncodec.Marshaler, v BackupFile) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -3679,7 +3680,7 @@ func marshalBackupFile(w *JsonMarshaler, v BackupFile) error {
 		if err = w.WriteKey("creationDate"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.CreationDate); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.CreationDate); err != nil {
 			return err
 		}
 	}
@@ -3728,7 +3729,7 @@ type BackupStatus struct {
 	Id               *string
 }
 
-func unmarshalBackupStatus(r *JSONReader) (*BackupStatus, error) {
+func unmarshalBackupStatus(r *jsoncodec.Reader) (*BackupStatus, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3738,7 +3739,7 @@ func unmarshalBackupStatus(r *JSONReader) (*BackupStatus, error) {
 		return nil, nil
 	}
 	result := &BackupStatus{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "backupCancelled":
@@ -3762,7 +3763,7 @@ func unmarshalBackupStatus(r *JSONReader) (*BackupStatus, error) {
 	}
 	return result, nil
 }
-func marshalBackupStatus(w *JsonMarshaler, v BackupStatus) error {
+func marshalBackupStatus(w *jsoncodec.Marshaler, v BackupStatus) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -3822,7 +3823,7 @@ type BitBucketChangesProcessor struct {
 	Path                     *string
 }
 
-func unmarshalBitBucketChangesProcessor(r *JSONReader) (*BitBucketChangesProcessor, error) {
+func unmarshalBitBucketChangesProcessor(r *jsoncodec.Reader) (*BitBucketChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3832,7 +3833,7 @@ func unmarshalBitBucketChangesProcessor(r *JSONReader) (*BitBucketChangesProcess
 		return nil, nil
 	}
 	result := &BitBucketChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -3846,13 +3847,13 @@ func unmarshalBitBucketChangesProcessor(r *JSONReader) (*BitBucketChangesProcess
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalBitBucketServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "branchSpecification":
@@ -3874,7 +3875,7 @@ func unmarshalBitBucketChangesProcessor(r *JSONReader) (*BitBucketChangesProcess
 	}
 	return result, nil
 }
-func marshalBitBucketChangesProcessor(w *JsonMarshaler, v BitBucketChangesProcessor) error {
+func marshalBitBucketChangesProcessor(w *jsoncodec.Marshaler, v BitBucketChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -3925,7 +3926,7 @@ func marshalBitBucketChangesProcessor(w *JsonMarshaler, v BitBucketChangesProces
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -3941,7 +3942,7 @@ func marshalBitBucketChangesProcessor(w *JsonMarshaler, v BitBucketChangesProces
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -3981,7 +3982,7 @@ type BitBucketServer struct {
 	Url *string
 }
 
-func unmarshalBitBucketServer(r *JSONReader) (*BitBucketServer, error) {
+func unmarshalBitBucketServer(r *jsoncodec.Reader) (*BitBucketServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -3991,7 +3992,7 @@ func unmarshalBitBucketServer(r *JSONReader) (*BitBucketServer, error) {
 		return nil, nil
 	}
 	result := &BitBucketServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -4011,7 +4012,7 @@ func unmarshalBitBucketServer(r *JSONReader) (*BitBucketServer, error) {
 	}
 	return result, nil
 }
-func marshalBitBucketServer(w *JsonMarshaler, v BitBucketServer) error {
+func marshalBitBucketServer(w *jsoncodec.Marshaler, v BitBucketServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4056,7 +4057,7 @@ type BitbucketStandaloneChangesProcessor struct {
 	Path                     *string
 }
 
-func unmarshalBitbucketStandaloneChangesProcessor(r *JSONReader) (*BitbucketStandaloneChangesProcessor, error) {
+func unmarshalBitbucketStandaloneChangesProcessor(r *jsoncodec.Reader) (*BitbucketStandaloneChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4066,7 +4067,7 @@ func unmarshalBitbucketStandaloneChangesProcessor(r *JSONReader) (*BitbucketStan
 		return nil, nil
 	}
 	result := &BitbucketStandaloneChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -4080,13 +4081,13 @@ func unmarshalBitbucketStandaloneChangesProcessor(r *JSONReader) (*BitbucketStan
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalBitbucketStandaloneServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "branchSpecification":
@@ -4108,7 +4109,7 @@ func unmarshalBitbucketStandaloneChangesProcessor(r *JSONReader) (*BitbucketStan
 	}
 	return result, nil
 }
-func marshalBitbucketStandaloneChangesProcessor(w *JsonMarshaler, v BitbucketStandaloneChangesProcessor) error {
+func marshalBitbucketStandaloneChangesProcessor(w *jsoncodec.Marshaler, v BitbucketStandaloneChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4159,7 +4160,7 @@ func marshalBitbucketStandaloneChangesProcessor(w *JsonMarshaler, v BitbucketSta
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -4175,7 +4176,7 @@ func marshalBitbucketStandaloneChangesProcessor(w *JsonMarshaler, v BitbucketSta
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -4215,7 +4216,7 @@ type BitbucketStandaloneServer struct {
 	Url *string
 }
 
-func unmarshalBitbucketStandaloneServer(r *JSONReader) (*BitbucketStandaloneServer, error) {
+func unmarshalBitbucketStandaloneServer(r *jsoncodec.Reader) (*BitbucketStandaloneServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4225,7 +4226,7 @@ func unmarshalBitbucketStandaloneServer(r *JSONReader) (*BitbucketStandaloneServ
 		return nil, nil
 	}
 	result := &BitbucketStandaloneServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -4245,7 +4246,7 @@ func unmarshalBitbucketStandaloneServer(r *JSONReader) (*BitbucketStandaloneServ
 	}
 	return result, nil
 }
-func marshalBitbucketStandaloneServer(w *JsonMarshaler, v BitbucketStandaloneServer) error {
+func marshalBitbucketStandaloneServer(w *jsoncodec.Marshaler, v BitbucketStandaloneServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4281,7 +4282,7 @@ type BuildBundle struct {
 	Values       []BuildBundleElement
 }
 
-func unmarshalBuildBundle(r *JSONReader) (*BuildBundle, error) {
+func unmarshalBuildBundle(r *jsoncodec.Reader) (*BuildBundle, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4291,7 +4292,7 @@ func unmarshalBuildBundle(r *JSONReader) (*BuildBundle, error) {
 		return nil, nil
 	}
 	result := &BuildBundle{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -4299,7 +4300,7 @@ func unmarshalBuildBundle(r *JSONReader) (*BuildBundle, error) {
 		case "isUpdateable":
 			result.IsUpdateable, err = r.NextOptionalBool()
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*BuildBundleElement, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*BuildBundleElement, error) {
 				return unmarshalBuildBundleElement(r)
 			})
 		case "$type":
@@ -4315,7 +4316,7 @@ func unmarshalBuildBundle(r *JSONReader) (*BuildBundle, error) {
 	}
 	return result, nil
 }
-func marshalBuildBundle(w *JsonMarshaler, v BuildBundle) error {
+func marshalBuildBundle(w *jsoncodec.Marshaler, v BuildBundle) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4342,7 +4343,7 @@ func marshalBuildBundle(w *JsonMarshaler, v BuildBundle) error {
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalBuildBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalBuildBundleElement); err != nil {
 			return err
 		}
 	}
@@ -4363,7 +4364,7 @@ type BuildBundleCustomFieldDefaults struct {
 	DefaultValues  []BuildBundleElement
 }
 
-func unmarshalBuildBundleCustomFieldDefaults(r *JSONReader) (*BuildBundleCustomFieldDefaults, error) {
+func unmarshalBuildBundleCustomFieldDefaults(r *jsoncodec.Reader) (*BuildBundleCustomFieldDefaults, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4373,7 +4374,7 @@ func unmarshalBuildBundleCustomFieldDefaults(r *JSONReader) (*BuildBundleCustomF
 		return nil, nil
 	}
 	result := &BuildBundleCustomFieldDefaults{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -4389,7 +4390,7 @@ func unmarshalBuildBundleCustomFieldDefaults(r *JSONReader) (*BuildBundleCustomF
 		case "bundle":
 			result.Bundle, err = unmarshalBuildBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*BuildBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*BuildBundleElement, error) {
 				return unmarshalBuildBundleElement(r)
 			})
 		case "$type":
@@ -4405,7 +4406,7 @@ func unmarshalBuildBundleCustomFieldDefaults(r *JSONReader) (*BuildBundleCustomF
 	}
 	return result, nil
 }
-func marshalBuildBundleCustomFieldDefaults(w *JsonMarshaler, v BuildBundleCustomFieldDefaults) error {
+func marshalBuildBundleCustomFieldDefaults(w *jsoncodec.Marshaler, v BuildBundleCustomFieldDefaults) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4464,7 +4465,7 @@ func marshalBuildBundleCustomFieldDefaults(w *JsonMarshaler, v BuildBundleCustom
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalBuildBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalBuildBundleElement); err != nil {
 			return err
 		}
 	}
@@ -4487,7 +4488,7 @@ type BuildBundleElement struct {
 	AssembleDate  *time.Time
 }
 
-func unmarshalBuildBundleElement(r *JSONReader) (*BuildBundleElement, error) {
+func unmarshalBuildBundleElement(r *jsoncodec.Reader) (*BuildBundleElement, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4497,7 +4498,7 @@ func unmarshalBuildBundleElement(r *JSONReader) (*BuildBundleElement, error) {
 		return nil, nil
 	}
 	result := &BuildBundleElement{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "archived":
@@ -4517,7 +4518,7 @@ func unmarshalBuildBundleElement(r *JSONReader) (*BuildBundleElement, error) {
 		case "ordinal":
 			result.Ordinal, err = r.NextOptionalInt()
 		case "assembleDate":
-			result.AssembleDate, err = unmarshalTime(r)
+			result.AssembleDate, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -4531,7 +4532,7 @@ func unmarshalBuildBundleElement(r *JSONReader) (*BuildBundleElement, error) {
 	}
 	return result, nil
 }
-func marshalBuildBundleElement(w *JsonMarshaler, v BuildBundleElement) error {
+func marshalBuildBundleElement(w *jsoncodec.Marshaler, v BuildBundleElement) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4606,7 +4607,7 @@ func marshalBuildBundleElement(w *JsonMarshaler, v BuildBundleElement) error {
 		if err = w.WriteKey("assembleDate"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.AssembleDate); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.AssembleDate); err != nil {
 			return err
 		}
 	}
@@ -4631,7 +4632,7 @@ type BuildProjectCustomField struct {
 	DefaultValues  []BuildBundleElement
 }
 
-func unmarshalBuildProjectCustomField(r *JSONReader) (*BuildProjectCustomField, error) {
+func unmarshalBuildProjectCustomField(r *jsoncodec.Reader) (*BuildProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4641,7 +4642,7 @@ func unmarshalBuildProjectCustomField(r *JSONReader) (*BuildProjectCustomField, 
 		return nil, nil
 	}
 	result := &BuildProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -4665,7 +4666,7 @@ func unmarshalBuildProjectCustomField(r *JSONReader) (*BuildProjectCustomField, 
 		case "bundle":
 			result.Bundle, err = unmarshalBuildBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*BuildBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*BuildBundleElement, error) {
 				return unmarshalBuildBundleElement(r)
 			})
 		case "$type":
@@ -4681,7 +4682,7 @@ func unmarshalBuildProjectCustomField(r *JSONReader) (*BuildProjectCustomField, 
 	}
 	return result, nil
 }
-func marshalBuildProjectCustomField(w *JsonMarshaler, v BuildProjectCustomField) error {
+func marshalBuildProjectCustomField(w *jsoncodec.Marshaler, v BuildProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4772,7 +4773,7 @@ func marshalBuildProjectCustomField(w *JsonMarshaler, v BuildProjectCustomField)
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalBuildBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalBuildBundleElement); err != nil {
 			return err
 		}
 	}
@@ -4789,7 +4790,7 @@ type ColumnSettings struct {
 	Id      *string
 }
 
-func unmarshalColumnSettings(r *JSONReader) (*ColumnSettings, error) {
+func unmarshalColumnSettings(r *jsoncodec.Reader) (*ColumnSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4799,11 +4800,11 @@ func unmarshalColumnSettings(r *JSONReader) (*ColumnSettings, error) {
 		return nil, nil
 	}
 	result := &ColumnSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "columns":
-			result.Columns, err = unmarshalList(r, func(r *JSONReader) (*AgileColumn, error) {
+			result.Columns, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*AgileColumn, error) {
 				return unmarshalAgileColumn(r)
 			})
 		case "field":
@@ -4823,7 +4824,7 @@ func unmarshalColumnSettings(r *JSONReader) (*ColumnSettings, error) {
 	}
 	return result, nil
 }
-func marshalColumnSettings(w *JsonMarshaler, v ColumnSettings) error {
+func marshalColumnSettings(w *jsoncodec.Marshaler, v ColumnSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4834,7 +4835,7 @@ func marshalColumnSettings(w *JsonMarshaler, v ColumnSettings) error {
 		if err = w.WriteKey("columns"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Columns, marshalAgileColumn); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Columns, marshalAgileColumn); err != nil {
 			return err
 		}
 	}
@@ -4867,7 +4868,7 @@ type CommandLimitedVisibility struct {
 	PermittedUsers  []User
 }
 
-func unmarshalCommandLimitedVisibility(r *JSONReader) (*CommandLimitedVisibility, error) {
+func unmarshalCommandLimitedVisibility(r *jsoncodec.Reader) (*CommandLimitedVisibility, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4877,17 +4878,17 @@ func unmarshalCommandLimitedVisibility(r *JSONReader) (*CommandLimitedVisibility
 		return nil, nil
 	}
 	result := &CommandLimitedVisibility{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "permittedGroups":
-			result.PermittedGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.PermittedGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "permittedUsers":
-			result.PermittedUsers, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.PermittedUsers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -4903,7 +4904,7 @@ func unmarshalCommandLimitedVisibility(r *JSONReader) (*CommandLimitedVisibility
 	}
 	return result, nil
 }
-func marshalCommandLimitedVisibility(w *JsonMarshaler, v CommandLimitedVisibility) error {
+func marshalCommandLimitedVisibility(w *jsoncodec.Marshaler, v CommandLimitedVisibility) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -4922,7 +4923,7 @@ func marshalCommandLimitedVisibility(w *JsonMarshaler, v CommandLimitedVisibilit
 		if err = w.WriteKey("permittedGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -4930,7 +4931,7 @@ func marshalCommandLimitedVisibility(w *JsonMarshaler, v CommandLimitedVisibilit
 		if err = w.WriteKey("permittedUsers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedUsers, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedUsers, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -4953,7 +4954,7 @@ type CommandList struct {
 	Visibility  CommandVisibility
 }
 
-func unmarshalCommandList(r *JSONReader) (*CommandList, error) {
+func unmarshalCommandList(r *jsoncodec.Reader) (*CommandList, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -4963,13 +4964,13 @@ func unmarshalCommandList(r *JSONReader) (*CommandList, error) {
 		return nil, nil
 	}
 	result := &CommandList{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "caret":
 			result.Caret, err = r.NextOptionalInt()
 		case "commands":
-			result.Commands, err = unmarshalList(r, func(r *JSONReader) (*ParsedCommand, error) {
+			result.Commands, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*ParsedCommand, error) {
 				return unmarshalParsedCommand(r)
 			})
 		case "comment":
@@ -4977,7 +4978,7 @@ func unmarshalCommandList(r *JSONReader) (*CommandList, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "issues":
-			result.Issues, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Issues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "query":
@@ -4987,7 +4988,7 @@ func unmarshalCommandList(r *JSONReader) (*CommandList, error) {
 		case "silent":
 			result.Silent, err = r.NextOptionalBool()
 		case "suggestions":
-			result.Suggestions, err = unmarshalList(r, func(r *JSONReader) (*Suggestion, error) {
+			result.Suggestions, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Suggestion, error) {
 				return unmarshalSuggestion(r)
 			})
 		case "visibility":
@@ -5005,7 +5006,7 @@ func unmarshalCommandList(r *JSONReader) (*CommandList, error) {
 	}
 	return result, nil
 }
-func marshalCommandList(w *JsonMarshaler, v CommandList) error {
+func marshalCommandList(w *jsoncodec.Marshaler, v CommandList) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -5024,7 +5025,7 @@ func marshalCommandList(w *JsonMarshaler, v CommandList) error {
 		if err = w.WriteKey("commands"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Commands, marshalParsedCommand); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Commands, marshalParsedCommand); err != nil {
 			return err
 		}
 	}
@@ -5048,7 +5049,7 @@ func marshalCommandList(w *JsonMarshaler, v CommandList) error {
 		if err = w.WriteKey("issues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Issues, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Issues, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -5080,7 +5081,7 @@ func marshalCommandList(w *JsonMarshaler, v CommandList) error {
 		if err = w.WriteKey("suggestions"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Suggestions, marshalSuggestion); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Suggestions, marshalSuggestion); err != nil {
 			return err
 		}
 	}
@@ -5103,7 +5104,7 @@ type CommandUnlimitedVisibility struct {
 	Id *string
 }
 
-func unmarshalCommandUnlimitedVisibility(r *JSONReader) (*CommandUnlimitedVisibility, error) {
+func unmarshalCommandUnlimitedVisibility(r *jsoncodec.Reader) (*CommandUnlimitedVisibility, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -5113,7 +5114,7 @@ func unmarshalCommandUnlimitedVisibility(r *JSONReader) (*CommandUnlimitedVisibi
 		return nil, nil
 	}
 	result := &CommandUnlimitedVisibility{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -5131,7 +5132,7 @@ func unmarshalCommandUnlimitedVisibility(r *JSONReader) (*CommandUnlimitedVisibi
 	}
 	return result, nil
 }
-func marshalCommandUnlimitedVisibility(w *JsonMarshaler, v CommandUnlimitedVisibility) error {
+func marshalCommandUnlimitedVisibility(w *jsoncodec.Marshaler, v CommandUnlimitedVisibility) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -5166,7 +5167,7 @@ type CommentActivityItem struct {
 	AuthorGroup  *UserGroup
 }
 
-func unmarshalCommentActivityItem(r *JSONReader) (*CommentActivityItem, error) {
+func unmarshalCommentActivityItem(r *jsoncodec.Reader) (*CommentActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -5176,11 +5177,11 @@ func unmarshalCommentActivityItem(r *JSONReader) (*CommentActivityItem, error) {
 		return nil, nil
 	}
 	result := &CommentActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*IssueComment, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueComment, error) {
 				return unmarshalIssueComment(r)
 			})
 		case "author":
@@ -5192,7 +5193,7 @@ func unmarshalCommentActivityItem(r *JSONReader) (*CommentActivityItem, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*IssueComment, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueComment, error) {
 				return unmarshalIssueComment(r)
 			})
 		case "target":
@@ -5200,7 +5201,7 @@ func unmarshalCommentActivityItem(r *JSONReader) (*CommentActivityItem, error) {
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "authorGroup":
 			result.AuthorGroup, err = unmarshalUserGroup(r)
 		case "$type":
@@ -5216,7 +5217,7 @@ func unmarshalCommentActivityItem(r *JSONReader) (*CommentActivityItem, error) {
 	}
 	return result, nil
 }
-func marshalCommentActivityItem(w *JsonMarshaler, v CommentActivityItem) error {
+func marshalCommentActivityItem(w *jsoncodec.Marshaler, v CommentActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -5227,7 +5228,7 @@ func marshalCommentActivityItem(w *JsonMarshaler, v CommentActivityItem) error {
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalIssueComment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalIssueComment); err != nil {
 			return err
 		}
 	}
@@ -5267,7 +5268,7 @@ func marshalCommentActivityItem(w *JsonMarshaler, v CommentActivityItem) error {
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalIssueComment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalIssueComment); err != nil {
 			return err
 		}
 	}
@@ -5291,7 +5292,7 @@ func marshalCommentActivityItem(w *JsonMarshaler, v CommentActivityItem) error {
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -5323,7 +5324,7 @@ type CommentAttachmentsActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalCommentAttachmentsActivityItem(r *JSONReader) (*CommentAttachmentsActivityItem, error) {
+func unmarshalCommentAttachmentsActivityItem(r *jsoncodec.Reader) (*CommentAttachmentsActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -5333,11 +5334,11 @@ func unmarshalCommentAttachmentsActivityItem(r *JSONReader) (*CommentAttachments
 		return nil, nil
 	}
 	result := &CommentAttachmentsActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*IssueAttachment, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueAttachment, error) {
 				return unmarshalIssueAttachment(r)
 			})
 		case "author":
@@ -5349,7 +5350,7 @@ func unmarshalCommentAttachmentsActivityItem(r *JSONReader) (*CommentAttachments
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*IssueAttachment, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueAttachment, error) {
 				return unmarshalIssueAttachment(r)
 			})
 		case "target":
@@ -5357,7 +5358,7 @@ func unmarshalCommentAttachmentsActivityItem(r *JSONReader) (*CommentAttachments
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -5371,7 +5372,7 @@ func unmarshalCommentAttachmentsActivityItem(r *JSONReader) (*CommentAttachments
 	}
 	return result, nil
 }
-func marshalCommentAttachmentsActivityItem(w *JsonMarshaler, v CommentAttachmentsActivityItem) error {
+func marshalCommentAttachmentsActivityItem(w *jsoncodec.Marshaler, v CommentAttachmentsActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -5382,7 +5383,7 @@ func marshalCommentAttachmentsActivityItem(w *JsonMarshaler, v CommentAttachment
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalIssueAttachment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalIssueAttachment); err != nil {
 			return err
 		}
 	}
@@ -5422,7 +5423,7 @@ func marshalCommentAttachmentsActivityItem(w *JsonMarshaler, v CommentAttachment
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalIssueAttachment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalIssueAttachment); err != nil {
 			return err
 		}
 	}
@@ -5446,7 +5447,7 @@ func marshalCommentAttachmentsActivityItem(w *JsonMarshaler, v CommentAttachment
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -5471,7 +5472,7 @@ type CustomField struct {
 	Ordinal                *int
 }
 
-func unmarshalCustomField(r *JSONReader) (*CustomField, error) {
+func unmarshalCustomField(r *jsoncodec.Reader) (*CustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -5481,7 +5482,7 @@ func unmarshalCustomField(r *JSONReader) (*CustomField, error) {
 		return nil, nil
 	}
 	result := &CustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "aliases":
@@ -5495,7 +5496,7 @@ func unmarshalCustomField(r *JSONReader) (*CustomField, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "instances":
-			result.Instances, err = unmarshalAbstractList(r, func(r *JSONReader) (ProjectCustomField, error) {
+			result.Instances, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (ProjectCustomField, error) {
 				return unmarshalProjectCustomField(r)
 			})
 		case "isAutoAttached":
@@ -5523,7 +5524,7 @@ func unmarshalCustomField(r *JSONReader) (*CustomField, error) {
 	}
 	return result, nil
 }
-func marshalCustomField(w *JsonMarshaler, v CustomField) error {
+func marshalCustomField(w *jsoncodec.Marshaler, v CustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -5574,7 +5575,7 @@ func marshalCustomField(w *JsonMarshaler, v CustomField) error {
 		if err = w.WriteKey("instances"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Instances, marshalProjectCustomField); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Instances, marshalProjectCustomField); err != nil {
 			return err
 		}
 	}
@@ -5640,7 +5641,7 @@ type CustomFilterField struct {
 	CustomField  *CustomField
 }
 
-func unmarshalCustomFilterField(r *JSONReader) (*CustomFilterField, error) {
+func unmarshalCustomFilterField(r *jsoncodec.Reader) (*CustomFilterField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -5650,7 +5651,7 @@ func unmarshalCustomFilterField(r *JSONReader) (*CustomFilterField, error) {
 		return nil, nil
 	}
 	result := &CustomFilterField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -5674,7 +5675,7 @@ func unmarshalCustomFilterField(r *JSONReader) (*CustomFilterField, error) {
 	}
 	return result, nil
 }
-func marshalCustomFilterField(w *JsonMarshaler, v CustomFilterField) error {
+func marshalCustomFilterField(w *jsoncodec.Marshaler, v CustomFilterField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -5731,7 +5732,7 @@ type DatabaseBackupSettings struct {
 	NotifiedUsers      []User
 }
 
-func unmarshalDatabaseBackupSettings(r *JSONReader) (*DatabaseBackupSettings, error) {
+func unmarshalDatabaseBackupSettings(r *jsoncodec.Reader) (*DatabaseBackupSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -5741,7 +5742,7 @@ func unmarshalDatabaseBackupSettings(r *JSONReader) (*DatabaseBackupSettings, er
 		return nil, nil
 	}
 	result := &DatabaseBackupSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "archiveFormat":
@@ -5761,7 +5762,7 @@ func unmarshalDatabaseBackupSettings(r *JSONReader) (*DatabaseBackupSettings, er
 		case "location":
 			result.Location, err = r.NextOptionalString()
 		case "notifiedUsers":
-			result.NotifiedUsers, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.NotifiedUsers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -5777,7 +5778,7 @@ func unmarshalDatabaseBackupSettings(r *JSONReader) (*DatabaseBackupSettings, er
 	}
 	return result, nil
 }
-func marshalDatabaseBackupSettings(w *JsonMarshaler, v DatabaseBackupSettings) error {
+func marshalDatabaseBackupSettings(w *jsoncodec.Marshaler, v DatabaseBackupSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -5852,7 +5853,7 @@ func marshalDatabaseBackupSettings(w *JsonMarshaler, v DatabaseBackupSettings) e
 		if err = w.WriteKey("notifiedUsers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.NotifiedUsers, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.NotifiedUsers, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -5870,7 +5871,7 @@ type DateFormatDescriptor struct {
 	Presentation *string
 }
 
-func unmarshalDateFormatDescriptor(r *JSONReader) (*DateFormatDescriptor, error) {
+func unmarshalDateFormatDescriptor(r *jsoncodec.Reader) (*DateFormatDescriptor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -5880,7 +5881,7 @@ func unmarshalDateFormatDescriptor(r *JSONReader) (*DateFormatDescriptor, error)
 		return nil, nil
 	}
 	result := &DateFormatDescriptor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "datePattern":
@@ -5904,7 +5905,7 @@ func unmarshalDateFormatDescriptor(r *JSONReader) (*DateFormatDescriptor, error)
 	}
 	return result, nil
 }
-func marshalDateFormatDescriptor(w *JsonMarshaler, v DateFormatDescriptor) error {
+func marshalDateFormatDescriptor(w *jsoncodec.Marshaler, v DateFormatDescriptor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -5957,7 +5958,7 @@ type DateIssueCustomField struct {
 	Value              *any
 }
 
-func unmarshalDateIssueCustomField(r *JSONReader) (*DateIssueCustomField, error) {
+func unmarshalDateIssueCustomField(r *jsoncodec.Reader) (*DateIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -5967,7 +5968,7 @@ func unmarshalDateIssueCustomField(r *JSONReader) (*DateIssueCustomField, error)
 		return nil, nil
 	}
 	result := &DateIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -5991,7 +5992,7 @@ func unmarshalDateIssueCustomField(r *JSONReader) (*DateIssueCustomField, error)
 	}
 	return result, nil
 }
-func marshalDateIssueCustomField(w *JsonMarshaler, v DateIssueCustomField) error {
+func marshalDateIssueCustomField(w *jsoncodec.Marshaler, v DateIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6043,7 +6044,7 @@ type DuplicateVote struct {
 	User  *User
 }
 
-func unmarshalDuplicateVote(r *JSONReader) (*DuplicateVote, error) {
+func unmarshalDuplicateVote(r *jsoncodec.Reader) (*DuplicateVote, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6053,7 +6054,7 @@ func unmarshalDuplicateVote(r *JSONReader) (*DuplicateVote, error) {
 		return nil, nil
 	}
 	result := &DuplicateVote{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -6075,7 +6076,7 @@ func unmarshalDuplicateVote(r *JSONReader) (*DuplicateVote, error) {
 	}
 	return result, nil
 }
-func marshalDuplicateVote(w *JsonMarshaler, v DuplicateVote) error {
+func marshalDuplicateVote(w *jsoncodec.Marshaler, v DuplicateVote) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6119,7 +6120,7 @@ type DurationValue struct {
 	Presentation *string
 }
 
-func unmarshalDurationValue(r *JSONReader) (*DurationValue, error) {
+func unmarshalDurationValue(r *jsoncodec.Reader) (*DurationValue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6129,7 +6130,7 @@ func unmarshalDurationValue(r *JSONReader) (*DurationValue, error) {
 		return nil, nil
 	}
 	result := &DurationValue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -6151,7 +6152,7 @@ func unmarshalDurationValue(r *JSONReader) (*DurationValue, error) {
 	}
 	return result, nil
 }
-func marshalDurationValue(w *JsonMarshaler, v DurationValue) error {
+func marshalDurationValue(w *jsoncodec.Marshaler, v DurationValue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6202,7 +6203,7 @@ type EmailSettings struct {
 	SslKey       *StorageEntry
 }
 
-func unmarshalEmailSettings(r *JSONReader) (*EmailSettings, error) {
+func unmarshalEmailSettings(r *jsoncodec.Reader) (*EmailSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6212,7 +6213,7 @@ func unmarshalEmailSettings(r *JSONReader) (*EmailSettings, error) {
 		return nil, nil
 	}
 	result := &EmailSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "anonymous":
@@ -6248,7 +6249,7 @@ func unmarshalEmailSettings(r *JSONReader) (*EmailSettings, error) {
 	}
 	return result, nil
 }
-func marshalEmailSettings(w *JsonMarshaler, v EmailSettings) error {
+func marshalEmailSettings(w *jsoncodec.Marshaler, v EmailSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6348,7 +6349,7 @@ type EnumBundle struct {
 	Values       []EnumBundleElement
 }
 
-func unmarshalEnumBundle(r *JSONReader) (*EnumBundle, error) {
+func unmarshalEnumBundle(r *jsoncodec.Reader) (*EnumBundle, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6358,7 +6359,7 @@ func unmarshalEnumBundle(r *JSONReader) (*EnumBundle, error) {
 		return nil, nil
 	}
 	result := &EnumBundle{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -6366,7 +6367,7 @@ func unmarshalEnumBundle(r *JSONReader) (*EnumBundle, error) {
 		case "isUpdateable":
 			result.IsUpdateable, err = r.NextOptionalBool()
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*EnumBundleElement, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*EnumBundleElement, error) {
 				return unmarshalEnumBundleElement(r)
 			})
 		case "$type":
@@ -6382,7 +6383,7 @@ func unmarshalEnumBundle(r *JSONReader) (*EnumBundle, error) {
 	}
 	return result, nil
 }
-func marshalEnumBundle(w *JsonMarshaler, v EnumBundle) error {
+func marshalEnumBundle(w *jsoncodec.Marshaler, v EnumBundle) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6409,7 +6410,7 @@ func marshalEnumBundle(w *JsonMarshaler, v EnumBundle) error {
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalEnumBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalEnumBundleElement); err != nil {
 			return err
 		}
 	}
@@ -6430,7 +6431,7 @@ type EnumBundleCustomFieldDefaults struct {
 	DefaultValues  []EnumBundleElement
 }
 
-func unmarshalEnumBundleCustomFieldDefaults(r *JSONReader) (*EnumBundleCustomFieldDefaults, error) {
+func unmarshalEnumBundleCustomFieldDefaults(r *jsoncodec.Reader) (*EnumBundleCustomFieldDefaults, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6440,7 +6441,7 @@ func unmarshalEnumBundleCustomFieldDefaults(r *JSONReader) (*EnumBundleCustomFie
 		return nil, nil
 	}
 	result := &EnumBundleCustomFieldDefaults{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -6456,7 +6457,7 @@ func unmarshalEnumBundleCustomFieldDefaults(r *JSONReader) (*EnumBundleCustomFie
 		case "bundle":
 			result.Bundle, err = unmarshalEnumBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*EnumBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*EnumBundleElement, error) {
 				return unmarshalEnumBundleElement(r)
 			})
 		case "$type":
@@ -6472,7 +6473,7 @@ func unmarshalEnumBundleCustomFieldDefaults(r *JSONReader) (*EnumBundleCustomFie
 	}
 	return result, nil
 }
-func marshalEnumBundleCustomFieldDefaults(w *JsonMarshaler, v EnumBundleCustomFieldDefaults) error {
+func marshalEnumBundleCustomFieldDefaults(w *jsoncodec.Marshaler, v EnumBundleCustomFieldDefaults) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6531,7 +6532,7 @@ func marshalEnumBundleCustomFieldDefaults(w *JsonMarshaler, v EnumBundleCustomFi
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalEnumBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalEnumBundleElement); err != nil {
 			return err
 		}
 	}
@@ -6554,7 +6555,7 @@ type EnumBundleElement struct {
 	LocalizedName *string
 }
 
-func unmarshalEnumBundleElement(r *JSONReader) (*EnumBundleElement, error) {
+func unmarshalEnumBundleElement(r *jsoncodec.Reader) (*EnumBundleElement, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6564,7 +6565,7 @@ func unmarshalEnumBundleElement(r *JSONReader) (*EnumBundleElement, error) {
 		return nil, nil
 	}
 	result := &EnumBundleElement{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "archived":
@@ -6598,7 +6599,7 @@ func unmarshalEnumBundleElement(r *JSONReader) (*EnumBundleElement, error) {
 	}
 	return result, nil
 }
-func marshalEnumBundleElement(w *JsonMarshaler, v EnumBundleElement) error {
+func marshalEnumBundleElement(w *jsoncodec.Marshaler, v EnumBundleElement) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6698,7 +6699,7 @@ type EnumProjectCustomField struct {
 	DefaultValues  []EnumBundleElement
 }
 
-func unmarshalEnumProjectCustomField(r *JSONReader) (*EnumProjectCustomField, error) {
+func unmarshalEnumProjectCustomField(r *jsoncodec.Reader) (*EnumProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6708,7 +6709,7 @@ func unmarshalEnumProjectCustomField(r *JSONReader) (*EnumProjectCustomField, er
 		return nil, nil
 	}
 	result := &EnumProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -6732,7 +6733,7 @@ func unmarshalEnumProjectCustomField(r *JSONReader) (*EnumProjectCustomField, er
 		case "bundle":
 			result.Bundle, err = unmarshalEnumBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*EnumBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*EnumBundleElement, error) {
 				return unmarshalEnumBundleElement(r)
 			})
 		case "$type":
@@ -6748,7 +6749,7 @@ func unmarshalEnumProjectCustomField(r *JSONReader) (*EnumProjectCustomField, er
 	}
 	return result, nil
 }
-func marshalEnumProjectCustomField(w *JsonMarshaler, v EnumProjectCustomField) error {
+func marshalEnumProjectCustomField(w *jsoncodec.Marshaler, v EnumProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6839,7 +6840,7 @@ func marshalEnumProjectCustomField(w *JsonMarshaler, v EnumProjectCustomField) e
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalEnumBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalEnumBundleElement); err != nil {
 			return err
 		}
 	}
@@ -6856,7 +6857,7 @@ type Event struct {
 	Presentation *string
 }
 
-func unmarshalEvent(r *JSONReader) (*Event, error) {
+func unmarshalEvent(r *jsoncodec.Reader) (*Event, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6866,7 +6867,7 @@ func unmarshalEvent(r *JSONReader) (*Event, error) {
 		return nil, nil
 	}
 	result := &Event{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -6886,7 +6887,7 @@ func unmarshalEvent(r *JSONReader) (*Event, error) {
 	}
 	return result, nil
 }
-func marshalEvent(w *JsonMarshaler, v Event) error {
+func marshalEvent(w *jsoncodec.Marshaler, v Event) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -6924,7 +6925,7 @@ type ExternalArticle struct {
 	Url  *string
 }
 
-func unmarshalExternalArticle(r *JSONReader) (*ExternalArticle, error) {
+func unmarshalExternalArticle(r *jsoncodec.Reader) (*ExternalArticle, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -6934,7 +6935,7 @@ func unmarshalExternalArticle(r *JSONReader) (*ExternalArticle, error) {
 		return nil, nil
 	}
 	result := &ExternalArticle{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -6958,7 +6959,7 @@ func unmarshalExternalArticle(r *JSONReader) (*ExternalArticle, error) {
 	}
 	return result, nil
 }
-func marshalExternalArticle(w *JsonMarshaler, v ExternalArticle) error {
+func marshalExternalArticle(w *jsoncodec.Marshaler, v ExternalArticle) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7012,7 +7013,7 @@ type ExternalIssue struct {
 	Url  *string
 }
 
-func unmarshalExternalIssue(r *JSONReader) (*ExternalIssue, error) {
+func unmarshalExternalIssue(r *jsoncodec.Reader) (*ExternalIssue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7022,7 +7023,7 @@ func unmarshalExternalIssue(r *JSONReader) (*ExternalIssue, error) {
 		return nil, nil
 	}
 	result := &ExternalIssue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -7046,7 +7047,7 @@ func unmarshalExternalIssue(r *JSONReader) (*ExternalIssue, error) {
 	}
 	return result, nil
 }
-func marshalExternalIssue(w *JsonMarshaler, v ExternalIssue) error {
+func marshalExternalIssue(w *jsoncodec.Marshaler, v ExternalIssue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7097,7 +7098,7 @@ type FieldBasedColorCoding struct {
 	Prototype *CustomField
 }
 
-func unmarshalFieldBasedColorCoding(r *JSONReader) (*FieldBasedColorCoding, error) {
+func unmarshalFieldBasedColorCoding(r *jsoncodec.Reader) (*FieldBasedColorCoding, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7107,7 +7108,7 @@ func unmarshalFieldBasedColorCoding(r *JSONReader) (*FieldBasedColorCoding, erro
 		return nil, nil
 	}
 	result := &FieldBasedColorCoding{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -7127,7 +7128,7 @@ func unmarshalFieldBasedColorCoding(r *JSONReader) (*FieldBasedColorCoding, erro
 	}
 	return result, nil
 }
-func marshalFieldBasedColorCoding(w *JsonMarshaler, v FieldBasedColorCoding) error {
+func marshalFieldBasedColorCoding(w *jsoncodec.Marshaler, v FieldBasedColorCoding) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7165,7 +7166,7 @@ type FieldBasedCondition struct {
 	Values           []BundleElement
 }
 
-func unmarshalFieldBasedCondition(r *JSONReader) (*FieldBasedCondition, error) {
+func unmarshalFieldBasedCondition(r *jsoncodec.Reader) (*FieldBasedCondition, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7175,7 +7176,7 @@ func unmarshalFieldBasedCondition(r *JSONReader) (*FieldBasedCondition, error) {
 		return nil, nil
 	}
 	result := &FieldBasedCondition{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -7187,7 +7188,7 @@ func unmarshalFieldBasedCondition(r *JSONReader) (*FieldBasedCondition, error) {
 		case "showForNullValue":
 			result.ShowForNullValue, err = r.NextOptionalBool()
 		case "values":
-			result.Values, err = unmarshalAbstractList(r, func(r *JSONReader) (BundleElement, error) {
+			result.Values, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (BundleElement, error) {
 				return unmarshalBundleElement(r)
 			})
 		case "$type":
@@ -7203,7 +7204,7 @@ func unmarshalFieldBasedCondition(r *JSONReader) (*FieldBasedCondition, error) {
 	}
 	return result, nil
 }
-func marshalFieldBasedCondition(w *JsonMarshaler, v FieldBasedCondition) error {
+func marshalFieldBasedCondition(w *jsoncodec.Marshaler, v FieldBasedCondition) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7246,7 +7247,7 @@ func marshalFieldBasedCondition(w *JsonMarshaler, v FieldBasedCondition) error {
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalBundleElement); err != nil {
 			return err
 		}
 	}
@@ -7263,7 +7264,7 @@ type FieldStyle struct {
 	Id         *string
 }
 
-func unmarshalFieldStyle(r *JSONReader) (*FieldStyle, error) {
+func unmarshalFieldStyle(r *jsoncodec.Reader) (*FieldStyle, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7273,7 +7274,7 @@ func unmarshalFieldStyle(r *JSONReader) (*FieldStyle, error) {
 		return nil, nil
 	}
 	result := &FieldStyle{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "background":
@@ -7295,7 +7296,7 @@ func unmarshalFieldStyle(r *JSONReader) (*FieldStyle, error) {
 	}
 	return result, nil
 }
-func marshalFieldStyle(w *JsonMarshaler, v FieldStyle) error {
+func marshalFieldStyle(w *jsoncodec.Marshaler, v FieldStyle) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7336,7 +7337,7 @@ type FieldType struct {
 	Id *string
 }
 
-func unmarshalFieldType(r *JSONReader) (*FieldType, error) {
+func unmarshalFieldType(r *jsoncodec.Reader) (*FieldType, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7346,7 +7347,7 @@ func unmarshalFieldType(r *JSONReader) (*FieldType, error) {
 		return nil, nil
 	}
 	result := &FieldType{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -7364,7 +7365,7 @@ func unmarshalFieldType(r *JSONReader) (*FieldType, error) {
 	}
 	return result, nil
 }
-func marshalFieldType(w *JsonMarshaler, v FieldType) error {
+func marshalFieldType(w *jsoncodec.Marshaler, v FieldType) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7392,7 +7393,7 @@ type GeneralUserProfile struct {
 	Timezone        *TimeZoneDescriptor
 }
 
-func unmarshalGeneralUserProfile(r *JSONReader) (*GeneralUserProfile, error) {
+func unmarshalGeneralUserProfile(r *jsoncodec.Reader) (*GeneralUserProfile, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7402,7 +7403,7 @@ func unmarshalGeneralUserProfile(r *JSONReader) (*GeneralUserProfile, error) {
 		return nil, nil
 	}
 	result := &GeneralUserProfile{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "dateFieldFormat":
@@ -7426,7 +7427,7 @@ func unmarshalGeneralUserProfile(r *JSONReader) (*GeneralUserProfile, error) {
 	}
 	return result, nil
 }
-func marshalGeneralUserProfile(w *JsonMarshaler, v GeneralUserProfile) error {
+func marshalGeneralUserProfile(w *jsoncodec.Marshaler, v GeneralUserProfile) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7486,7 +7487,7 @@ type GitHubChangesProcessor struct {
 	Path                     *string
 }
 
-func unmarshalGitHubChangesProcessor(r *JSONReader) (*GitHubChangesProcessor, error) {
+func unmarshalGitHubChangesProcessor(r *jsoncodec.Reader) (*GitHubChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7496,7 +7497,7 @@ func unmarshalGitHubChangesProcessor(r *JSONReader) (*GitHubChangesProcessor, er
 		return nil, nil
 	}
 	result := &GitHubChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -7510,13 +7511,13 @@ func unmarshalGitHubChangesProcessor(r *JSONReader) (*GitHubChangesProcessor, er
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalGitHubServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "branchSpecification":
@@ -7538,7 +7539,7 @@ func unmarshalGitHubChangesProcessor(r *JSONReader) (*GitHubChangesProcessor, er
 	}
 	return result, nil
 }
-func marshalGitHubChangesProcessor(w *JsonMarshaler, v GitHubChangesProcessor) error {
+func marshalGitHubChangesProcessor(w *jsoncodec.Marshaler, v GitHubChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7589,7 +7590,7 @@ func marshalGitHubChangesProcessor(w *JsonMarshaler, v GitHubChangesProcessor) e
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -7605,7 +7606,7 @@ func marshalGitHubChangesProcessor(w *JsonMarshaler, v GitHubChangesProcessor) e
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -7645,7 +7646,7 @@ type GitHubServer struct {
 	Url *string
 }
 
-func unmarshalGitHubServer(r *JSONReader) (*GitHubServer, error) {
+func unmarshalGitHubServer(r *jsoncodec.Reader) (*GitHubServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7655,7 +7656,7 @@ func unmarshalGitHubServer(r *JSONReader) (*GitHubServer, error) {
 		return nil, nil
 	}
 	result := &GitHubServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -7675,7 +7676,7 @@ func unmarshalGitHubServer(r *JSONReader) (*GitHubServer, error) {
 	}
 	return result, nil
 }
-func marshalGitHubServer(w *JsonMarshaler, v GitHubServer) error {
+func marshalGitHubServer(w *jsoncodec.Marshaler, v GitHubServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7719,7 +7720,7 @@ type GitLabChangesProcessor struct {
 	Path                     *string
 }
 
-func unmarshalGitLabChangesProcessor(r *JSONReader) (*GitLabChangesProcessor, error) {
+func unmarshalGitLabChangesProcessor(r *jsoncodec.Reader) (*GitLabChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7729,7 +7730,7 @@ func unmarshalGitLabChangesProcessor(r *JSONReader) (*GitLabChangesProcessor, er
 		return nil, nil
 	}
 	result := &GitLabChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -7743,13 +7744,13 @@ func unmarshalGitLabChangesProcessor(r *JSONReader) (*GitLabChangesProcessor, er
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalGitLabServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "branchSpecification":
@@ -7771,7 +7772,7 @@ func unmarshalGitLabChangesProcessor(r *JSONReader) (*GitLabChangesProcessor, er
 	}
 	return result, nil
 }
-func marshalGitLabChangesProcessor(w *JsonMarshaler, v GitLabChangesProcessor) error {
+func marshalGitLabChangesProcessor(w *jsoncodec.Marshaler, v GitLabChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7822,7 +7823,7 @@ func marshalGitLabChangesProcessor(w *JsonMarshaler, v GitLabChangesProcessor) e
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -7838,7 +7839,7 @@ func marshalGitLabChangesProcessor(w *JsonMarshaler, v GitLabChangesProcessor) e
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -7878,7 +7879,7 @@ type GitLabServer struct {
 	Url *string
 }
 
-func unmarshalGitLabServer(r *JSONReader) (*GitLabServer, error) {
+func unmarshalGitLabServer(r *jsoncodec.Reader) (*GitLabServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7888,7 +7889,7 @@ func unmarshalGitLabServer(r *JSONReader) (*GitLabServer, error) {
 		return nil, nil
 	}
 	result := &GitLabServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -7908,7 +7909,7 @@ func unmarshalGitLabServer(r *JSONReader) (*GitLabServer, error) {
 	}
 	return result, nil
 }
-func marshalGitLabServer(w *JsonMarshaler, v GitLabServer) error {
+func marshalGitLabServer(w *jsoncodec.Marshaler, v GitLabServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -7952,7 +7953,7 @@ type GiteaChangesProcessor struct {
 	Path                     *string
 }
 
-func unmarshalGiteaChangesProcessor(r *JSONReader) (*GiteaChangesProcessor, error) {
+func unmarshalGiteaChangesProcessor(r *jsoncodec.Reader) (*GiteaChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -7962,7 +7963,7 @@ func unmarshalGiteaChangesProcessor(r *JSONReader) (*GiteaChangesProcessor, erro
 		return nil, nil
 	}
 	result := &GiteaChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -7976,13 +7977,13 @@ func unmarshalGiteaChangesProcessor(r *JSONReader) (*GiteaChangesProcessor, erro
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalGiteaServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "branchSpecification":
@@ -8004,7 +8005,7 @@ func unmarshalGiteaChangesProcessor(r *JSONReader) (*GiteaChangesProcessor, erro
 	}
 	return result, nil
 }
-func marshalGiteaChangesProcessor(w *JsonMarshaler, v GiteaChangesProcessor) error {
+func marshalGiteaChangesProcessor(w *jsoncodec.Marshaler, v GiteaChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8055,7 +8056,7 @@ func marshalGiteaChangesProcessor(w *JsonMarshaler, v GiteaChangesProcessor) err
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -8071,7 +8072,7 @@ func marshalGiteaChangesProcessor(w *JsonMarshaler, v GiteaChangesProcessor) err
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -8111,7 +8112,7 @@ type GiteaServer struct {
 	Url *string
 }
 
-func unmarshalGiteaServer(r *JSONReader) (*GiteaServer, error) {
+func unmarshalGiteaServer(r *jsoncodec.Reader) (*GiteaServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -8121,7 +8122,7 @@ func unmarshalGiteaServer(r *JSONReader) (*GiteaServer, error) {
 		return nil, nil
 	}
 	result := &GiteaServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -8141,7 +8142,7 @@ func unmarshalGiteaServer(r *JSONReader) (*GiteaServer, error) {
 	}
 	return result, nil
 }
-func marshalGiteaServer(w *JsonMarshaler, v GiteaServer) error {
+func marshalGiteaServer(w *jsoncodec.Marshaler, v GiteaServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8174,7 +8175,7 @@ type GlobalScope struct {
 	Id *string
 }
 
-func unmarshalGlobalScope(r *JSONReader) (*GlobalScope, error) {
+func unmarshalGlobalScope(r *jsoncodec.Reader) (*GlobalScope, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -8184,7 +8185,7 @@ func unmarshalGlobalScope(r *JSONReader) (*GlobalScope, error) {
 		return nil, nil
 	}
 	result := &GlobalScope{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -8202,7 +8203,7 @@ func unmarshalGlobalScope(r *JSONReader) (*GlobalScope, error) {
 	}
 	return result, nil
 }
-func marshalGlobalScope(w *JsonMarshaler, v GlobalScope) error {
+func marshalGlobalScope(w *jsoncodec.Marshaler, v GlobalScope) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8233,7 +8234,7 @@ type GlobalSettings struct {
 	SystemSettings       *SystemSettings
 }
 
-func unmarshalGlobalSettings(r *JSONReader) (*GlobalSettings, error) {
+func unmarshalGlobalSettings(r *jsoncodec.Reader) (*GlobalSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -8243,7 +8244,7 @@ func unmarshalGlobalSettings(r *JSONReader) (*GlobalSettings, error) {
 		return nil, nil
 	}
 	result := &GlobalSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "appearanceSettings":
@@ -8273,7 +8274,7 @@ func unmarshalGlobalSettings(r *JSONReader) (*GlobalSettings, error) {
 	}
 	return result, nil
 }
-func marshalGlobalSettings(w *JsonMarshaler, v GlobalSettings) error {
+func marshalGlobalSettings(w *jsoncodec.Marshaler, v GlobalSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8349,7 +8350,7 @@ type GlobalTimeTrackingSettings struct {
 	WorkTimeSettings    *WorkTimeSettings
 }
 
-func unmarshalGlobalTimeTrackingSettings(r *JSONReader) (*GlobalTimeTrackingSettings, error) {
+func unmarshalGlobalTimeTrackingSettings(r *jsoncodec.Reader) (*GlobalTimeTrackingSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -8359,17 +8360,17 @@ func unmarshalGlobalTimeTrackingSettings(r *JSONReader) (*GlobalTimeTrackingSett
 		return nil, nil
 	}
 	result := &GlobalTimeTrackingSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "attributePrototypes":
-			result.AttributePrototypes, err = unmarshalList(r, func(r *JSONReader) (*WorkItemAttributePrototype, error) {
+			result.AttributePrototypes, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemAttributePrototype, error) {
 				return unmarshalWorkItemAttributePrototype(r)
 			})
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "workItemTypes":
-			result.WorkItemTypes, err = unmarshalList(r, func(r *JSONReader) (*WorkItemType, error) {
+			result.WorkItemTypes, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemType, error) {
 				return unmarshalWorkItemType(r)
 			})
 		case "workTimeSettings":
@@ -8387,7 +8388,7 @@ func unmarshalGlobalTimeTrackingSettings(r *JSONReader) (*GlobalTimeTrackingSett
 	}
 	return result, nil
 }
-func marshalGlobalTimeTrackingSettings(w *JsonMarshaler, v GlobalTimeTrackingSettings) error {
+func marshalGlobalTimeTrackingSettings(w *jsoncodec.Marshaler, v GlobalTimeTrackingSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8398,7 +8399,7 @@ func marshalGlobalTimeTrackingSettings(w *JsonMarshaler, v GlobalTimeTrackingSet
 		if err = w.WriteKey("attributePrototypes"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.AttributePrototypes, marshalWorkItemAttributePrototype); err != nil {
+		if err = jsoncodec.MarshalList(w, v.AttributePrototypes, marshalWorkItemAttributePrototype); err != nil {
 			return err
 		}
 	}
@@ -8414,7 +8415,7 @@ func marshalGlobalTimeTrackingSettings(w *JsonMarshaler, v GlobalTimeTrackingSet
 		if err = w.WriteKey("workItemTypes"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.WorkItemTypes, marshalWorkItemType); err != nil {
+		if err = jsoncodec.MarshalList(w, v.WorkItemTypes, marshalWorkItemType); err != nil {
 			return err
 		}
 	}
@@ -8447,7 +8448,7 @@ type GogsChangesProcessor struct {
 	Path                     *string
 }
 
-func unmarshalGogsChangesProcessor(r *JSONReader) (*GogsChangesProcessor, error) {
+func unmarshalGogsChangesProcessor(r *jsoncodec.Reader) (*GogsChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -8457,7 +8458,7 @@ func unmarshalGogsChangesProcessor(r *JSONReader) (*GogsChangesProcessor, error)
 		return nil, nil
 	}
 	result := &GogsChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -8471,13 +8472,13 @@ func unmarshalGogsChangesProcessor(r *JSONReader) (*GogsChangesProcessor, error)
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalGogsServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "branchSpecification":
@@ -8499,7 +8500,7 @@ func unmarshalGogsChangesProcessor(r *JSONReader) (*GogsChangesProcessor, error)
 	}
 	return result, nil
 }
-func marshalGogsChangesProcessor(w *JsonMarshaler, v GogsChangesProcessor) error {
+func marshalGogsChangesProcessor(w *jsoncodec.Marshaler, v GogsChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8550,7 +8551,7 @@ func marshalGogsChangesProcessor(w *JsonMarshaler, v GogsChangesProcessor) error
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -8566,7 +8567,7 @@ func marshalGogsChangesProcessor(w *JsonMarshaler, v GogsChangesProcessor) error
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -8606,7 +8607,7 @@ type GogsServer struct {
 	Url *string
 }
 
-func unmarshalGogsServer(r *JSONReader) (*GogsServer, error) {
+func unmarshalGogsServer(r *jsoncodec.Reader) (*GogsServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -8616,7 +8617,7 @@ func unmarshalGogsServer(r *JSONReader) (*GogsServer, error) {
 		return nil, nil
 	}
 	result := &GogsServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -8636,7 +8637,7 @@ func unmarshalGogsServer(r *JSONReader) (*GogsServer, error) {
 	}
 	return result, nil
 }
-func marshalGogsServer(w *JsonMarshaler, v GogsServer) error {
+func marshalGogsServer(w *jsoncodec.Marshaler, v GogsServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8679,7 +8680,7 @@ type GroupProjectCustomField struct {
 	DefaultValues  []UserGroup
 }
 
-func unmarshalGroupProjectCustomField(r *JSONReader) (*GroupProjectCustomField, error) {
+func unmarshalGroupProjectCustomField(r *jsoncodec.Reader) (*GroupProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -8689,7 +8690,7 @@ func unmarshalGroupProjectCustomField(r *JSONReader) (*GroupProjectCustomField, 
 		return nil, nil
 	}
 	result := &GroupProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -8711,7 +8712,7 @@ func unmarshalGroupProjectCustomField(r *JSONReader) (*GroupProjectCustomField, 
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "$type":
@@ -8727,7 +8728,7 @@ func unmarshalGroupProjectCustomField(r *JSONReader) (*GroupProjectCustomField, 
 	}
 	return result, nil
 }
-func marshalGroupProjectCustomField(w *JsonMarshaler, v GroupProjectCustomField) error {
+func marshalGroupProjectCustomField(w *jsoncodec.Marshaler, v GroupProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8810,7 +8811,7 @@ func marshalGroupProjectCustomField(w *JsonMarshaler, v GroupProjectCustomField)
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -8851,7 +8852,7 @@ type Issue struct {
 	WikifiedDescription *string
 }
 
-func unmarshalIssue(r *JSONReader) (*Issue, error) {
+func unmarshalIssue(r *jsoncodec.Reader) (*Issue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -8861,23 +8862,23 @@ func unmarshalIssue(r *JSONReader) (*Issue, error) {
 		return nil, nil
 	}
 	result := &Issue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "attachments":
-			result.Attachments, err = unmarshalList(r, func(r *JSONReader) (*IssueAttachment, error) {
+			result.Attachments, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueAttachment, error) {
 				return unmarshalIssueAttachment(r)
 			})
 		case "comments":
-			result.Comments, err = unmarshalList(r, func(r *JSONReader) (*IssueComment, error) {
+			result.Comments, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueComment, error) {
 				return unmarshalIssueComment(r)
 			})
 		case "commentsCount":
 			result.CommentsCount, err = r.NextOptionalInt()
 		case "created":
-			result.Created, err = unmarshalTime(r)
+			result.Created, err = jsoncodec.UnmarshalTime(r)
 		case "customFields":
-			result.CustomFields, err = unmarshalAbstractList(r, func(r *JSONReader) (IssueCustomField, error) {
+			result.CustomFields, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (IssueCustomField, error) {
 				return unmarshalIssueCustomField(r)
 			})
 		case "description":
@@ -8893,7 +8894,7 @@ func unmarshalIssue(r *JSONReader) (*Issue, error) {
 		case "isDraft":
 			result.IsDraft, err = r.NextOptionalBool()
 		case "links":
-			result.Links, err = unmarshalList(r, func(r *JSONReader) (*IssueLink, error) {
+			result.Links, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueLink, error) {
 				return unmarshalIssueLink(r)
 			})
 		case "numberInProject":
@@ -8901,7 +8902,7 @@ func unmarshalIssue(r *JSONReader) (*Issue, error) {
 		case "parent":
 			result.Parent, err = unmarshalIssueLink(r)
 		case "pinnedComments":
-			result.PinnedComments, err = unmarshalList(r, func(r *JSONReader) (*IssueComment, error) {
+			result.PinnedComments, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueComment, error) {
 				return unmarshalIssueComment(r)
 			})
 		case "project":
@@ -8909,19 +8910,19 @@ func unmarshalIssue(r *JSONReader) (*Issue, error) {
 		case "reporter":
 			result.Reporter, err = unmarshalUser(r)
 		case "resolved":
-			result.Resolved, err = unmarshalTime(r)
+			result.Resolved, err = jsoncodec.UnmarshalTime(r)
 		case "subtasks":
-			result.Subtasks, err = unmarshalList(r, func(r *JSONReader) (*IssueLink, error) {
+			result.Subtasks, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueLink, error) {
 				return unmarshalIssueLink(r)
 			})
 		case "summary":
 			result.Summary, err = r.NextOptionalString()
 		case "tags":
-			result.Tags, err = unmarshalAbstractList(r, func(r *JSONReader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "updated":
-			result.Updated, err = unmarshalTime(r)
+			result.Updated, err = jsoncodec.UnmarshalTime(r)
 		case "updater":
 			result.Updater, err = unmarshalUser(r)
 		case "visibility":
@@ -8947,7 +8948,7 @@ func unmarshalIssue(r *JSONReader) (*Issue, error) {
 	}
 	return result, nil
 }
-func marshalIssue(w *JsonMarshaler, v Issue) error {
+func marshalIssue(w *jsoncodec.Marshaler, v Issue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -8958,7 +8959,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("attachments"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Attachments, marshalIssueAttachment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Attachments, marshalIssueAttachment); err != nil {
 			return err
 		}
 	}
@@ -8966,7 +8967,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("comments"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Comments, marshalIssueComment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Comments, marshalIssueComment); err != nil {
 			return err
 		}
 	}
@@ -8982,7 +8983,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("created"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Created); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Created); err != nil {
 			return err
 		}
 	}
@@ -8990,7 +8991,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("customFields"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.CustomFields, marshalIssueCustomField); err != nil {
+		if err = jsoncodec.MarshalList(w, v.CustomFields, marshalIssueCustomField); err != nil {
 			return err
 		}
 	}
@@ -9046,7 +9047,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("links"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Links, marshalIssueLink); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Links, marshalIssueLink); err != nil {
 			return err
 		}
 	}
@@ -9070,7 +9071,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("pinnedComments"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PinnedComments, marshalIssueComment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PinnedComments, marshalIssueComment); err != nil {
 			return err
 		}
 	}
@@ -9094,7 +9095,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("resolved"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Resolved); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Resolved); err != nil {
 			return err
 		}
 	}
@@ -9102,7 +9103,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("subtasks"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Subtasks, marshalIssueLink); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Subtasks, marshalIssueLink); err != nil {
 			return err
 		}
 	}
@@ -9118,7 +9119,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("tags"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Tags, marshalTag); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Tags, marshalTag); err != nil {
 			return err
 		}
 	}
@@ -9126,7 +9127,7 @@ func marshalIssue(w *JsonMarshaler, v Issue) error {
 		if err = w.WriteKey("updated"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Updated); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Updated); err != nil {
 			return err
 		}
 	}
@@ -9205,7 +9206,7 @@ type IssueAttachment struct {
 	Visibility    Visibility
 }
 
-func unmarshalIssueAttachment(r *JSONReader) (*IssueAttachment, error) {
+func unmarshalIssueAttachment(r *jsoncodec.Reader) (*IssueAttachment, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -9215,7 +9216,7 @@ func unmarshalIssueAttachment(r *JSONReader) (*IssueAttachment, error) {
 		return nil, nil
 	}
 	result := &IssueAttachment{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "author":
@@ -9227,7 +9228,7 @@ func unmarshalIssueAttachment(r *JSONReader) (*IssueAttachment, error) {
 		case "comment":
 			result.Comment, err = unmarshalIssueComment(r)
 		case "created":
-			result.Created, err = unmarshalTime(r)
+			result.Created, err = jsoncodec.UnmarshalTime(r)
 		case "draft":
 			result.Draft, err = r.NextOptionalBool()
 		case "extension":
@@ -9249,7 +9250,7 @@ func unmarshalIssueAttachment(r *JSONReader) (*IssueAttachment, error) {
 		case "thumbnailURL":
 			result.ThumbnailURL, err = r.NextOptionalString()
 		case "updated":
-			result.Updated, err = unmarshalTime(r)
+			result.Updated, err = jsoncodec.UnmarshalTime(r)
 		case "url":
 			result.Url, err = r.NextOptionalString()
 		case "visibility":
@@ -9267,7 +9268,7 @@ func unmarshalIssueAttachment(r *JSONReader) (*IssueAttachment, error) {
 	}
 	return result, nil
 }
-func marshalIssueAttachment(w *JsonMarshaler, v IssueAttachment) error {
+func marshalIssueAttachment(w *jsoncodec.Marshaler, v IssueAttachment) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -9310,7 +9311,7 @@ func marshalIssueAttachment(w *JsonMarshaler, v IssueAttachment) error {
 		if err = w.WriteKey("created"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Created); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Created); err != nil {
 			return err
 		}
 	}
@@ -9398,7 +9399,7 @@ func marshalIssueAttachment(w *JsonMarshaler, v IssueAttachment) error {
 		if err = w.WriteKey("updated"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Updated); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Updated); err != nil {
 			return err
 		}
 	}
@@ -9434,7 +9435,7 @@ type IssueBasedSwimlaneSettings struct {
 	Values          []SwimlaneValue
 }
 
-func unmarshalIssueBasedSwimlaneSettings(r *JSONReader) (*IssueBasedSwimlaneSettings, error) {
+func unmarshalIssueBasedSwimlaneSettings(r *jsoncodec.Reader) (*IssueBasedSwimlaneSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -9444,7 +9445,7 @@ func unmarshalIssueBasedSwimlaneSettings(r *JSONReader) (*IssueBasedSwimlaneSett
 		return nil, nil
 	}
 	result := &IssueBasedSwimlaneSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "enabled":
@@ -9456,7 +9457,7 @@ func unmarshalIssueBasedSwimlaneSettings(r *JSONReader) (*IssueBasedSwimlaneSett
 		case "field":
 			result.Field, err = unmarshalFilterField(r)
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*SwimlaneValue, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*SwimlaneValue, error) {
 				return unmarshalSwimlaneValue(r)
 			})
 		case "$type":
@@ -9472,7 +9473,7 @@ func unmarshalIssueBasedSwimlaneSettings(r *JSONReader) (*IssueBasedSwimlaneSett
 	}
 	return result, nil
 }
-func marshalIssueBasedSwimlaneSettings(w *JsonMarshaler, v IssueBasedSwimlaneSettings) error {
+func marshalIssueBasedSwimlaneSettings(w *jsoncodec.Marshaler, v IssueBasedSwimlaneSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -9515,7 +9516,7 @@ func marshalIssueBasedSwimlaneSettings(w *JsonMarshaler, v IssueBasedSwimlaneSet
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalSwimlaneValue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalSwimlaneValue); err != nil {
 			return err
 		}
 	}
@@ -9540,7 +9541,7 @@ type IssueComment struct {
 	Visibility  Visibility
 }
 
-func unmarshalIssueComment(r *JSONReader) (*IssueComment, error) {
+func unmarshalIssueComment(r *jsoncodec.Reader) (*IssueComment, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -9550,17 +9551,17 @@ func unmarshalIssueComment(r *JSONReader) (*IssueComment, error) {
 		return nil, nil
 	}
 	result := &IssueComment{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "attachments":
-			result.Attachments, err = unmarshalList(r, func(r *JSONReader) (*IssueAttachment, error) {
+			result.Attachments, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueAttachment, error) {
 				return unmarshalIssueAttachment(r)
 			})
 		case "author":
 			result.Author, err = unmarshalUser(r)
 		case "created":
-			result.Created, err = unmarshalTime(r)
+			result.Created, err = jsoncodec.UnmarshalTime(r)
 		case "deleted":
 			result.Deleted, err = r.NextOptionalBool()
 		case "id":
@@ -9570,7 +9571,7 @@ func unmarshalIssueComment(r *JSONReader) (*IssueComment, error) {
 		case "pinned":
 			result.Pinned, err = r.NextOptionalBool()
 		case "reactions":
-			result.Reactions, err = unmarshalList(r, func(r *JSONReader) (*Reaction, error) {
+			result.Reactions, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Reaction, error) {
 				return unmarshalReaction(r)
 			})
 		case "text":
@@ -9578,7 +9579,7 @@ func unmarshalIssueComment(r *JSONReader) (*IssueComment, error) {
 		case "textPreview":
 			result.TextPreview, err = r.NextOptionalString()
 		case "updated":
-			result.Updated, err = unmarshalTime(r)
+			result.Updated, err = jsoncodec.UnmarshalTime(r)
 		case "visibility":
 			result.Visibility, err = unmarshalVisibility(r)
 		case "$type":
@@ -9594,7 +9595,7 @@ func unmarshalIssueComment(r *JSONReader) (*IssueComment, error) {
 	}
 	return result, nil
 }
-func marshalIssueComment(w *JsonMarshaler, v IssueComment) error {
+func marshalIssueComment(w *jsoncodec.Marshaler, v IssueComment) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -9605,7 +9606,7 @@ func marshalIssueComment(w *JsonMarshaler, v IssueComment) error {
 		if err = w.WriteKey("attachments"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Attachments, marshalIssueAttachment); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Attachments, marshalIssueAttachment); err != nil {
 			return err
 		}
 	}
@@ -9621,7 +9622,7 @@ func marshalIssueComment(w *JsonMarshaler, v IssueComment) error {
 		if err = w.WriteKey("created"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Created); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Created); err != nil {
 			return err
 		}
 	}
@@ -9661,7 +9662,7 @@ func marshalIssueComment(w *JsonMarshaler, v IssueComment) error {
 		if err = w.WriteKey("reactions"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Reactions, marshalReaction); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Reactions, marshalReaction); err != nil {
 			return err
 		}
 	}
@@ -9685,7 +9686,7 @@ func marshalIssueComment(w *JsonMarshaler, v IssueComment) error {
 		if err = w.WriteKey("updated"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Updated); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Updated); err != nil {
 			return err
 		}
 	}
@@ -9711,7 +9712,7 @@ type IssueCountResponse struct {
 	UnresolvedOnly *bool
 }
 
-func unmarshalIssueCountResponse(r *JSONReader) (*IssueCountResponse, error) {
+func unmarshalIssueCountResponse(r *jsoncodec.Reader) (*IssueCountResponse, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -9721,7 +9722,7 @@ func unmarshalIssueCountResponse(r *JSONReader) (*IssueCountResponse, error) {
 		return nil, nil
 	}
 	result := &IssueCountResponse{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "count":
@@ -9747,7 +9748,7 @@ func unmarshalIssueCountResponse(r *JSONReader) (*IssueCountResponse, error) {
 	}
 	return result, nil
 }
-func marshalIssueCountResponse(w *JsonMarshaler, v IssueCountResponse) error {
+func marshalIssueCountResponse(w *jsoncodec.Marshaler, v IssueCountResponse) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -9813,7 +9814,7 @@ type IssueCreatedActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalIssueCreatedActivityItem(r *JSONReader) (*IssueCreatedActivityItem, error) {
+func unmarshalIssueCreatedActivityItem(r *jsoncodec.Reader) (*IssueCreatedActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -9823,11 +9824,11 @@ func unmarshalIssueCreatedActivityItem(r *JSONReader) (*IssueCreatedActivityItem
 		return nil, nil
 	}
 	result := &IssueCreatedActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "author":
@@ -9839,7 +9840,7 @@ func unmarshalIssueCreatedActivityItem(r *JSONReader) (*IssueCreatedActivityItem
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "target":
@@ -9847,7 +9848,7 @@ func unmarshalIssueCreatedActivityItem(r *JSONReader) (*IssueCreatedActivityItem
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -9861,7 +9862,7 @@ func unmarshalIssueCreatedActivityItem(r *JSONReader) (*IssueCreatedActivityItem
 	}
 	return result, nil
 }
-func marshalIssueCreatedActivityItem(w *JsonMarshaler, v IssueCreatedActivityItem) error {
+func marshalIssueCreatedActivityItem(w *jsoncodec.Marshaler, v IssueCreatedActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -9872,7 +9873,7 @@ func marshalIssueCreatedActivityItem(w *JsonMarshaler, v IssueCreatedActivityIte
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -9912,7 +9913,7 @@ func marshalIssueCreatedActivityItem(w *JsonMarshaler, v IssueCreatedActivityIte
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -9936,7 +9937,7 @@ func marshalIssueCreatedActivityItem(w *JsonMarshaler, v IssueCreatedActivityIte
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -9954,7 +9955,7 @@ type IssueKey struct {
 	Project         *Project
 }
 
-func unmarshalIssueKey(r *JSONReader) (*IssueKey, error) {
+func unmarshalIssueKey(r *jsoncodec.Reader) (*IssueKey, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -9964,7 +9965,7 @@ func unmarshalIssueKey(r *JSONReader) (*IssueKey, error) {
 		return nil, nil
 	}
 	result := &IssueKey{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -9986,7 +9987,7 @@ func unmarshalIssueKey(r *JSONReader) (*IssueKey, error) {
 	}
 	return result, nil
 }
-func marshalIssueKey(w *JsonMarshaler, v IssueKey) error {
+func marshalIssueKey(w *jsoncodec.Marshaler, v IssueKey) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10031,7 +10032,7 @@ type IssueLink struct {
 	TrimmedIssues []Issue
 }
 
-func unmarshalIssueLink(r *JSONReader) (*IssueLink, error) {
+func unmarshalIssueLink(r *jsoncodec.Reader) (*IssueLink, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10041,7 +10042,7 @@ func unmarshalIssueLink(r *JSONReader) (*IssueLink, error) {
 		return nil, nil
 	}
 	result := &IssueLink{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "direction":
@@ -10049,13 +10050,13 @@ func unmarshalIssueLink(r *JSONReader) (*IssueLink, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "issues":
-			result.Issues, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Issues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "linkType":
 			result.LinkType, err = unmarshalIssueLinkType(r)
 		case "trimmedIssues":
-			result.TrimmedIssues, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.TrimmedIssues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "$type":
@@ -10071,7 +10072,7 @@ func unmarshalIssueLink(r *JSONReader) (*IssueLink, error) {
 	}
 	return result, nil
 }
-func marshalIssueLink(w *JsonMarshaler, v IssueLink) error {
+func marshalIssueLink(w *jsoncodec.Marshaler, v IssueLink) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10098,7 +10099,7 @@ func marshalIssueLink(w *JsonMarshaler, v IssueLink) error {
 		if err = w.WriteKey("issues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Issues, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Issues, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -10114,7 +10115,7 @@ func marshalIssueLink(w *JsonMarshaler, v IssueLink) error {
 		if err = w.WriteKey("trimmedIssues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.TrimmedIssues, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.TrimmedIssues, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -10137,7 +10138,7 @@ type IssueLinkType struct {
 	TargetToSource          *string
 }
 
-func unmarshalIssueLinkType(r *JSONReader) (*IssueLinkType, error) {
+func unmarshalIssueLinkType(r *jsoncodec.Reader) (*IssueLinkType, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10147,7 +10148,7 @@ func unmarshalIssueLinkType(r *JSONReader) (*IssueLinkType, error) {
 		return nil, nil
 	}
 	result := &IssueLinkType{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "aggregation":
@@ -10183,7 +10184,7 @@ func unmarshalIssueLinkType(r *JSONReader) (*IssueLinkType, error) {
 	}
 	return result, nil
 }
-func marshalIssueLinkType(w *JsonMarshaler, v IssueLinkType) error {
+func marshalIssueLinkType(w *jsoncodec.Marshaler, v IssueLinkType) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10289,7 +10290,7 @@ type IssueResolvedActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalIssueResolvedActivityItem(r *JSONReader) (*IssueResolvedActivityItem, error) {
+func unmarshalIssueResolvedActivityItem(r *jsoncodec.Reader) (*IssueResolvedActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10299,11 +10300,11 @@ func unmarshalIssueResolvedActivityItem(r *JSONReader) (*IssueResolvedActivityIt
 		return nil, nil
 	}
 	result := &IssueResolvedActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalTime(r)
+			result.Added, err = jsoncodec.UnmarshalTime(r)
 		case "author":
 			result.Author, err = unmarshalUser(r)
 		case "category":
@@ -10313,13 +10314,13 @@ func unmarshalIssueResolvedActivityItem(r *JSONReader) (*IssueResolvedActivityIt
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalTime(r)
+			result.Removed, err = jsoncodec.UnmarshalTime(r)
 		case "target":
 			result.Target, err = r.NextOptionalValue()
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -10333,7 +10334,7 @@ func unmarshalIssueResolvedActivityItem(r *JSONReader) (*IssueResolvedActivityIt
 	}
 	return result, nil
 }
-func marshalIssueResolvedActivityItem(w *JsonMarshaler, v IssueResolvedActivityItem) error {
+func marshalIssueResolvedActivityItem(w *jsoncodec.Marshaler, v IssueResolvedActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10344,7 +10345,7 @@ func marshalIssueResolvedActivityItem(w *JsonMarshaler, v IssueResolvedActivityI
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Added); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Added); err != nil {
 			return err
 		}
 	}
@@ -10384,7 +10385,7 @@ func marshalIssueResolvedActivityItem(w *JsonMarshaler, v IssueResolvedActivityI
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Removed); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Removed); err != nil {
 			return err
 		}
 	}
@@ -10408,7 +10409,7 @@ func marshalIssueResolvedActivityItem(w *JsonMarshaler, v IssueResolvedActivityI
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -10433,7 +10434,7 @@ type IssueTag struct {
 	UntagOnResolve        *bool
 }
 
-func unmarshalIssueTag(r *JSONReader) (*IssueTag, error) {
+func unmarshalIssueTag(r *jsoncodec.Reader) (*IssueTag, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10443,7 +10444,7 @@ func unmarshalIssueTag(r *JSONReader) (*IssueTag, error) {
 		return nil, nil
 	}
 	result := &IssueTag{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -10463,7 +10464,7 @@ func unmarshalIssueTag(r *JSONReader) (*IssueTag, error) {
 		case "color":
 			result.Color, err = unmarshalFieldStyle(r)
 		case "issues":
-			result.Issues, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Issues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "tagSharingSettings":
@@ -10483,7 +10484,7 @@ func unmarshalIssueTag(r *JSONReader) (*IssueTag, error) {
 	}
 	return result, nil
 }
-func marshalIssueTag(w *JsonMarshaler, v IssueTag) error {
+func marshalIssueTag(w *jsoncodec.Marshaler, v IssueTag) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10558,7 +10559,7 @@ func marshalIssueTag(w *JsonMarshaler, v IssueTag) error {
 		if err = w.WriteKey("issues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Issues, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Issues, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -10590,7 +10591,7 @@ type IssueTimeTracker struct {
 	WorkItems []IssueWorkItem
 }
 
-func unmarshalIssueTimeTracker(r *JSONReader) (*IssueTimeTracker, error) {
+func unmarshalIssueTimeTracker(r *jsoncodec.Reader) (*IssueTimeTracker, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10600,7 +10601,7 @@ func unmarshalIssueTimeTracker(r *JSONReader) (*IssueTimeTracker, error) {
 		return nil, nil
 	}
 	result := &IssueTimeTracker{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "enabled":
@@ -10608,7 +10609,7 @@ func unmarshalIssueTimeTracker(r *JSONReader) (*IssueTimeTracker, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "workItems":
-			result.WorkItems, err = unmarshalList(r, func(r *JSONReader) (*IssueWorkItem, error) {
+			result.WorkItems, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueWorkItem, error) {
 				return unmarshalIssueWorkItem(r)
 			})
 		case "$type":
@@ -10624,7 +10625,7 @@ func unmarshalIssueTimeTracker(r *JSONReader) (*IssueTimeTracker, error) {
 	}
 	return result, nil
 }
-func marshalIssueTimeTracker(w *JsonMarshaler, v IssueTimeTracker) error {
+func marshalIssueTimeTracker(w *jsoncodec.Marshaler, v IssueTimeTracker) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10651,7 +10652,7 @@ func marshalIssueTimeTracker(w *JsonMarshaler, v IssueTimeTracker) error {
 		if err = w.WriteKey("workItems"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.WorkItems, marshalIssueWorkItem); err != nil {
+		if err = jsoncodec.MarshalList(w, v.WorkItems, marshalIssueWorkItem); err != nil {
 			return err
 		}
 	}
@@ -10669,7 +10670,7 @@ type IssueVoters struct {
 	Original  []User
 }
 
-func unmarshalIssueVoters(r *JSONReader) (*IssueVoters, error) {
+func unmarshalIssueVoters(r *jsoncodec.Reader) (*IssueVoters, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10679,11 +10680,11 @@ func unmarshalIssueVoters(r *JSONReader) (*IssueVoters, error) {
 		return nil, nil
 	}
 	result := &IssueVoters{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "duplicate":
-			result.Duplicate, err = unmarshalList(r, func(r *JSONReader) (*DuplicateVote, error) {
+			result.Duplicate, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*DuplicateVote, error) {
 				return unmarshalDuplicateVote(r)
 			})
 		case "hasVote":
@@ -10691,7 +10692,7 @@ func unmarshalIssueVoters(r *JSONReader) (*IssueVoters, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "original":
-			result.Original, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Original, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -10707,7 +10708,7 @@ func unmarshalIssueVoters(r *JSONReader) (*IssueVoters, error) {
 	}
 	return result, nil
 }
-func marshalIssueVoters(w *JsonMarshaler, v IssueVoters) error {
+func marshalIssueVoters(w *jsoncodec.Marshaler, v IssueVoters) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10718,7 +10719,7 @@ func marshalIssueVoters(w *JsonMarshaler, v IssueVoters) error {
 		if err = w.WriteKey("duplicate"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Duplicate, marshalDuplicateVote); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Duplicate, marshalDuplicateVote); err != nil {
 			return err
 		}
 	}
@@ -10742,7 +10743,7 @@ func marshalIssueVoters(w *JsonMarshaler, v IssueVoters) error {
 		if err = w.WriteKey("original"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Original, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Original, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -10760,7 +10761,7 @@ type IssueWatcher struct {
 	User      *User
 }
 
-func unmarshalIssueWatcher(r *JSONReader) (*IssueWatcher, error) {
+func unmarshalIssueWatcher(r *jsoncodec.Reader) (*IssueWatcher, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10770,7 +10771,7 @@ func unmarshalIssueWatcher(r *JSONReader) (*IssueWatcher, error) {
 		return nil, nil
 	}
 	result := &IssueWatcher{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -10794,7 +10795,7 @@ func unmarshalIssueWatcher(r *JSONReader) (*IssueWatcher, error) {
 	}
 	return result, nil
 }
-func marshalIssueWatcher(w *JsonMarshaler, v IssueWatcher) error {
+func marshalIssueWatcher(w *jsoncodec.Marshaler, v IssueWatcher) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10847,7 +10848,7 @@ type IssueWatchers struct {
 	IssueWatchers     []IssueWatcher
 }
 
-func unmarshalIssueWatchers(r *JSONReader) (*IssueWatchers, error) {
+func unmarshalIssueWatchers(r *jsoncodec.Reader) (*IssueWatchers, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10857,11 +10858,11 @@ func unmarshalIssueWatchers(r *JSONReader) (*IssueWatchers, error) {
 		return nil, nil
 	}
 	result := &IssueWatchers{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "duplicateWatchers":
-			result.DuplicateWatchers, err = unmarshalList(r, func(r *JSONReader) (*IssueWatcher, error) {
+			result.DuplicateWatchers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueWatcher, error) {
 				return unmarshalIssueWatcher(r)
 			})
 		case "hasStar":
@@ -10869,7 +10870,7 @@ func unmarshalIssueWatchers(r *JSONReader) (*IssueWatchers, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "issueWatchers":
-			result.IssueWatchers, err = unmarshalList(r, func(r *JSONReader) (*IssueWatcher, error) {
+			result.IssueWatchers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueWatcher, error) {
 				return unmarshalIssueWatcher(r)
 			})
 		case "$type":
@@ -10885,7 +10886,7 @@ func unmarshalIssueWatchers(r *JSONReader) (*IssueWatchers, error) {
 	}
 	return result, nil
 }
-func marshalIssueWatchers(w *JsonMarshaler, v IssueWatchers) error {
+func marshalIssueWatchers(w *jsoncodec.Marshaler, v IssueWatchers) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -10896,7 +10897,7 @@ func marshalIssueWatchers(w *JsonMarshaler, v IssueWatchers) error {
 		if err = w.WriteKey("duplicateWatchers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DuplicateWatchers, marshalIssueWatcher); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DuplicateWatchers, marshalIssueWatcher); err != nil {
 			return err
 		}
 	}
@@ -10920,7 +10921,7 @@ func marshalIssueWatchers(w *JsonMarshaler, v IssueWatchers) error {
 		if err = w.WriteKey("issueWatchers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.IssueWatchers, marshalIssueWatcher); err != nil {
+		if err = jsoncodec.MarshalList(w, v.IssueWatchers, marshalIssueWatcher); err != nil {
 			return err
 		}
 	}
@@ -10946,7 +10947,7 @@ type IssueWorkItem struct {
 	Updated     *time.Time
 }
 
-func unmarshalIssueWorkItem(r *JSONReader) (*IssueWorkItem, error) {
+func unmarshalIssueWorkItem(r *jsoncodec.Reader) (*IssueWorkItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -10956,23 +10957,23 @@ func unmarshalIssueWorkItem(r *JSONReader) (*IssueWorkItem, error) {
 		return nil, nil
 	}
 	result := &IssueWorkItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "attributes":
-			result.Attributes, err = unmarshalList(r, func(r *JSONReader) (*WorkItemAttribute, error) {
+			result.Attributes, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemAttribute, error) {
 				return unmarshalWorkItemAttribute(r)
 			})
 		case "author":
 			result.Author, err = unmarshalUser(r)
 		case "created":
-			result.Created, err = unmarshalTime(r)
+			result.Created, err = jsoncodec.UnmarshalTime(r)
 		case "creator":
 			result.Creator, err = unmarshalUser(r)
 		case "date":
-			result.Date, err = unmarshalTime(r)
+			result.Date, err = jsoncodec.UnmarshalTime(r)
 		case "duration":
 			result.Duration, err = unmarshalDurationValue(r)
 		case "issue":
@@ -10984,7 +10985,7 @@ func unmarshalIssueWorkItem(r *JSONReader) (*IssueWorkItem, error) {
 		case "type":
 			result.Type, err = unmarshalWorkItemType(r)
 		case "updated":
-			result.Updated, err = unmarshalTime(r)
+			result.Updated, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -10998,7 +10999,7 @@ func unmarshalIssueWorkItem(r *JSONReader) (*IssueWorkItem, error) {
 	}
 	return result, nil
 }
-func marshalIssueWorkItem(w *JsonMarshaler, v IssueWorkItem) error {
+func marshalIssueWorkItem(w *jsoncodec.Marshaler, v IssueWorkItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11017,7 +11018,7 @@ func marshalIssueWorkItem(w *JsonMarshaler, v IssueWorkItem) error {
 		if err = w.WriteKey("attributes"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Attributes, marshalWorkItemAttribute); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Attributes, marshalWorkItemAttribute); err != nil {
 			return err
 		}
 	}
@@ -11033,7 +11034,7 @@ func marshalIssueWorkItem(w *JsonMarshaler, v IssueWorkItem) error {
 		if err = w.WriteKey("created"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Created); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Created); err != nil {
 			return err
 		}
 	}
@@ -11049,7 +11050,7 @@ func marshalIssueWorkItem(w *JsonMarshaler, v IssueWorkItem) error {
 		if err = w.WriteKey("date"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Date); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Date); err != nil {
 			return err
 		}
 	}
@@ -11097,7 +11098,7 @@ func marshalIssueWorkItem(w *JsonMarshaler, v IssueWorkItem) error {
 		if err = w.WriteKey("updated"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Updated); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Updated); err != nil {
 			return err
 		}
 	}
@@ -11119,7 +11120,7 @@ type JenkinsChangesProcessor struct {
 	VisibleForGroups         []UserGroup
 }
 
-func unmarshalJenkinsChangesProcessor(r *JSONReader) (*JenkinsChangesProcessor, error) {
+func unmarshalJenkinsChangesProcessor(r *jsoncodec.Reader) (*JenkinsChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11129,7 +11130,7 @@ func unmarshalJenkinsChangesProcessor(r *JSONReader) (*JenkinsChangesProcessor, 
 		return nil, nil
 	}
 	result := &JenkinsChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -11143,13 +11144,13 @@ func unmarshalJenkinsChangesProcessor(r *JSONReader) (*JenkinsChangesProcessor, 
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalJenkinsServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "$type":
@@ -11165,7 +11166,7 @@ func unmarshalJenkinsChangesProcessor(r *JSONReader) (*JenkinsChangesProcessor, 
 	}
 	return result, nil
 }
-func marshalJenkinsChangesProcessor(w *JsonMarshaler, v JenkinsChangesProcessor) error {
+func marshalJenkinsChangesProcessor(w *jsoncodec.Marshaler, v JenkinsChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11216,7 +11217,7 @@ func marshalJenkinsChangesProcessor(w *JsonMarshaler, v JenkinsChangesProcessor)
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -11232,7 +11233,7 @@ func marshalJenkinsChangesProcessor(w *JsonMarshaler, v JenkinsChangesProcessor)
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -11248,7 +11249,7 @@ type JenkinsServer struct {
 	Url *string
 }
 
-func unmarshalJenkinsServer(r *JSONReader) (*JenkinsServer, error) {
+func unmarshalJenkinsServer(r *jsoncodec.Reader) (*JenkinsServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11258,7 +11259,7 @@ func unmarshalJenkinsServer(r *JSONReader) (*JenkinsServer, error) {
 		return nil, nil
 	}
 	result := &JenkinsServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -11278,7 +11279,7 @@ func unmarshalJenkinsServer(r *JSONReader) (*JenkinsServer, error) {
 	}
 	return result, nil
 }
-func marshalJenkinsServer(w *JsonMarshaler, v JenkinsServer) error {
+func marshalJenkinsServer(w *jsoncodec.Marshaler, v JenkinsServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11314,7 +11315,7 @@ type License struct {
 	Username *string
 }
 
-func unmarshalLicense(r *JSONReader) (*License, error) {
+func unmarshalLicense(r *jsoncodec.Reader) (*License, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11324,7 +11325,7 @@ func unmarshalLicense(r *JSONReader) (*License, error) {
 		return nil, nil
 	}
 	result := &License{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "error":
@@ -11348,7 +11349,7 @@ func unmarshalLicense(r *JSONReader) (*License, error) {
 	}
 	return result, nil
 }
-func marshalLicense(w *JsonMarshaler, v License) error {
+func marshalLicense(w *jsoncodec.Marshaler, v License) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11400,7 +11401,7 @@ type LimitedVisibility struct {
 	PermittedUsers  []User
 }
 
-func unmarshalLimitedVisibility(r *JSONReader) (*LimitedVisibility, error) {
+func unmarshalLimitedVisibility(r *jsoncodec.Reader) (*LimitedVisibility, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11410,17 +11411,17 @@ func unmarshalLimitedVisibility(r *JSONReader) (*LimitedVisibility, error) {
 		return nil, nil
 	}
 	result := &LimitedVisibility{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "permittedGroups":
-			result.PermittedGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.PermittedGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "permittedUsers":
-			result.PermittedUsers, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.PermittedUsers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -11436,7 +11437,7 @@ func unmarshalLimitedVisibility(r *JSONReader) (*LimitedVisibility, error) {
 	}
 	return result, nil
 }
-func marshalLimitedVisibility(w *JsonMarshaler, v LimitedVisibility) error {
+func marshalLimitedVisibility(w *jsoncodec.Marshaler, v LimitedVisibility) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11455,7 +11456,7 @@ func marshalLimitedVisibility(w *JsonMarshaler, v LimitedVisibility) error {
 		if err = w.WriteKey("permittedGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -11463,7 +11464,7 @@ func marshalLimitedVisibility(w *JsonMarshaler, v LimitedVisibility) error {
 		if err = w.WriteKey("permittedUsers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedUsers, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedUsers, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -11490,7 +11491,7 @@ type LinksActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalLinksActivityItem(r *JSONReader) (*LinksActivityItem, error) {
+func unmarshalLinksActivityItem(r *jsoncodec.Reader) (*LinksActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11500,11 +11501,11 @@ func unmarshalLinksActivityItem(r *JSONReader) (*LinksActivityItem, error) {
 		return nil, nil
 	}
 	result := &LinksActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "author":
@@ -11516,7 +11517,7 @@ func unmarshalLinksActivityItem(r *JSONReader) (*LinksActivityItem, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "target":
@@ -11524,7 +11525,7 @@ func unmarshalLinksActivityItem(r *JSONReader) (*LinksActivityItem, error) {
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -11538,7 +11539,7 @@ func unmarshalLinksActivityItem(r *JSONReader) (*LinksActivityItem, error) {
 	}
 	return result, nil
 }
-func marshalLinksActivityItem(w *JsonMarshaler, v LinksActivityItem) error {
+func marshalLinksActivityItem(w *jsoncodec.Marshaler, v LinksActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11549,7 +11550,7 @@ func marshalLinksActivityItem(w *JsonMarshaler, v LinksActivityItem) error {
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -11589,7 +11590,7 @@ func marshalLinksActivityItem(w *JsonMarshaler, v LinksActivityItem) error {
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -11613,7 +11614,7 @@ func marshalLinksActivityItem(w *JsonMarshaler, v LinksActivityItem) error {
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -11632,7 +11633,7 @@ type LocaleDescriptor struct {
 	Name      *string
 }
 
-func unmarshalLocaleDescriptor(r *JSONReader) (*LocaleDescriptor, error) {
+func unmarshalLocaleDescriptor(r *jsoncodec.Reader) (*LocaleDescriptor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11642,7 +11643,7 @@ func unmarshalLocaleDescriptor(r *JSONReader) (*LocaleDescriptor, error) {
 		return nil, nil
 	}
 	result := &LocaleDescriptor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "community":
@@ -11668,7 +11669,7 @@ func unmarshalLocaleDescriptor(r *JSONReader) (*LocaleDescriptor, error) {
 	}
 	return result, nil
 }
-func marshalLocaleDescriptor(w *JsonMarshaler, v LocaleDescriptor) error {
+func marshalLocaleDescriptor(w *jsoncodec.Marshaler, v LocaleDescriptor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11727,7 +11728,7 @@ type LocaleSettings struct {
 	Locale *LocaleDescriptor
 }
 
-func unmarshalLocaleSettings(r *JSONReader) (*LocaleSettings, error) {
+func unmarshalLocaleSettings(r *jsoncodec.Reader) (*LocaleSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11737,7 +11738,7 @@ func unmarshalLocaleSettings(r *JSONReader) (*LocaleSettings, error) {
 		return nil, nil
 	}
 	result := &LocaleSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -11759,7 +11760,7 @@ func unmarshalLocaleSettings(r *JSONReader) (*LocaleSettings, error) {
 	}
 	return result, nil
 }
-func marshalLocaleSettings(w *JsonMarshaler, v LocaleSettings) error {
+func marshalLocaleSettings(w *jsoncodec.Marshaler, v LocaleSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11802,7 +11803,7 @@ type Logo struct {
 	Url *string
 }
 
-func unmarshalLogo(r *JSONReader) (*Logo, error) {
+func unmarshalLogo(r *jsoncodec.Reader) (*Logo, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11812,7 +11813,7 @@ func unmarshalLogo(r *JSONReader) (*Logo, error) {
 		return nil, nil
 	}
 	result := &Logo{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -11832,7 +11833,7 @@ func unmarshalLogo(r *JSONReader) (*Logo, error) {
 	}
 	return result, nil
 }
-func marshalLogo(w *JsonMarshaler, v Logo) error {
+func marshalLogo(w *jsoncodec.Marshaler, v Logo) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -11878,7 +11879,7 @@ type Me struct {
 	UserType     *UserType
 }
 
-func unmarshalMe(r *JSONReader) (*Me, error) {
+func unmarshalMe(r *jsoncodec.Reader) (*Me, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -11888,7 +11889,7 @@ func unmarshalMe(r *JSONReader) (*Me, error) {
 		return nil, nil
 	}
 	result := &Me{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "avatarUrl":
@@ -11914,11 +11915,11 @@ func unmarshalMe(r *JSONReader) (*Me, error) {
 		case "ringId":
 			result.RingId, err = r.NextOptionalString()
 		case "savedQueries":
-			result.SavedQueries, err = unmarshalList(r, func(r *JSONReader) (*SavedQuery, error) {
+			result.SavedQueries, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*SavedQuery, error) {
 				return unmarshalSavedQuery(r)
 			})
 		case "tags":
-			result.Tags, err = unmarshalAbstractList(r, func(r *JSONReader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "userType":
@@ -11936,7 +11937,7 @@ func unmarshalMe(r *JSONReader) (*Me, error) {
 	}
 	return result, nil
 }
-func marshalMe(w *JsonMarshaler, v Me) error {
+func marshalMe(w *jsoncodec.Marshaler, v Me) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12035,7 +12036,7 @@ func marshalMe(w *JsonMarshaler, v Me) error {
 		if err = w.WriteKey("savedQueries"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.SavedQueries, marshalSavedQuery); err != nil {
+		if err = jsoncodec.MarshalList(w, v.SavedQueries, marshalSavedQuery); err != nil {
 			return err
 		}
 	}
@@ -12043,7 +12044,7 @@ func marshalMe(w *JsonMarshaler, v Me) error {
 		if err = w.WriteKey("tags"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Tags, marshalTag); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Tags, marshalTag); err != nil {
 			return err
 		}
 	}
@@ -12069,7 +12070,7 @@ type MultiBuildIssueCustomField struct {
 	Value              []BuildBundleElement
 }
 
-func unmarshalMultiBuildIssueCustomField(r *JSONReader) (*MultiBuildIssueCustomField, error) {
+func unmarshalMultiBuildIssueCustomField(r *jsoncodec.Reader) (*MultiBuildIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12079,7 +12080,7 @@ func unmarshalMultiBuildIssueCustomField(r *JSONReader) (*MultiBuildIssueCustomF
 		return nil, nil
 	}
 	result := &MultiBuildIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -12089,7 +12090,7 @@ func unmarshalMultiBuildIssueCustomField(r *JSONReader) (*MultiBuildIssueCustomF
 		case "projectCustomField":
 			result.ProjectCustomField, err = unmarshalProjectCustomField(r)
 		case "value":
-			result.Value, err = unmarshalList(r, func(r *JSONReader) (*BuildBundleElement, error) {
+			result.Value, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*BuildBundleElement, error) {
 				return unmarshalBuildBundleElement(r)
 			})
 		case "$type":
@@ -12105,7 +12106,7 @@ func unmarshalMultiBuildIssueCustomField(r *JSONReader) (*MultiBuildIssueCustomF
 	}
 	return result, nil
 }
-func marshalMultiBuildIssueCustomField(w *JsonMarshaler, v MultiBuildIssueCustomField) error {
+func marshalMultiBuildIssueCustomField(w *jsoncodec.Marshaler, v MultiBuildIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12140,7 +12141,7 @@ func marshalMultiBuildIssueCustomField(w *JsonMarshaler, v MultiBuildIssueCustom
 		if err = w.WriteKey("value"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Value, marshalBuildBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Value, marshalBuildBundleElement); err != nil {
 			return err
 		}
 	}
@@ -12158,7 +12159,7 @@ type MultiEnumIssueCustomField struct {
 	Value              []EnumBundleElement
 }
 
-func unmarshalMultiEnumIssueCustomField(r *JSONReader) (*MultiEnumIssueCustomField, error) {
+func unmarshalMultiEnumIssueCustomField(r *jsoncodec.Reader) (*MultiEnumIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12168,7 +12169,7 @@ func unmarshalMultiEnumIssueCustomField(r *JSONReader) (*MultiEnumIssueCustomFie
 		return nil, nil
 	}
 	result := &MultiEnumIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -12178,7 +12179,7 @@ func unmarshalMultiEnumIssueCustomField(r *JSONReader) (*MultiEnumIssueCustomFie
 		case "projectCustomField":
 			result.ProjectCustomField, err = unmarshalProjectCustomField(r)
 		case "value":
-			result.Value, err = unmarshalList(r, func(r *JSONReader) (*EnumBundleElement, error) {
+			result.Value, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*EnumBundleElement, error) {
 				return unmarshalEnumBundleElement(r)
 			})
 		case "$type":
@@ -12194,7 +12195,7 @@ func unmarshalMultiEnumIssueCustomField(r *JSONReader) (*MultiEnumIssueCustomFie
 	}
 	return result, nil
 }
-func marshalMultiEnumIssueCustomField(w *JsonMarshaler, v MultiEnumIssueCustomField) error {
+func marshalMultiEnumIssueCustomField(w *jsoncodec.Marshaler, v MultiEnumIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12229,7 +12230,7 @@ func marshalMultiEnumIssueCustomField(w *JsonMarshaler, v MultiEnumIssueCustomFi
 		if err = w.WriteKey("value"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Value, marshalEnumBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Value, marshalEnumBundleElement); err != nil {
 			return err
 		}
 	}
@@ -12247,7 +12248,7 @@ type MultiGroupIssueCustomField struct {
 	Value              []UserGroup
 }
 
-func unmarshalMultiGroupIssueCustomField(r *JSONReader) (*MultiGroupIssueCustomField, error) {
+func unmarshalMultiGroupIssueCustomField(r *jsoncodec.Reader) (*MultiGroupIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12257,7 +12258,7 @@ func unmarshalMultiGroupIssueCustomField(r *JSONReader) (*MultiGroupIssueCustomF
 		return nil, nil
 	}
 	result := &MultiGroupIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -12267,7 +12268,7 @@ func unmarshalMultiGroupIssueCustomField(r *JSONReader) (*MultiGroupIssueCustomF
 		case "projectCustomField":
 			result.ProjectCustomField, err = unmarshalProjectCustomField(r)
 		case "value":
-			result.Value, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.Value, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "$type":
@@ -12283,7 +12284,7 @@ func unmarshalMultiGroupIssueCustomField(r *JSONReader) (*MultiGroupIssueCustomF
 	}
 	return result, nil
 }
-func marshalMultiGroupIssueCustomField(w *JsonMarshaler, v MultiGroupIssueCustomField) error {
+func marshalMultiGroupIssueCustomField(w *jsoncodec.Marshaler, v MultiGroupIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12318,7 +12319,7 @@ func marshalMultiGroupIssueCustomField(w *JsonMarshaler, v MultiGroupIssueCustom
 		if err = w.WriteKey("value"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Value, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Value, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -12336,7 +12337,7 @@ type MultiOwnedIssueCustomField struct {
 	Value              []OwnedBundleElement
 }
 
-func unmarshalMultiOwnedIssueCustomField(r *JSONReader) (*MultiOwnedIssueCustomField, error) {
+func unmarshalMultiOwnedIssueCustomField(r *jsoncodec.Reader) (*MultiOwnedIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12346,7 +12347,7 @@ func unmarshalMultiOwnedIssueCustomField(r *JSONReader) (*MultiOwnedIssueCustomF
 		return nil, nil
 	}
 	result := &MultiOwnedIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -12356,7 +12357,7 @@ func unmarshalMultiOwnedIssueCustomField(r *JSONReader) (*MultiOwnedIssueCustomF
 		case "projectCustomField":
 			result.ProjectCustomField, err = unmarshalProjectCustomField(r)
 		case "value":
-			result.Value, err = unmarshalList(r, func(r *JSONReader) (*OwnedBundleElement, error) {
+			result.Value, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*OwnedBundleElement, error) {
 				return unmarshalOwnedBundleElement(r)
 			})
 		case "$type":
@@ -12372,7 +12373,7 @@ func unmarshalMultiOwnedIssueCustomField(r *JSONReader) (*MultiOwnedIssueCustomF
 	}
 	return result, nil
 }
-func marshalMultiOwnedIssueCustomField(w *JsonMarshaler, v MultiOwnedIssueCustomField) error {
+func marshalMultiOwnedIssueCustomField(w *jsoncodec.Marshaler, v MultiOwnedIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12407,7 +12408,7 @@ func marshalMultiOwnedIssueCustomField(w *JsonMarshaler, v MultiOwnedIssueCustom
 		if err = w.WriteKey("value"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Value, marshalOwnedBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Value, marshalOwnedBundleElement); err != nil {
 			return err
 		}
 	}
@@ -12425,7 +12426,7 @@ type MultiUserIssueCustomField struct {
 	Value              []User
 }
 
-func unmarshalMultiUserIssueCustomField(r *JSONReader) (*MultiUserIssueCustomField, error) {
+func unmarshalMultiUserIssueCustomField(r *jsoncodec.Reader) (*MultiUserIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12435,7 +12436,7 @@ func unmarshalMultiUserIssueCustomField(r *JSONReader) (*MultiUserIssueCustomFie
 		return nil, nil
 	}
 	result := &MultiUserIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -12445,7 +12446,7 @@ func unmarshalMultiUserIssueCustomField(r *JSONReader) (*MultiUserIssueCustomFie
 		case "projectCustomField":
 			result.ProjectCustomField, err = unmarshalProjectCustomField(r)
 		case "value":
-			result.Value, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Value, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -12461,7 +12462,7 @@ func unmarshalMultiUserIssueCustomField(r *JSONReader) (*MultiUserIssueCustomFie
 	}
 	return result, nil
 }
-func marshalMultiUserIssueCustomField(w *JsonMarshaler, v MultiUserIssueCustomField) error {
+func marshalMultiUserIssueCustomField(w *jsoncodec.Marshaler, v MultiUserIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12496,7 +12497,7 @@ func marshalMultiUserIssueCustomField(w *JsonMarshaler, v MultiUserIssueCustomFi
 		if err = w.WriteKey("value"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Value, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Value, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -12514,7 +12515,7 @@ type MultiVersionIssueCustomField struct {
 	Value              []VersionBundleElement
 }
 
-func unmarshalMultiVersionIssueCustomField(r *JSONReader) (*MultiVersionIssueCustomField, error) {
+func unmarshalMultiVersionIssueCustomField(r *jsoncodec.Reader) (*MultiVersionIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12524,7 +12525,7 @@ func unmarshalMultiVersionIssueCustomField(r *JSONReader) (*MultiVersionIssueCus
 		return nil, nil
 	}
 	result := &MultiVersionIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -12534,7 +12535,7 @@ func unmarshalMultiVersionIssueCustomField(r *JSONReader) (*MultiVersionIssueCus
 		case "projectCustomField":
 			result.ProjectCustomField, err = unmarshalProjectCustomField(r)
 		case "value":
-			result.Value, err = unmarshalList(r, func(r *JSONReader) (*VersionBundleElement, error) {
+			result.Value, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*VersionBundleElement, error) {
 				return unmarshalVersionBundleElement(r)
 			})
 		case "$type":
@@ -12550,7 +12551,7 @@ func unmarshalMultiVersionIssueCustomField(r *JSONReader) (*MultiVersionIssueCus
 	}
 	return result, nil
 }
-func marshalMultiVersionIssueCustomField(w *JsonMarshaler, v MultiVersionIssueCustomField) error {
+func marshalMultiVersionIssueCustomField(w *jsoncodec.Marshaler, v MultiVersionIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12585,7 +12586,7 @@ func marshalMultiVersionIssueCustomField(w *JsonMarshaler, v MultiVersionIssueCu
 		if err = w.WriteKey("value"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Value, marshalVersionBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Value, marshalVersionBundleElement); err != nil {
 			return err
 		}
 	}
@@ -12614,7 +12615,7 @@ type NestedGroup struct {
 	Viewers                        *any
 }
 
-func unmarshalNestedGroup(r *JSONReader) (*NestedGroup, error) {
+func unmarshalNestedGroup(r *jsoncodec.Reader) (*NestedGroup, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12624,7 +12625,7 @@ func unmarshalNestedGroup(r *JSONReader) (*NestedGroup, error) {
 		return nil, nil
 	}
 	result := &NestedGroup{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "allUsersGroup":
@@ -12638,7 +12639,7 @@ func unmarshalNestedGroup(r *JSONReader) (*NestedGroup, error) {
 		case "ringId":
 			result.RingId, err = r.NextOptionalString()
 		case "users":
-			result.Users, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Users, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "usersCount":
@@ -12672,7 +12673,7 @@ func unmarshalNestedGroup(r *JSONReader) (*NestedGroup, error) {
 	}
 	return result, nil
 }
-func marshalNestedGroup(w *JsonMarshaler, v NestedGroup) error {
+func marshalNestedGroup(w *jsoncodec.Marshaler, v NestedGroup) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12723,7 +12724,7 @@ func marshalNestedGroup(w *JsonMarshaler, v NestedGroup) error {
 		if err = w.WriteKey("users"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Users, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Users, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -12810,7 +12811,7 @@ type NotificationSettings struct {
 	Id            *string
 }
 
-func unmarshalNotificationSettings(r *JSONReader) (*NotificationSettings, error) {
+func unmarshalNotificationSettings(r *jsoncodec.Reader) (*NotificationSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12820,7 +12821,7 @@ func unmarshalNotificationSettings(r *JSONReader) (*NotificationSettings, error)
 		return nil, nil
 	}
 	result := &NotificationSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "emailSettings":
@@ -12840,7 +12841,7 @@ func unmarshalNotificationSettings(r *JSONReader) (*NotificationSettings, error)
 	}
 	return result, nil
 }
-func marshalNotificationSettings(w *JsonMarshaler, v NotificationSettings) error {
+func marshalNotificationSettings(w *jsoncodec.Marshaler, v NotificationSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -12883,7 +12884,7 @@ type NotificationsUserProfile struct {
 	UsePlainTextEmails                     *bool
 }
 
-func unmarshalNotificationsUserProfile(r *JSONReader) (*NotificationsUserProfile, error) {
+func unmarshalNotificationsUserProfile(r *jsoncodec.Reader) (*NotificationsUserProfile, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -12893,7 +12894,7 @@ func unmarshalNotificationsUserProfile(r *JSONReader) (*NotificationsUserProfile
 		return nil, nil
 	}
 	result := &NotificationsUserProfile{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "autoWatchOnComment":
@@ -12931,7 +12932,7 @@ func unmarshalNotificationsUserProfile(r *JSONReader) (*NotificationsUserProfile
 	}
 	return result, nil
 }
-func marshalNotificationsUserProfile(w *JsonMarshaler, v NotificationsUserProfile) error {
+func marshalNotificationsUserProfile(w *jsoncodec.Marshaler, v NotificationsUserProfile) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13038,7 +13039,7 @@ type OnlineUsers struct {
 	Users *int
 }
 
-func unmarshalOnlineUsers(r *JSONReader) (*OnlineUsers, error) {
+func unmarshalOnlineUsers(r *jsoncodec.Reader) (*OnlineUsers, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13048,7 +13049,7 @@ func unmarshalOnlineUsers(r *JSONReader) (*OnlineUsers, error) {
 		return nil, nil
 	}
 	result := &OnlineUsers{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -13068,7 +13069,7 @@ func unmarshalOnlineUsers(r *JSONReader) (*OnlineUsers, error) {
 	}
 	return result, nil
 }
-func marshalOnlineUsers(w *JsonMarshaler, v OnlineUsers) error {
+func marshalOnlineUsers(w *jsoncodec.Marshaler, v OnlineUsers) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13106,7 +13107,7 @@ type Organization struct {
 	Projects    []Project
 }
 
-func unmarshalOrganization(r *JSONReader) (*Organization, error) {
+func unmarshalOrganization(r *jsoncodec.Reader) (*Organization, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13116,7 +13117,7 @@ func unmarshalOrganization(r *JSONReader) (*Organization, error) {
 		return nil, nil
 	}
 	result := &Organization{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "description":
@@ -13130,7 +13131,7 @@ func unmarshalOrganization(r *JSONReader) (*Organization, error) {
 		case "name":
 			result.Name, err = r.NextOptionalString()
 		case "projects":
-			result.Projects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.Projects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "$type":
@@ -13146,7 +13147,7 @@ func unmarshalOrganization(r *JSONReader) (*Organization, error) {
 	}
 	return result, nil
 }
-func marshalOrganization(w *JsonMarshaler, v Organization) error {
+func marshalOrganization(w *jsoncodec.Marshaler, v Organization) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13197,7 +13198,7 @@ func marshalOrganization(w *JsonMarshaler, v Organization) error {
 		if err = w.WriteKey("projects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Projects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Projects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -13212,7 +13213,7 @@ type OrganizationScope struct {
 	Organization *Organization
 }
 
-func unmarshalOrganizationScope(r *JSONReader) (*OrganizationScope, error) {
+func unmarshalOrganizationScope(r *jsoncodec.Reader) (*OrganizationScope, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13222,7 +13223,7 @@ func unmarshalOrganizationScope(r *JSONReader) (*OrganizationScope, error) {
 		return nil, nil
 	}
 	result := &OrganizationScope{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -13242,7 +13243,7 @@ func unmarshalOrganizationScope(r *JSONReader) (*OrganizationScope, error) {
 	}
 	return result, nil
 }
-func marshalOrganizationScope(w *JsonMarshaler, v OrganizationScope) error {
+func marshalOrganizationScope(w *jsoncodec.Marshaler, v OrganizationScope) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13278,7 +13279,7 @@ type OwnedBundle struct {
 	Values       []OwnedBundleElement
 }
 
-func unmarshalOwnedBundle(r *JSONReader) (*OwnedBundle, error) {
+func unmarshalOwnedBundle(r *jsoncodec.Reader) (*OwnedBundle, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13288,7 +13289,7 @@ func unmarshalOwnedBundle(r *JSONReader) (*OwnedBundle, error) {
 		return nil, nil
 	}
 	result := &OwnedBundle{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -13296,7 +13297,7 @@ func unmarshalOwnedBundle(r *JSONReader) (*OwnedBundle, error) {
 		case "isUpdateable":
 			result.IsUpdateable, err = r.NextOptionalBool()
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*OwnedBundleElement, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*OwnedBundleElement, error) {
 				return unmarshalOwnedBundleElement(r)
 			})
 		case "$type":
@@ -13312,7 +13313,7 @@ func unmarshalOwnedBundle(r *JSONReader) (*OwnedBundle, error) {
 	}
 	return result, nil
 }
-func marshalOwnedBundle(w *JsonMarshaler, v OwnedBundle) error {
+func marshalOwnedBundle(w *jsoncodec.Marshaler, v OwnedBundle) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13339,7 +13340,7 @@ func marshalOwnedBundle(w *JsonMarshaler, v OwnedBundle) error {
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalOwnedBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalOwnedBundleElement); err != nil {
 			return err
 		}
 	}
@@ -13360,7 +13361,7 @@ type OwnedBundleCustomFieldDefaults struct {
 	DefaultValues  []OwnedBundleElement
 }
 
-func unmarshalOwnedBundleCustomFieldDefaults(r *JSONReader) (*OwnedBundleCustomFieldDefaults, error) {
+func unmarshalOwnedBundleCustomFieldDefaults(r *jsoncodec.Reader) (*OwnedBundleCustomFieldDefaults, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13370,7 +13371,7 @@ func unmarshalOwnedBundleCustomFieldDefaults(r *JSONReader) (*OwnedBundleCustomF
 		return nil, nil
 	}
 	result := &OwnedBundleCustomFieldDefaults{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -13386,7 +13387,7 @@ func unmarshalOwnedBundleCustomFieldDefaults(r *JSONReader) (*OwnedBundleCustomF
 		case "bundle":
 			result.Bundle, err = unmarshalOwnedBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*OwnedBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*OwnedBundleElement, error) {
 				return unmarshalOwnedBundleElement(r)
 			})
 		case "$type":
@@ -13402,7 +13403,7 @@ func unmarshalOwnedBundleCustomFieldDefaults(r *JSONReader) (*OwnedBundleCustomF
 	}
 	return result, nil
 }
-func marshalOwnedBundleCustomFieldDefaults(w *JsonMarshaler, v OwnedBundleCustomFieldDefaults) error {
+func marshalOwnedBundleCustomFieldDefaults(w *jsoncodec.Marshaler, v OwnedBundleCustomFieldDefaults) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13461,7 +13462,7 @@ func marshalOwnedBundleCustomFieldDefaults(w *JsonMarshaler, v OwnedBundleCustom
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalOwnedBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalOwnedBundleElement); err != nil {
 			return err
 		}
 	}
@@ -13484,7 +13485,7 @@ type OwnedBundleElement struct {
 	Owner         *User
 }
 
-func unmarshalOwnedBundleElement(r *JSONReader) (*OwnedBundleElement, error) {
+func unmarshalOwnedBundleElement(r *jsoncodec.Reader) (*OwnedBundleElement, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13494,7 +13495,7 @@ func unmarshalOwnedBundleElement(r *JSONReader) (*OwnedBundleElement, error) {
 		return nil, nil
 	}
 	result := &OwnedBundleElement{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "archived":
@@ -13528,7 +13529,7 @@ func unmarshalOwnedBundleElement(r *JSONReader) (*OwnedBundleElement, error) {
 	}
 	return result, nil
 }
-func marshalOwnedBundleElement(w *JsonMarshaler, v OwnedBundleElement) error {
+func marshalOwnedBundleElement(w *jsoncodec.Marshaler, v OwnedBundleElement) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13628,7 +13629,7 @@ type OwnedProjectCustomField struct {
 	DefaultValues  []OwnedBundleElement
 }
 
-func unmarshalOwnedProjectCustomField(r *JSONReader) (*OwnedProjectCustomField, error) {
+func unmarshalOwnedProjectCustomField(r *jsoncodec.Reader) (*OwnedProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13638,7 +13639,7 @@ func unmarshalOwnedProjectCustomField(r *JSONReader) (*OwnedProjectCustomField, 
 		return nil, nil
 	}
 	result := &OwnedProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -13662,7 +13663,7 @@ func unmarshalOwnedProjectCustomField(r *JSONReader) (*OwnedProjectCustomField, 
 		case "bundle":
 			result.Bundle, err = unmarshalOwnedBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*OwnedBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*OwnedBundleElement, error) {
 				return unmarshalOwnedBundleElement(r)
 			})
 		case "$type":
@@ -13678,7 +13679,7 @@ func unmarshalOwnedProjectCustomField(r *JSONReader) (*OwnedProjectCustomField, 
 	}
 	return result, nil
 }
-func marshalOwnedProjectCustomField(w *JsonMarshaler, v OwnedProjectCustomField) error {
+func marshalOwnedProjectCustomField(w *jsoncodec.Marshaler, v OwnedProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13769,7 +13770,7 @@ func marshalOwnedProjectCustomField(w *JsonMarshaler, v OwnedProjectCustomField)
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalOwnedBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalOwnedBundleElement); err != nil {
 			return err
 		}
 	}
@@ -13787,7 +13788,7 @@ type ParsedCommand struct {
 	Id          *string
 }
 
-func unmarshalParsedCommand(r *JSONReader) (*ParsedCommand, error) {
+func unmarshalParsedCommand(r *jsoncodec.Reader) (*ParsedCommand, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13797,7 +13798,7 @@ func unmarshalParsedCommand(r *JSONReader) (*ParsedCommand, error) {
 		return nil, nil
 	}
 	result := &ParsedCommand{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "delete":
@@ -13821,7 +13822,7 @@ func unmarshalParsedCommand(r *JSONReader) (*ParsedCommand, error) {
 	}
 	return result, nil
 }
-func marshalParsedCommand(w *JsonMarshaler, v ParsedCommand) error {
+func marshalParsedCommand(w *jsoncodec.Marshaler, v ParsedCommand) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13871,7 +13872,7 @@ type PeriodFieldFormat struct {
 	Id *string
 }
 
-func unmarshalPeriodFieldFormat(r *JSONReader) (*PeriodFieldFormat, error) {
+func unmarshalPeriodFieldFormat(r *jsoncodec.Reader) (*PeriodFieldFormat, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13881,7 +13882,7 @@ func unmarshalPeriodFieldFormat(r *JSONReader) (*PeriodFieldFormat, error) {
 		return nil, nil
 	}
 	result := &PeriodFieldFormat{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -13899,7 +13900,7 @@ func unmarshalPeriodFieldFormat(r *JSONReader) (*PeriodFieldFormat, error) {
 	}
 	return result, nil
 }
-func marshalPeriodFieldFormat(w *JsonMarshaler, v PeriodFieldFormat) error {
+func marshalPeriodFieldFormat(w *jsoncodec.Marshaler, v PeriodFieldFormat) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -13928,7 +13929,7 @@ type PeriodIssueCustomField struct {
 	Value              *PeriodValue
 }
 
-func unmarshalPeriodIssueCustomField(r *JSONReader) (*PeriodIssueCustomField, error) {
+func unmarshalPeriodIssueCustomField(r *jsoncodec.Reader) (*PeriodIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -13938,7 +13939,7 @@ func unmarshalPeriodIssueCustomField(r *JSONReader) (*PeriodIssueCustomField, er
 		return nil, nil
 	}
 	result := &PeriodIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -13962,7 +13963,7 @@ func unmarshalPeriodIssueCustomField(r *JSONReader) (*PeriodIssueCustomField, er
 	}
 	return result, nil
 }
-func marshalPeriodIssueCustomField(w *JsonMarshaler, v PeriodIssueCustomField) error {
+func marshalPeriodIssueCustomField(w *jsoncodec.Marshaler, v PeriodIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14020,7 +14021,7 @@ type PeriodProjectCustomField struct {
 	Project        *Project
 }
 
-func unmarshalPeriodProjectCustomField(r *JSONReader) (*PeriodProjectCustomField, error) {
+func unmarshalPeriodProjectCustomField(r *jsoncodec.Reader) (*PeriodProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14030,7 +14031,7 @@ func unmarshalPeriodProjectCustomField(r *JSONReader) (*PeriodProjectCustomField
 		return nil, nil
 	}
 	result := &PeriodProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -14064,7 +14065,7 @@ func unmarshalPeriodProjectCustomField(r *JSONReader) (*PeriodProjectCustomField
 	}
 	return result, nil
 }
-func marshalPeriodProjectCustomField(w *JsonMarshaler, v PeriodProjectCustomField) error {
+func marshalPeriodProjectCustomField(w *jsoncodec.Marshaler, v PeriodProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14156,7 +14157,7 @@ type PeriodValue struct {
 	Presentation *string
 }
 
-func unmarshalPeriodValue(r *JSONReader) (*PeriodValue, error) {
+func unmarshalPeriodValue(r *jsoncodec.Reader) (*PeriodValue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14166,7 +14167,7 @@ func unmarshalPeriodValue(r *JSONReader) (*PeriodValue, error) {
 		return nil, nil
 	}
 	result := &PeriodValue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -14188,7 +14189,7 @@ func unmarshalPeriodValue(r *JSONReader) (*PeriodValue, error) {
 	}
 	return result, nil
 }
-func marshalPeriodValue(w *JsonMarshaler, v PeriodValue) error {
+func marshalPeriodValue(w *jsoncodec.Marshaler, v PeriodValue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14236,7 +14237,7 @@ type Permission struct {
 	Scope                *any
 }
 
-func unmarshalPermission(r *JSONReader) (*Permission, error) {
+func unmarshalPermission(r *jsoncodec.Reader) (*Permission, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14246,11 +14247,11 @@ func unmarshalPermission(r *JSONReader) (*Permission, error) {
 		return nil, nil
 	}
 	result := &Permission{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "dependentPermissions":
-			result.DependentPermissions, err = unmarshalList(r, func(r *JSONReader) (*Permission, error) {
+			result.DependentPermissions, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Permission, error) {
 				return unmarshalPermission(r)
 			})
 		case "description":
@@ -14258,7 +14259,7 @@ func unmarshalPermission(r *JSONReader) (*Permission, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "impliedPermissions":
-			result.ImpliedPermissions, err = unmarshalList(r, func(r *JSONReader) (*Permission, error) {
+			result.ImpliedPermissions, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Permission, error) {
 				return unmarshalPermission(r)
 			})
 		case "name":
@@ -14282,7 +14283,7 @@ func unmarshalPermission(r *JSONReader) (*Permission, error) {
 	}
 	return result, nil
 }
-func marshalPermission(w *JsonMarshaler, v Permission) error {
+func marshalPermission(w *jsoncodec.Marshaler, v Permission) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14293,7 +14294,7 @@ func marshalPermission(w *JsonMarshaler, v Permission) error {
 		if err = w.WriteKey("dependentPermissions"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DependentPermissions, marshalPermission); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DependentPermissions, marshalPermission); err != nil {
 			return err
 		}
 	}
@@ -14317,7 +14318,7 @@ func marshalPermission(w *JsonMarshaler, v Permission) error {
 		if err = w.WriteKey("impliedPermissions"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.ImpliedPermissions, marshalPermission); err != nil {
+		if err = jsoncodec.MarshalList(w, v.ImpliedPermissions, marshalPermission); err != nil {
 			return err
 		}
 	}
@@ -14368,7 +14369,7 @@ type PredefinedFilterField struct {
 	Presentation *string
 }
 
-func unmarshalPredefinedFilterField(r *JSONReader) (*PredefinedFilterField, error) {
+func unmarshalPredefinedFilterField(r *jsoncodec.Reader) (*PredefinedFilterField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14378,7 +14379,7 @@ func unmarshalPredefinedFilterField(r *JSONReader) (*PredefinedFilterField, erro
 		return nil, nil
 	}
 	result := &PredefinedFilterField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -14400,7 +14401,7 @@ func unmarshalPredefinedFilterField(r *JSONReader) (*PredefinedFilterField, erro
 	}
 	return result, nil
 }
-func marshalPredefinedFilterField(w *JsonMarshaler, v PredefinedFilterField) error {
+func marshalPredefinedFilterField(w *jsoncodec.Marshaler, v PredefinedFilterField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14456,7 +14457,7 @@ type Project struct {
 	Template       *bool
 }
 
-func unmarshalProject(r *JSONReader) (*Project, error) {
+func unmarshalProject(r *jsoncodec.Reader) (*Project, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14466,7 +14467,7 @@ func unmarshalProject(r *JSONReader) (*Project, error) {
 		return nil, nil
 	}
 	result := &Project{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -14478,7 +14479,7 @@ func unmarshalProject(r *JSONReader) (*Project, error) {
 		case "createdBy":
 			result.CreatedBy, err = unmarshalUser(r)
 		case "customFields":
-			result.CustomFields, err = unmarshalAbstractList(r, func(r *JSONReader) (ProjectCustomField, error) {
+			result.CustomFields, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (ProjectCustomField, error) {
 				return unmarshalProjectCustomField(r)
 			})
 		case "description":
@@ -14488,7 +14489,7 @@ func unmarshalProject(r *JSONReader) (*Project, error) {
 		case "iconUrl":
 			result.IconUrl, err = r.NextOptionalString()
 		case "issues":
-			result.Issues, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Issues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "leader":
@@ -14516,7 +14517,7 @@ func unmarshalProject(r *JSONReader) (*Project, error) {
 	}
 	return result, nil
 }
-func marshalProject(w *JsonMarshaler, v Project) error {
+func marshalProject(w *jsoncodec.Marshaler, v Project) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14559,7 +14560,7 @@ func marshalProject(w *JsonMarshaler, v Project) error {
 		if err = w.WriteKey("customFields"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.CustomFields, marshalProjectCustomField); err != nil {
+		if err = jsoncodec.MarshalList(w, v.CustomFields, marshalProjectCustomField); err != nil {
 			return err
 		}
 	}
@@ -14591,7 +14592,7 @@ func marshalProject(w *JsonMarshaler, v Project) error {
 		if err = w.WriteKey("issues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Issues, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Issues, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -14662,7 +14663,7 @@ type ProjectActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalProjectActivityItem(r *JSONReader) (*ProjectActivityItem, error) {
+func unmarshalProjectActivityItem(r *jsoncodec.Reader) (*ProjectActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14672,7 +14673,7 @@ func unmarshalProjectActivityItem(r *JSONReader) (*ProjectActivityItem, error) {
 		return nil, nil
 	}
 	result := &ProjectActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
@@ -14692,7 +14693,7 @@ func unmarshalProjectActivityItem(r *JSONReader) (*ProjectActivityItem, error) {
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -14706,7 +14707,7 @@ func unmarshalProjectActivityItem(r *JSONReader) (*ProjectActivityItem, error) {
 	}
 	return result, nil
 }
-func marshalProjectActivityItem(w *JsonMarshaler, v ProjectActivityItem) error {
+func marshalProjectActivityItem(w *jsoncodec.Marshaler, v ProjectActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14781,7 +14782,7 @@ func marshalProjectActivityItem(w *JsonMarshaler, v ProjectActivityItem) error {
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -14797,7 +14798,7 @@ type ProjectBasedColorCoding struct {
 	ProjectColors []ProjectColor
 }
 
-func unmarshalProjectBasedColorCoding(r *JSONReader) (*ProjectBasedColorCoding, error) {
+func unmarshalProjectBasedColorCoding(r *jsoncodec.Reader) (*ProjectBasedColorCoding, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14807,13 +14808,13 @@ func unmarshalProjectBasedColorCoding(r *JSONReader) (*ProjectBasedColorCoding, 
 		return nil, nil
 	}
 	result := &ProjectBasedColorCoding{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "projectColors":
-			result.ProjectColors, err = unmarshalList(r, func(r *JSONReader) (*ProjectColor, error) {
+			result.ProjectColors, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*ProjectColor, error) {
 				return unmarshalProjectColor(r)
 			})
 		case "$type":
@@ -14829,7 +14830,7 @@ func unmarshalProjectBasedColorCoding(r *JSONReader) (*ProjectBasedColorCoding, 
 	}
 	return result, nil
 }
-func marshalProjectBasedColorCoding(w *JsonMarshaler, v ProjectBasedColorCoding) error {
+func marshalProjectBasedColorCoding(w *jsoncodec.Marshaler, v ProjectBasedColorCoding) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14848,7 +14849,7 @@ func marshalProjectBasedColorCoding(w *JsonMarshaler, v ProjectBasedColorCoding)
 		if err = w.WriteKey("projectColors"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.ProjectColors, marshalProjectColor); err != nil {
+		if err = jsoncodec.MarshalList(w, v.ProjectColors, marshalProjectColor); err != nil {
 			return err
 		}
 	}
@@ -14865,7 +14866,7 @@ type ProjectColor struct {
 	Project *Project
 }
 
-func unmarshalProjectColor(r *JSONReader) (*ProjectColor, error) {
+func unmarshalProjectColor(r *jsoncodec.Reader) (*ProjectColor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14875,7 +14876,7 @@ func unmarshalProjectColor(r *JSONReader) (*ProjectColor, error) {
 		return nil, nil
 	}
 	result := &ProjectColor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "color":
@@ -14897,7 +14898,7 @@ func unmarshalProjectColor(r *JSONReader) (*ProjectColor, error) {
 	}
 	return result, nil
 }
-func marshalProjectColor(w *JsonMarshaler, v ProjectColor) error {
+func marshalProjectColor(w *jsoncodec.Marshaler, v ProjectColor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -14939,7 +14940,7 @@ type ProjectScope struct {
 	Project *Project
 }
 
-func unmarshalProjectScope(r *JSONReader) (*ProjectScope, error) {
+func unmarshalProjectScope(r *jsoncodec.Reader) (*ProjectScope, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -14949,7 +14950,7 @@ func unmarshalProjectScope(r *JSONReader) (*ProjectScope, error) {
 		return nil, nil
 	}
 	result := &ProjectScope{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -14969,7 +14970,7 @@ func unmarshalProjectScope(r *JSONReader) (*ProjectScope, error) {
 	}
 	return result, nil
 }
-func marshalProjectScope(w *JsonMarshaler, v ProjectScope) error {
+func marshalProjectScope(w *jsoncodec.Marshaler, v ProjectScope) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -15012,7 +15013,7 @@ type ProjectTeam struct {
 	Project       *Project
 }
 
-func unmarshalProjectTeam(r *JSONReader) (*ProjectTeam, error) {
+func unmarshalProjectTeam(r *jsoncodec.Reader) (*ProjectTeam, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -15022,7 +15023,7 @@ func unmarshalProjectTeam(r *JSONReader) (*ProjectTeam, error) {
 		return nil, nil
 	}
 	result := &ProjectTeam{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "allUsersGroup":
@@ -15036,17 +15037,17 @@ func unmarshalProjectTeam(r *JSONReader) (*ProjectTeam, error) {
 		case "ringId":
 			result.RingId, err = r.NextOptionalString()
 		case "users":
-			result.Users, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Users, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "usersCount":
 			result.UsersCount, err = r.NextOptionalInt()
 		case "groups":
-			result.Groups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.Groups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "ownUsers":
-			result.OwnUsers, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.OwnUsers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "project":
@@ -15064,7 +15065,7 @@ func unmarshalProjectTeam(r *JSONReader) (*ProjectTeam, error) {
 	}
 	return result, nil
 }
-func marshalProjectTeam(w *JsonMarshaler, v ProjectTeam) error {
+func marshalProjectTeam(w *jsoncodec.Marshaler, v ProjectTeam) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -15115,7 +15116,7 @@ func marshalProjectTeam(w *JsonMarshaler, v ProjectTeam) error {
 		if err = w.WriteKey("users"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Users, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Users, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -15131,7 +15132,7 @@ func marshalProjectTeam(w *JsonMarshaler, v ProjectTeam) error {
 		if err = w.WriteKey("groups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Groups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Groups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -15139,7 +15140,7 @@ func marshalProjectTeam(w *JsonMarshaler, v ProjectTeam) error {
 		if err = w.WriteKey("ownUsers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.OwnUsers, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.OwnUsers, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -15167,7 +15168,7 @@ type ProjectTimeTrackingSettings struct {
 	WorkItemTypes []WorkItemType
 }
 
-func unmarshalProjectTimeTrackingSettings(r *JSONReader) (*ProjectTimeTrackingSettings, error) {
+func unmarshalProjectTimeTrackingSettings(r *jsoncodec.Reader) (*ProjectTimeTrackingSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -15177,11 +15178,11 @@ func unmarshalProjectTimeTrackingSettings(r *JSONReader) (*ProjectTimeTrackingSe
 		return nil, nil
 	}
 	result := &ProjectTimeTrackingSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "attributes":
-			result.Attributes, err = unmarshalList(r, func(r *JSONReader) (*WorkItemProjectAttribute, error) {
+			result.Attributes, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemProjectAttribute, error) {
 				return unmarshalWorkItemProjectAttribute(r)
 			})
 		case "enabled":
@@ -15195,7 +15196,7 @@ func unmarshalProjectTimeTrackingSettings(r *JSONReader) (*ProjectTimeTrackingSe
 		case "timeSpent":
 			result.TimeSpent, err = unmarshalProjectCustomField(r)
 		case "workItemTypes":
-			result.WorkItemTypes, err = unmarshalList(r, func(r *JSONReader) (*WorkItemType, error) {
+			result.WorkItemTypes, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemType, error) {
 				return unmarshalWorkItemType(r)
 			})
 		case "$type":
@@ -15211,7 +15212,7 @@ func unmarshalProjectTimeTrackingSettings(r *JSONReader) (*ProjectTimeTrackingSe
 	}
 	return result, nil
 }
-func marshalProjectTimeTrackingSettings(w *JsonMarshaler, v ProjectTimeTrackingSettings) error {
+func marshalProjectTimeTrackingSettings(w *jsoncodec.Marshaler, v ProjectTimeTrackingSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -15222,7 +15223,7 @@ func marshalProjectTimeTrackingSettings(w *JsonMarshaler, v ProjectTimeTrackingS
 		if err = w.WriteKey("attributes"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Attributes, marshalWorkItemProjectAttribute); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Attributes, marshalWorkItemProjectAttribute); err != nil {
 			return err
 		}
 	}
@@ -15270,7 +15271,7 @@ func marshalProjectTimeTrackingSettings(w *JsonMarshaler, v ProjectTimeTrackingS
 		if err = w.WriteKey("workItemTypes"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.WorkItemTypes, marshalWorkItemType); err != nil {
+		if err = jsoncodec.MarshalList(w, v.WorkItemTypes, marshalWorkItemType); err != nil {
 			return err
 		}
 	}
@@ -15300,7 +15301,7 @@ type PullRequest struct {
 	UserNotFoundReason    *int
 }
 
-func unmarshalPullRequest(r *JSONReader) (*PullRequest, error) {
+func unmarshalPullRequest(r *jsoncodec.Reader) (*PullRequest, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -15310,7 +15311,7 @@ func unmarshalPullRequest(r *JSONReader) (*PullRequest, error) {
 		return nil, nil
 	}
 	result := &PullRequest{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "author":
@@ -15318,9 +15319,9 @@ func unmarshalPullRequest(r *JSONReader) (*PullRequest, error) {
 		case "branch":
 			result.Branch, err = r.NextOptionalString()
 		case "date":
-			result.Date, err = unmarshalTime(r)
+			result.Date, err = jsoncodec.UnmarshalTime(r)
 		case "fetched":
-			result.Fetched, err = unmarshalTime(r)
+			result.Fetched, err = jsoncodec.UnmarshalTime(r)
 		case "files":
 			result.Files, err = r.NextOptionalInt()
 		case "hubUserNotFoundReason":
@@ -15360,7 +15361,7 @@ func unmarshalPullRequest(r *JSONReader) (*PullRequest, error) {
 	}
 	return result, nil
 }
-func marshalPullRequest(w *JsonMarshaler, v PullRequest) error {
+func marshalPullRequest(w *jsoncodec.Marshaler, v PullRequest) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -15387,7 +15388,7 @@ func marshalPullRequest(w *JsonMarshaler, v PullRequest) error {
 		if err = w.WriteKey("date"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Date); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Date); err != nil {
 			return err
 		}
 	}
@@ -15395,7 +15396,7 @@ func marshalPullRequest(w *JsonMarshaler, v PullRequest) error {
 		if err = w.WriteKey("fetched"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Fetched); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Fetched); err != nil {
 			return err
 		}
 	}
@@ -15521,7 +15522,7 @@ type PullRequestChange struct {
 	UserNotFoundReason    *int
 }
 
-func unmarshalPullRequestChange(r *JSONReader) (*PullRequestChange, error) {
+func unmarshalPullRequestChange(r *jsoncodec.Reader) (*PullRequestChange, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -15531,13 +15532,13 @@ func unmarshalPullRequestChange(r *JSONReader) (*PullRequestChange, error) {
 		return nil, nil
 	}
 	result := &PullRequestChange{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "author":
 			result.Author, err = unmarshalUser(r)
 		case "fetched":
-			result.Fetched, err = unmarshalTime(r)
+			result.Fetched, err = jsoncodec.UnmarshalTime(r)
 		case "hubUserNotFoundReason":
 			result.HubUserNotFoundReason, err = r.NextOptionalInt()
 		case "id":
@@ -15563,7 +15564,7 @@ func unmarshalPullRequestChange(r *JSONReader) (*PullRequestChange, error) {
 	}
 	return result, nil
 }
-func marshalPullRequestChange(w *JsonMarshaler, v PullRequestChange) error {
+func marshalPullRequestChange(w *jsoncodec.Marshaler, v PullRequestChange) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -15582,7 +15583,7 @@ func marshalPullRequestChange(w *JsonMarshaler, v PullRequestChange) error {
 		if err = w.WriteKey("fetched"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Fetched); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Fetched); err != nil {
 			return err
 		}
 	}
@@ -15654,7 +15655,7 @@ type PullRequestChangeActivityItem struct {
 	PullRequest  *PullRequest
 }
 
-func unmarshalPullRequestChangeActivityItem(r *JSONReader) (*PullRequestChangeActivityItem, error) {
+func unmarshalPullRequestChangeActivityItem(r *jsoncodec.Reader) (*PullRequestChangeActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -15664,11 +15665,11 @@ func unmarshalPullRequestChangeActivityItem(r *JSONReader) (*PullRequestChangeAc
 		return nil, nil
 	}
 	result := &PullRequestChangeActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*PullRequestChange, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*PullRequestChange, error) {
 				return unmarshalPullRequestChange(r)
 			})
 		case "author":
@@ -15680,7 +15681,7 @@ func unmarshalPullRequestChangeActivityItem(r *JSONReader) (*PullRequestChangeAc
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*PullRequestChange, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*PullRequestChange, error) {
 				return unmarshalPullRequestChange(r)
 			})
 		case "target":
@@ -15688,7 +15689,7 @@ func unmarshalPullRequestChangeActivityItem(r *JSONReader) (*PullRequestChangeAc
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "pullRequest":
 			result.PullRequest, err = unmarshalPullRequest(r)
 		case "$type":
@@ -15704,7 +15705,7 @@ func unmarshalPullRequestChangeActivityItem(r *JSONReader) (*PullRequestChangeAc
 	}
 	return result, nil
 }
-func marshalPullRequestChangeActivityItem(w *JsonMarshaler, v PullRequestChangeActivityItem) error {
+func marshalPullRequestChangeActivityItem(w *jsoncodec.Marshaler, v PullRequestChangeActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -15715,7 +15716,7 @@ func marshalPullRequestChangeActivityItem(w *JsonMarshaler, v PullRequestChangeA
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalPullRequestChange); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalPullRequestChange); err != nil {
 			return err
 		}
 	}
@@ -15755,7 +15756,7 @@ func marshalPullRequestChangeActivityItem(w *JsonMarshaler, v PullRequestChangeA
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalPullRequestChange); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalPullRequestChange); err != nil {
 			return err
 		}
 	}
@@ -15779,7 +15780,7 @@ func marshalPullRequestChangeActivityItem(w *JsonMarshaler, v PullRequestChangeA
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -15803,7 +15804,7 @@ type PullRequestState struct {
 	Id *string
 }
 
-func unmarshalPullRequestState(r *JSONReader) (*PullRequestState, error) {
+func unmarshalPullRequestState(r *jsoncodec.Reader) (*PullRequestState, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -15813,7 +15814,7 @@ func unmarshalPullRequestState(r *JSONReader) (*PullRequestState, error) {
 		return nil, nil
 	}
 	result := &PullRequestState{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -15831,7 +15832,7 @@ func unmarshalPullRequestState(r *JSONReader) (*PullRequestState, error) {
 	}
 	return result, nil
 }
-func marshalPullRequestState(w *JsonMarshaler, v PullRequestState) error {
+func marshalPullRequestState(w *jsoncodec.Marshaler, v PullRequestState) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -15858,7 +15859,7 @@ type Reaction struct {
 	Reaction *string
 }
 
-func unmarshalReaction(r *JSONReader) (*Reaction, error) {
+func unmarshalReaction(r *jsoncodec.Reader) (*Reaction, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -15868,7 +15869,7 @@ func unmarshalReaction(r *JSONReader) (*Reaction, error) {
 		return nil, nil
 	}
 	result := &Reaction{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "author":
@@ -15890,7 +15891,7 @@ func unmarshalReaction(r *JSONReader) (*Reaction, error) {
 	}
 	return result, nil
 }
-func marshalReaction(w *JsonMarshaler, v Reaction) error {
+func marshalReaction(w *jsoncodec.Marshaler, v Reaction) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -15938,7 +15939,7 @@ type RegisteredUsersGroup struct {
 	UsersCount    *int
 }
 
-func unmarshalRegisteredUsersGroup(r *JSONReader) (*RegisteredUsersGroup, error) {
+func unmarshalRegisteredUsersGroup(r *jsoncodec.Reader) (*RegisteredUsersGroup, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -15948,7 +15949,7 @@ func unmarshalRegisteredUsersGroup(r *JSONReader) (*RegisteredUsersGroup, error)
 		return nil, nil
 	}
 	result := &RegisteredUsersGroup{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "allUsersGroup":
@@ -15962,7 +15963,7 @@ func unmarshalRegisteredUsersGroup(r *JSONReader) (*RegisteredUsersGroup, error)
 		case "ringId":
 			result.RingId, err = r.NextOptionalString()
 		case "users":
-			result.Users, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Users, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "usersCount":
@@ -15980,7 +15981,7 @@ func unmarshalRegisteredUsersGroup(r *JSONReader) (*RegisteredUsersGroup, error)
 	}
 	return result, nil
 }
-func marshalRegisteredUsersGroup(w *JsonMarshaler, v RegisteredUsersGroup) error {
+func marshalRegisteredUsersGroup(w *jsoncodec.Marshaler, v RegisteredUsersGroup) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16031,7 +16032,7 @@ func marshalRegisteredUsersGroup(w *JsonMarshaler, v RegisteredUsersGroup) error
 		if err = w.WriteKey("users"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Users, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Users, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -16055,7 +16056,7 @@ type RestCorsSettings struct {
 	Id              *string
 }
 
-func unmarshalRestCorsSettings(r *JSONReader) (*RestCorsSettings, error) {
+func unmarshalRestCorsSettings(r *jsoncodec.Reader) (*RestCorsSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16065,13 +16066,13 @@ func unmarshalRestCorsSettings(r *JSONReader) (*RestCorsSettings, error) {
 		return nil, nil
 	}
 	result := &RestCorsSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "allowAllOrigins":
 			result.AllowAllOrigins, err = r.NextOptionalBool()
 		case "allowedOrigins":
-			result.AllowedOrigins, err = unmarshalList(r, func(r *JSONReader) (*string, error) {
+			result.AllowedOrigins, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*string, error) {
 				return r.NextOptionalString()
 			})
 		case "id":
@@ -16089,7 +16090,7 @@ func unmarshalRestCorsSettings(r *JSONReader) (*RestCorsSettings, error) {
 	}
 	return result, nil
 }
-func marshalRestCorsSettings(w *JsonMarshaler, v RestCorsSettings) error {
+func marshalRestCorsSettings(w *jsoncodec.Marshaler, v RestCorsSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16108,7 +16109,7 @@ func marshalRestCorsSettings(w *JsonMarshaler, v RestCorsSettings) error {
 		if err = w.WriteKey("allowedOrigins"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.AllowedOrigins, marshalstring); err != nil {
+		if err = jsoncodec.MarshalList(w, v.AllowedOrigins, jsoncodec.MarshalString); err != nil {
 			return err
 		}
 	}
@@ -16134,7 +16135,7 @@ type Role struct {
 	Permissions []Permission
 }
 
-func unmarshalRole(r *JSONReader) (*Role, error) {
+func unmarshalRole(r *jsoncodec.Reader) (*Role, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16144,7 +16145,7 @@ func unmarshalRole(r *JSONReader) (*Role, error) {
 		return nil, nil
 	}
 	result := &Role{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "description":
@@ -16156,7 +16157,7 @@ func unmarshalRole(r *JSONReader) (*Role, error) {
 		case "name":
 			result.Name, err = r.NextOptionalString()
 		case "permissions":
-			result.Permissions, err = unmarshalList(r, func(r *JSONReader) (*Permission, error) {
+			result.Permissions, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Permission, error) {
 				return unmarshalPermission(r)
 			})
 		case "$type":
@@ -16172,7 +16173,7 @@ func unmarshalRole(r *JSONReader) (*Role, error) {
 	}
 	return result, nil
 }
-func marshalRole(w *JsonMarshaler, v Role) error {
+func marshalRole(w *jsoncodec.Marshaler, v Role) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16215,7 +16216,7 @@ func marshalRole(w *JsonMarshaler, v Role) error {
 		if err = w.WriteKey("permissions"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Permissions, marshalPermission); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Permissions, marshalPermission); err != nil {
 			return err
 		}
 	}
@@ -16238,7 +16239,7 @@ type SavedQuery struct {
 	Query                 *string
 }
 
-func unmarshalSavedQuery(r *JSONReader) (*SavedQuery, error) {
+func unmarshalSavedQuery(r *jsoncodec.Reader) (*SavedQuery, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16248,7 +16249,7 @@ func unmarshalSavedQuery(r *JSONReader) (*SavedQuery, error) {
 		return nil, nil
 	}
 	result := &SavedQuery{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -16266,7 +16267,7 @@ func unmarshalSavedQuery(r *JSONReader) (*SavedQuery, error) {
 		case "visibleFor":
 			result.VisibleFor, err = unmarshalUserGroup(r)
 		case "issues":
-			result.Issues, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Issues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "query":
@@ -16284,7 +16285,7 @@ func unmarshalSavedQuery(r *JSONReader) (*SavedQuery, error) {
 	}
 	return result, nil
 }
-func marshalSavedQuery(w *JsonMarshaler, v SavedQuery) error {
+func marshalSavedQuery(w *jsoncodec.Marshaler, v SavedQuery) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16351,7 +16352,7 @@ func marshalSavedQuery(w *JsonMarshaler, v SavedQuery) error {
 		if err = w.WriteKey("issues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Issues, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Issues, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -16378,7 +16379,7 @@ type SearchSuggestions struct {
 	Suggestions             []Suggestion
 }
 
-func unmarshalSearchSuggestions(r *JSONReader) (*SearchSuggestions, error) {
+func unmarshalSearchSuggestions(r *jsoncodec.Reader) (*SearchSuggestions, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16388,13 +16389,13 @@ func unmarshalSearchSuggestions(r *JSONReader) (*SearchSuggestions, error) {
 		return nil, nil
 	}
 	result := &SearchSuggestions{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "caret":
 			result.Caret, err = r.NextOptionalInt()
 		case "folders":
-			result.Folders, err = unmarshalAbstractList(r, func(r *JSONReader) (IssueFolder, error) {
+			result.Folders, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (IssueFolder, error) {
 				return unmarshalIssueFolder(r)
 			})
 		case "id":
@@ -16404,7 +16405,7 @@ func unmarshalSearchSuggestions(r *JSONReader) (*SearchSuggestions, error) {
 		case "query":
 			result.Query, err = r.NextOptionalString()
 		case "suggestions":
-			result.Suggestions, err = unmarshalList(r, func(r *JSONReader) (*Suggestion, error) {
+			result.Suggestions, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Suggestion, error) {
 				return unmarshalSuggestion(r)
 			})
 		case "$type":
@@ -16420,7 +16421,7 @@ func unmarshalSearchSuggestions(r *JSONReader) (*SearchSuggestions, error) {
 	}
 	return result, nil
 }
-func marshalSearchSuggestions(w *JsonMarshaler, v SearchSuggestions) error {
+func marshalSearchSuggestions(w *jsoncodec.Marshaler, v SearchSuggestions) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16439,7 +16440,7 @@ func marshalSearchSuggestions(w *JsonMarshaler, v SearchSuggestions) error {
 		if err = w.WriteKey("folders"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Folders, marshalIssueFolder); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Folders, marshalIssueFolder); err != nil {
 			return err
 		}
 	}
@@ -16471,7 +16472,7 @@ func marshalSearchSuggestions(w *JsonMarshaler, v SearchSuggestions) error {
 		if err = w.WriteKey("suggestions"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Suggestions, marshalSuggestion); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Suggestions, marshalSuggestion); err != nil {
 			return err
 		}
 	}
@@ -16489,7 +16490,7 @@ type SimpleIssueCustomField struct {
 	Value              *any
 }
 
-func unmarshalSimpleIssueCustomField(r *JSONReader) (*SimpleIssueCustomField, error) {
+func unmarshalSimpleIssueCustomField(r *jsoncodec.Reader) (*SimpleIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16499,7 +16500,7 @@ func unmarshalSimpleIssueCustomField(r *JSONReader) (*SimpleIssueCustomField, er
 		return nil, nil
 	}
 	result := &SimpleIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -16523,7 +16524,7 @@ func unmarshalSimpleIssueCustomField(r *JSONReader) (*SimpleIssueCustomField, er
 	}
 	return result, nil
 }
-func marshalSimpleIssueCustomField(w *JsonMarshaler, v SimpleIssueCustomField) error {
+func marshalSimpleIssueCustomField(w *jsoncodec.Marshaler, v SimpleIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16582,7 +16583,7 @@ type SimpleProjectCustomField struct {
 	Project        *Project
 }
 
-func unmarshalSimpleProjectCustomField(r *JSONReader) (*SimpleProjectCustomField, error) {
+func unmarshalSimpleProjectCustomField(r *jsoncodec.Reader) (*SimpleProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16592,7 +16593,7 @@ func unmarshalSimpleProjectCustomField(r *JSONReader) (*SimpleProjectCustomField
 		return nil, nil
 	}
 	result := &SimpleProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -16626,7 +16627,7 @@ func unmarshalSimpleProjectCustomField(r *JSONReader) (*SimpleProjectCustomField
 	}
 	return result, nil
 }
-func marshalSimpleProjectCustomField(w *JsonMarshaler, v SimpleProjectCustomField) error {
+func marshalSimpleProjectCustomField(w *jsoncodec.Marshaler, v SimpleProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16719,7 +16720,7 @@ type SingleBuildIssueCustomField struct {
 	Value              *BuildBundleElement
 }
 
-func unmarshalSingleBuildIssueCustomField(r *JSONReader) (*SingleBuildIssueCustomField, error) {
+func unmarshalSingleBuildIssueCustomField(r *jsoncodec.Reader) (*SingleBuildIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16729,7 +16730,7 @@ func unmarshalSingleBuildIssueCustomField(r *JSONReader) (*SingleBuildIssueCusto
 		return nil, nil
 	}
 	result := &SingleBuildIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -16753,7 +16754,7 @@ func unmarshalSingleBuildIssueCustomField(r *JSONReader) (*SingleBuildIssueCusto
 	}
 	return result, nil
 }
-func marshalSingleBuildIssueCustomField(w *JsonMarshaler, v SingleBuildIssueCustomField) error {
+func marshalSingleBuildIssueCustomField(w *jsoncodec.Marshaler, v SingleBuildIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16806,7 +16807,7 @@ type SingleEnumIssueCustomField struct {
 	Value              *EnumBundleElement
 }
 
-func unmarshalSingleEnumIssueCustomField(r *JSONReader) (*SingleEnumIssueCustomField, error) {
+func unmarshalSingleEnumIssueCustomField(r *jsoncodec.Reader) (*SingleEnumIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16816,7 +16817,7 @@ func unmarshalSingleEnumIssueCustomField(r *JSONReader) (*SingleEnumIssueCustomF
 		return nil, nil
 	}
 	result := &SingleEnumIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -16840,7 +16841,7 @@ func unmarshalSingleEnumIssueCustomField(r *JSONReader) (*SingleEnumIssueCustomF
 	}
 	return result, nil
 }
-func marshalSingleEnumIssueCustomField(w *JsonMarshaler, v SingleEnumIssueCustomField) error {
+func marshalSingleEnumIssueCustomField(w *jsoncodec.Marshaler, v SingleEnumIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16893,7 +16894,7 @@ type SingleGroupIssueCustomField struct {
 	Value              *UserGroup
 }
 
-func unmarshalSingleGroupIssueCustomField(r *JSONReader) (*SingleGroupIssueCustomField, error) {
+func unmarshalSingleGroupIssueCustomField(r *jsoncodec.Reader) (*SingleGroupIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16903,7 +16904,7 @@ func unmarshalSingleGroupIssueCustomField(r *JSONReader) (*SingleGroupIssueCusto
 		return nil, nil
 	}
 	result := &SingleGroupIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -16927,7 +16928,7 @@ func unmarshalSingleGroupIssueCustomField(r *JSONReader) (*SingleGroupIssueCusto
 	}
 	return result, nil
 }
-func marshalSingleGroupIssueCustomField(w *JsonMarshaler, v SingleGroupIssueCustomField) error {
+func marshalSingleGroupIssueCustomField(w *jsoncodec.Marshaler, v SingleGroupIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -16980,7 +16981,7 @@ type SingleOwnedIssueCustomField struct {
 	Value              *OwnedBundleElement
 }
 
-func unmarshalSingleOwnedIssueCustomField(r *JSONReader) (*SingleOwnedIssueCustomField, error) {
+func unmarshalSingleOwnedIssueCustomField(r *jsoncodec.Reader) (*SingleOwnedIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -16990,7 +16991,7 @@ func unmarshalSingleOwnedIssueCustomField(r *JSONReader) (*SingleOwnedIssueCusto
 		return nil, nil
 	}
 	result := &SingleOwnedIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -17014,7 +17015,7 @@ func unmarshalSingleOwnedIssueCustomField(r *JSONReader) (*SingleOwnedIssueCusto
 	}
 	return result, nil
 }
-func marshalSingleOwnedIssueCustomField(w *JsonMarshaler, v SingleOwnedIssueCustomField) error {
+func marshalSingleOwnedIssueCustomField(w *jsoncodec.Marshaler, v SingleOwnedIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -17067,7 +17068,7 @@ type SingleUserIssueCustomField struct {
 	Value              *User
 }
 
-func unmarshalSingleUserIssueCustomField(r *JSONReader) (*SingleUserIssueCustomField, error) {
+func unmarshalSingleUserIssueCustomField(r *jsoncodec.Reader) (*SingleUserIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -17077,7 +17078,7 @@ func unmarshalSingleUserIssueCustomField(r *JSONReader) (*SingleUserIssueCustomF
 		return nil, nil
 	}
 	result := &SingleUserIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -17101,7 +17102,7 @@ func unmarshalSingleUserIssueCustomField(r *JSONReader) (*SingleUserIssueCustomF
 	}
 	return result, nil
 }
-func marshalSingleUserIssueCustomField(w *JsonMarshaler, v SingleUserIssueCustomField) error {
+func marshalSingleUserIssueCustomField(w *jsoncodec.Marshaler, v SingleUserIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -17154,7 +17155,7 @@ type SingleVersionIssueCustomField struct {
 	Value              *VersionBundleElement
 }
 
-func unmarshalSingleVersionIssueCustomField(r *JSONReader) (*SingleVersionIssueCustomField, error) {
+func unmarshalSingleVersionIssueCustomField(r *jsoncodec.Reader) (*SingleVersionIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -17164,7 +17165,7 @@ func unmarshalSingleVersionIssueCustomField(r *JSONReader) (*SingleVersionIssueC
 		return nil, nil
 	}
 	result := &SingleVersionIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -17188,7 +17189,7 @@ func unmarshalSingleVersionIssueCustomField(r *JSONReader) (*SingleVersionIssueC
 	}
 	return result, nil
 }
-func marshalSingleVersionIssueCustomField(w *JsonMarshaler, v SingleVersionIssueCustomField) error {
+func marshalSingleVersionIssueCustomField(w *jsoncodec.Marshaler, v SingleVersionIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -17248,7 +17249,7 @@ type SpaceChangesProcessor struct {
 	Path                     *string
 }
 
-func unmarshalSpaceChangesProcessor(r *JSONReader) (*SpaceChangesProcessor, error) {
+func unmarshalSpaceChangesProcessor(r *jsoncodec.Reader) (*SpaceChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -17258,7 +17259,7 @@ func unmarshalSpaceChangesProcessor(r *JSONReader) (*SpaceChangesProcessor, erro
 		return nil, nil
 	}
 	result := &SpaceChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -17272,13 +17273,13 @@ func unmarshalSpaceChangesProcessor(r *JSONReader) (*SpaceChangesProcessor, erro
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalSpaceServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "branchSpecification":
@@ -17300,7 +17301,7 @@ func unmarshalSpaceChangesProcessor(r *JSONReader) (*SpaceChangesProcessor, erro
 	}
 	return result, nil
 }
-func marshalSpaceChangesProcessor(w *JsonMarshaler, v SpaceChangesProcessor) error {
+func marshalSpaceChangesProcessor(w *jsoncodec.Marshaler, v SpaceChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -17351,7 +17352,7 @@ func marshalSpaceChangesProcessor(w *JsonMarshaler, v SpaceChangesProcessor) err
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -17367,7 +17368,7 @@ func marshalSpaceChangesProcessor(w *JsonMarshaler, v SpaceChangesProcessor) err
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -17407,7 +17408,7 @@ type SpaceServer struct {
 	Url *string
 }
 
-func unmarshalSpaceServer(r *JSONReader) (*SpaceServer, error) {
+func unmarshalSpaceServer(r *jsoncodec.Reader) (*SpaceServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -17417,7 +17418,7 @@ func unmarshalSpaceServer(r *JSONReader) (*SpaceServer, error) {
 		return nil, nil
 	}
 	result := &SpaceServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -17437,7 +17438,7 @@ func unmarshalSpaceServer(r *JSONReader) (*SpaceServer, error) {
 	}
 	return result, nil
 }
-func marshalSpaceServer(w *JsonMarshaler, v SpaceServer) error {
+func marshalSpaceServer(w *jsoncodec.Marshaler, v SpaceServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -17480,7 +17481,7 @@ type Sprint struct {
 	UnresolvedIssuesCount *int
 }
 
-func unmarshalSprint(r *JSONReader) (*Sprint, error) {
+func unmarshalSprint(r *jsoncodec.Reader) (*Sprint, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -17490,7 +17491,7 @@ func unmarshalSprint(r *JSONReader) (*Sprint, error) {
 		return nil, nil
 	}
 	result := &Sprint{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "agile":
@@ -17498,7 +17499,7 @@ func unmarshalSprint(r *JSONReader) (*Sprint, error) {
 		case "archived":
 			result.Archived, err = r.NextOptionalBool()
 		case "finish":
-			result.Finish, err = unmarshalTime(r)
+			result.Finish, err = jsoncodec.UnmarshalTime(r)
 		case "goal":
 			result.Goal, err = r.NextOptionalString()
 		case "id":
@@ -17506,7 +17507,7 @@ func unmarshalSprint(r *JSONReader) (*Sprint, error) {
 		case "isDefault":
 			result.IsDefault, err = r.NextOptionalBool()
 		case "issues":
-			result.Issues, err = unmarshalList(r, func(r *JSONReader) (*Issue, error) {
+			result.Issues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
 				return unmarshalIssue(r)
 			})
 		case "name":
@@ -17514,7 +17515,7 @@ func unmarshalSprint(r *JSONReader) (*Sprint, error) {
 		case "previousSprint":
 			result.PreviousSprint, err = unmarshalSprint(r)
 		case "start":
-			result.Start, err = unmarshalTime(r)
+			result.Start, err = jsoncodec.UnmarshalTime(r)
 		case "unresolvedIssuesCount":
 			result.UnresolvedIssuesCount, err = r.NextOptionalInt()
 		case "$type":
@@ -17530,7 +17531,7 @@ func unmarshalSprint(r *JSONReader) (*Sprint, error) {
 	}
 	return result, nil
 }
-func marshalSprint(w *JsonMarshaler, v Sprint) error {
+func marshalSprint(w *jsoncodec.Marshaler, v Sprint) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -17557,7 +17558,7 @@ func marshalSprint(w *JsonMarshaler, v Sprint) error {
 		if err = w.WriteKey("finish"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Finish); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Finish); err != nil {
 			return err
 		}
 	}
@@ -17589,7 +17590,7 @@ func marshalSprint(w *JsonMarshaler, v Sprint) error {
 		if err = w.WriteKey("issues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Issues, marshalIssue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Issues, marshalIssue); err != nil {
 			return err
 		}
 	}
@@ -17613,7 +17614,7 @@ func marshalSprint(w *JsonMarshaler, v Sprint) error {
 		if err = w.WriteKey("start"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Start); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Start); err != nil {
 			return err
 		}
 	}
@@ -17645,7 +17646,7 @@ type SprintActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalSprintActivityItem(r *JSONReader) (*SprintActivityItem, error) {
+func unmarshalSprintActivityItem(r *jsoncodec.Reader) (*SprintActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -17655,11 +17656,11 @@ func unmarshalSprintActivityItem(r *JSONReader) (*SprintActivityItem, error) {
 		return nil, nil
 	}
 	result := &SprintActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*Sprint, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Sprint, error) {
 				return unmarshalSprint(r)
 			})
 		case "author":
@@ -17671,7 +17672,7 @@ func unmarshalSprintActivityItem(r *JSONReader) (*SprintActivityItem, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*Sprint, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Sprint, error) {
 				return unmarshalSprint(r)
 			})
 		case "target":
@@ -17679,7 +17680,7 @@ func unmarshalSprintActivityItem(r *JSONReader) (*SprintActivityItem, error) {
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -17693,7 +17694,7 @@ func unmarshalSprintActivityItem(r *JSONReader) (*SprintActivityItem, error) {
 	}
 	return result, nil
 }
-func marshalSprintActivityItem(w *JsonMarshaler, v SprintActivityItem) error {
+func marshalSprintActivityItem(w *jsoncodec.Marshaler, v SprintActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -17704,7 +17705,7 @@ func marshalSprintActivityItem(w *JsonMarshaler, v SprintActivityItem) error {
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalSprint); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalSprint); err != nil {
 			return err
 		}
 	}
@@ -17744,7 +17745,7 @@ func marshalSprintActivityItem(w *JsonMarshaler, v SprintActivityItem) error {
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalSprint); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalSprint); err != nil {
 			return err
 		}
 	}
@@ -17768,7 +17769,7 @@ func marshalSprintActivityItem(w *JsonMarshaler, v SprintActivityItem) error {
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -17790,7 +17791,7 @@ type SprintsSettings struct {
 	SprintSyncField      *CustomField
 }
 
-func unmarshalSprintsSettings(r *JSONReader) (*SprintsSettings, error) {
+func unmarshalSprintsSettings(r *jsoncodec.Reader) (*SprintsSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -17800,7 +17801,7 @@ func unmarshalSprintsSettings(r *JSONReader) (*SprintsSettings, error) {
 		return nil, nil
 	}
 	result := &SprintsSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "cardOnSeveralSprints":
@@ -17832,7 +17833,7 @@ func unmarshalSprintsSettings(r *JSONReader) (*SprintsSettings, error) {
 	}
 	return result, nil
 }
-func marshalSprintsSettings(w *JsonMarshaler, v SprintsSettings) error {
+func marshalSprintsSettings(w *jsoncodec.Marshaler, v SprintsSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -17921,7 +17922,7 @@ type StarWatchFolder struct {
 	RemoveOnResolve       *bool
 }
 
-func unmarshalStarWatchFolder(r *JSONReader) (*StarWatchFolder, error) {
+func unmarshalStarWatchFolder(r *jsoncodec.Reader) (*StarWatchFolder, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -17931,7 +17932,7 @@ func unmarshalStarWatchFolder(r *JSONReader) (*StarWatchFolder, error) {
 		return nil, nil
 	}
 	result := &StarWatchFolder{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -17963,7 +17964,7 @@ func unmarshalStarWatchFolder(r *JSONReader) (*StarWatchFolder, error) {
 	}
 	return result, nil
 }
-func marshalStarWatchFolder(w *JsonMarshaler, v StarWatchFolder) error {
+func marshalStarWatchFolder(w *jsoncodec.Marshaler, v StarWatchFolder) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -18047,7 +18048,7 @@ type StateBundle struct {
 	Values       []StateBundleElement
 }
 
-func unmarshalStateBundle(r *JSONReader) (*StateBundle, error) {
+func unmarshalStateBundle(r *jsoncodec.Reader) (*StateBundle, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -18057,7 +18058,7 @@ func unmarshalStateBundle(r *JSONReader) (*StateBundle, error) {
 		return nil, nil
 	}
 	result := &StateBundle{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -18065,7 +18066,7 @@ func unmarshalStateBundle(r *JSONReader) (*StateBundle, error) {
 		case "isUpdateable":
 			result.IsUpdateable, err = r.NextOptionalBool()
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*StateBundleElement, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*StateBundleElement, error) {
 				return unmarshalStateBundleElement(r)
 			})
 		case "$type":
@@ -18081,7 +18082,7 @@ func unmarshalStateBundle(r *JSONReader) (*StateBundle, error) {
 	}
 	return result, nil
 }
-func marshalStateBundle(w *JsonMarshaler, v StateBundle) error {
+func marshalStateBundle(w *jsoncodec.Marshaler, v StateBundle) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -18108,7 +18109,7 @@ func marshalStateBundle(w *JsonMarshaler, v StateBundle) error {
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalStateBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalStateBundleElement); err != nil {
 			return err
 		}
 	}
@@ -18129,7 +18130,7 @@ type StateBundleCustomFieldDefaults struct {
 	DefaultValues  []StateBundleElement
 }
 
-func unmarshalStateBundleCustomFieldDefaults(r *JSONReader) (*StateBundleCustomFieldDefaults, error) {
+func unmarshalStateBundleCustomFieldDefaults(r *jsoncodec.Reader) (*StateBundleCustomFieldDefaults, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -18139,7 +18140,7 @@ func unmarshalStateBundleCustomFieldDefaults(r *JSONReader) (*StateBundleCustomF
 		return nil, nil
 	}
 	result := &StateBundleCustomFieldDefaults{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -18155,7 +18156,7 @@ func unmarshalStateBundleCustomFieldDefaults(r *JSONReader) (*StateBundleCustomF
 		case "bundle":
 			result.Bundle, err = unmarshalStateBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*StateBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*StateBundleElement, error) {
 				return unmarshalStateBundleElement(r)
 			})
 		case "$type":
@@ -18171,7 +18172,7 @@ func unmarshalStateBundleCustomFieldDefaults(r *JSONReader) (*StateBundleCustomF
 	}
 	return result, nil
 }
-func marshalStateBundleCustomFieldDefaults(w *JsonMarshaler, v StateBundleCustomFieldDefaults) error {
+func marshalStateBundleCustomFieldDefaults(w *jsoncodec.Marshaler, v StateBundleCustomFieldDefaults) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -18230,7 +18231,7 @@ func marshalStateBundleCustomFieldDefaults(w *JsonMarshaler, v StateBundleCustom
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalStateBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalStateBundleElement); err != nil {
 			return err
 		}
 	}
@@ -18254,7 +18255,7 @@ type StateBundleElement struct {
 	IsResolved    *bool
 }
 
-func unmarshalStateBundleElement(r *JSONReader) (*StateBundleElement, error) {
+func unmarshalStateBundleElement(r *jsoncodec.Reader) (*StateBundleElement, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -18264,7 +18265,7 @@ func unmarshalStateBundleElement(r *JSONReader) (*StateBundleElement, error) {
 		return nil, nil
 	}
 	result := &StateBundleElement{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "archived":
@@ -18300,7 +18301,7 @@ func unmarshalStateBundleElement(r *JSONReader) (*StateBundleElement, error) {
 	}
 	return result, nil
 }
-func marshalStateBundleElement(w *JsonMarshaler, v StateBundleElement) error {
+func marshalStateBundleElement(w *jsoncodec.Marshaler, v StateBundleElement) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -18401,7 +18402,7 @@ type StateIssueCustomField struct {
 	Value              *StateBundleElement
 }
 
-func unmarshalStateIssueCustomField(r *JSONReader) (*StateIssueCustomField, error) {
+func unmarshalStateIssueCustomField(r *jsoncodec.Reader) (*StateIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -18411,7 +18412,7 @@ func unmarshalStateIssueCustomField(r *JSONReader) (*StateIssueCustomField, erro
 		return nil, nil
 	}
 	result := &StateIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -18435,7 +18436,7 @@ func unmarshalStateIssueCustomField(r *JSONReader) (*StateIssueCustomField, erro
 	}
 	return result, nil
 }
-func marshalStateIssueCustomField(w *JsonMarshaler, v StateIssueCustomField) error {
+func marshalStateIssueCustomField(w *jsoncodec.Marshaler, v StateIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -18491,7 +18492,7 @@ type StateMachineIssueCustomField struct {
 	PossibleEvents     []Event
 }
 
-func unmarshalStateMachineIssueCustomField(r *JSONReader) (*StateMachineIssueCustomField, error) {
+func unmarshalStateMachineIssueCustomField(r *jsoncodec.Reader) (*StateMachineIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -18501,7 +18502,7 @@ func unmarshalStateMachineIssueCustomField(r *JSONReader) (*StateMachineIssueCus
 		return nil, nil
 	}
 	result := &StateMachineIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -18515,7 +18516,7 @@ func unmarshalStateMachineIssueCustomField(r *JSONReader) (*StateMachineIssueCus
 		case "event":
 			result.Event, err = unmarshalEvent(r)
 		case "possibleEvents":
-			result.PossibleEvents, err = unmarshalList(r, func(r *JSONReader) (*Event, error) {
+			result.PossibleEvents, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Event, error) {
 				return unmarshalEvent(r)
 			})
 		case "$type":
@@ -18531,7 +18532,7 @@ func unmarshalStateMachineIssueCustomField(r *JSONReader) (*StateMachineIssueCus
 	}
 	return result, nil
 }
-func marshalStateMachineIssueCustomField(w *JsonMarshaler, v StateMachineIssueCustomField) error {
+func marshalStateMachineIssueCustomField(w *jsoncodec.Marshaler, v StateMachineIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -18582,7 +18583,7 @@ func marshalStateMachineIssueCustomField(w *JsonMarshaler, v StateMachineIssueCu
 		if err = w.WriteKey("possibleEvents"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PossibleEvents, marshalEvent); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PossibleEvents, marshalEvent); err != nil {
 			return err
 		}
 	}
@@ -18607,7 +18608,7 @@ type StateProjectCustomField struct {
 	DefaultValues  []StateBundleElement
 }
 
-func unmarshalStateProjectCustomField(r *JSONReader) (*StateProjectCustomField, error) {
+func unmarshalStateProjectCustomField(r *jsoncodec.Reader) (*StateProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -18617,7 +18618,7 @@ func unmarshalStateProjectCustomField(r *JSONReader) (*StateProjectCustomField, 
 		return nil, nil
 	}
 	result := &StateProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -18641,7 +18642,7 @@ func unmarshalStateProjectCustomField(r *JSONReader) (*StateProjectCustomField, 
 		case "bundle":
 			result.Bundle, err = unmarshalStateBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*StateBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*StateBundleElement, error) {
 				return unmarshalStateBundleElement(r)
 			})
 		case "$type":
@@ -18657,7 +18658,7 @@ func unmarshalStateProjectCustomField(r *JSONReader) (*StateProjectCustomField, 
 	}
 	return result, nil
 }
-func marshalStateProjectCustomField(w *JsonMarshaler, v StateProjectCustomField) error {
+func marshalStateProjectCustomField(w *jsoncodec.Marshaler, v StateProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -18748,7 +18749,7 @@ func marshalStateProjectCustomField(w *JsonMarshaler, v StateProjectCustomField)
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalStateBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalStateBundleElement); err != nil {
 			return err
 		}
 	}
@@ -18764,7 +18765,7 @@ type StorageEntry struct {
 	Name *string
 }
 
-func unmarshalStorageEntry(r *JSONReader) (*StorageEntry, error) {
+func unmarshalStorageEntry(r *jsoncodec.Reader) (*StorageEntry, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -18774,7 +18775,7 @@ func unmarshalStorageEntry(r *JSONReader) (*StorageEntry, error) {
 		return nil, nil
 	}
 	result := &StorageEntry{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -18794,7 +18795,7 @@ func unmarshalStorageEntry(r *JSONReader) (*StorageEntry, error) {
 	}
 	return result, nil
 }
-func marshalStorageEntry(w *JsonMarshaler, v StorageEntry) error {
+func marshalStorageEntry(w *jsoncodec.Marshaler, v StorageEntry) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -18841,7 +18842,7 @@ type Suggestion struct {
 	Suffix          *string
 }
 
-func unmarshalSuggestion(r *JSONReader) (*Suggestion, error) {
+func unmarshalSuggestion(r *jsoncodec.Reader) (*Suggestion, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -18851,7 +18852,7 @@ func unmarshalSuggestion(r *JSONReader) (*Suggestion, error) {
 		return nil, nil
 	}
 	result := &Suggestion{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "auxiliaryIcon":
@@ -18895,7 +18896,7 @@ func unmarshalSuggestion(r *JSONReader) (*Suggestion, error) {
 	}
 	return result, nil
 }
-func marshalSuggestion(w *JsonMarshaler, v Suggestion) error {
+func marshalSuggestion(w *jsoncodec.Marshaler, v Suggestion) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19028,7 +19029,7 @@ type SwimlaneEntityAttributeValue struct {
 	Name       *string
 }
 
-func unmarshalSwimlaneEntityAttributeValue(r *JSONReader) (*SwimlaneEntityAttributeValue, error) {
+func unmarshalSwimlaneEntityAttributeValue(r *jsoncodec.Reader) (*SwimlaneEntityAttributeValue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -19038,7 +19039,7 @@ func unmarshalSwimlaneEntityAttributeValue(r *JSONReader) (*SwimlaneEntityAttrib
 		return nil, nil
 	}
 	result := &SwimlaneEntityAttributeValue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -19060,7 +19061,7 @@ func unmarshalSwimlaneEntityAttributeValue(r *JSONReader) (*SwimlaneEntityAttrib
 	}
 	return result, nil
 }
-func marshalSwimlaneEntityAttributeValue(w *JsonMarshaler, v SwimlaneEntityAttributeValue) error {
+func marshalSwimlaneEntityAttributeValue(w *jsoncodec.Marshaler, v SwimlaneEntityAttributeValue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19103,7 +19104,7 @@ type SwimlaneValue struct {
 	Name *string
 }
 
-func unmarshalSwimlaneValue(r *JSONReader) (*SwimlaneValue, error) {
+func unmarshalSwimlaneValue(r *jsoncodec.Reader) (*SwimlaneValue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -19113,7 +19114,7 @@ func unmarshalSwimlaneValue(r *JSONReader) (*SwimlaneValue, error) {
 		return nil, nil
 	}
 	result := &SwimlaneValue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -19133,7 +19134,7 @@ func unmarshalSwimlaneValue(r *JSONReader) (*SwimlaneValue, error) {
 	}
 	return result, nil
 }
-func marshalSwimlaneValue(w *JsonMarshaler, v SwimlaneValue) error {
+func marshalSwimlaneValue(w *jsoncodec.Marshaler, v SwimlaneValue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19172,7 +19173,7 @@ type SystemSettings struct {
 	MaxUploadFileSize         *int
 }
 
-func unmarshalSystemSettings(r *JSONReader) (*SystemSettings, error) {
+func unmarshalSystemSettings(r *jsoncodec.Reader) (*SystemSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -19182,7 +19183,7 @@ func unmarshalSystemSettings(r *JSONReader) (*SystemSettings, error) {
 		return nil, nil
 	}
 	result := &SystemSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "administratorEmail":
@@ -19212,7 +19213,7 @@ func unmarshalSystemSettings(r *JSONReader) (*SystemSettings, error) {
 	}
 	return result, nil
 }
-func marshalSystemSettings(w *JsonMarshaler, v SystemSettings) error {
+func marshalSystemSettings(w *jsoncodec.Marshaler, v SystemSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19288,7 +19289,7 @@ type TagSharingSettings struct {
 	PermittedUsers  []User
 }
 
-func unmarshalTagSharingSettings(r *JSONReader) (*TagSharingSettings, error) {
+func unmarshalTagSharingSettings(r *jsoncodec.Reader) (*TagSharingSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -19298,17 +19299,17 @@ func unmarshalTagSharingSettings(r *JSONReader) (*TagSharingSettings, error) {
 		return nil, nil
 	}
 	result := &TagSharingSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "permittedGroups":
-			result.PermittedGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.PermittedGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "permittedUsers":
-			result.PermittedUsers, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.PermittedUsers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -19324,7 +19325,7 @@ func unmarshalTagSharingSettings(r *JSONReader) (*TagSharingSettings, error) {
 	}
 	return result, nil
 }
-func marshalTagSharingSettings(w *JsonMarshaler, v TagSharingSettings) error {
+func marshalTagSharingSettings(w *jsoncodec.Marshaler, v TagSharingSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19343,7 +19344,7 @@ func marshalTagSharingSettings(w *JsonMarshaler, v TagSharingSettings) error {
 		if err = w.WriteKey("permittedGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -19351,7 +19352,7 @@ func marshalTagSharingSettings(w *JsonMarshaler, v TagSharingSettings) error {
 		if err = w.WriteKey("permittedUsers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedUsers, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedUsers, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -19374,7 +19375,7 @@ type TagsActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalTagsActivityItem(r *JSONReader) (*TagsActivityItem, error) {
+func unmarshalTagsActivityItem(r *jsoncodec.Reader) (*TagsActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -19384,11 +19385,11 @@ func unmarshalTagsActivityItem(r *JSONReader) (*TagsActivityItem, error) {
 		return nil, nil
 	}
 	result := &TagsActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalAbstractList(r, func(r *JSONReader) (Tag, error) {
+			result.Added, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "author":
@@ -19400,7 +19401,7 @@ func unmarshalTagsActivityItem(r *JSONReader) (*TagsActivityItem, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalAbstractList(r, func(r *JSONReader) (Tag, error) {
+			result.Removed, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "target":
@@ -19408,7 +19409,7 @@ func unmarshalTagsActivityItem(r *JSONReader) (*TagsActivityItem, error) {
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -19422,7 +19423,7 @@ func unmarshalTagsActivityItem(r *JSONReader) (*TagsActivityItem, error) {
 	}
 	return result, nil
 }
-func marshalTagsActivityItem(w *JsonMarshaler, v TagsActivityItem) error {
+func marshalTagsActivityItem(w *jsoncodec.Marshaler, v TagsActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19433,7 +19434,7 @@ func marshalTagsActivityItem(w *JsonMarshaler, v TagsActivityItem) error {
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalTag); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalTag); err != nil {
 			return err
 		}
 	}
@@ -19473,7 +19474,7 @@ func marshalTagsActivityItem(w *JsonMarshaler, v TagsActivityItem) error {
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalTag); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalTag); err != nil {
 			return err
 		}
 	}
@@ -19497,7 +19498,7 @@ func marshalTagsActivityItem(w *JsonMarshaler, v TagsActivityItem) error {
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -19519,7 +19520,7 @@ type TeamcityChangesProcessor struct {
 	VisibleForGroups         []UserGroup
 }
 
-func unmarshalTeamcityChangesProcessor(r *JSONReader) (*TeamcityChangesProcessor, error) {
+func unmarshalTeamcityChangesProcessor(r *jsoncodec.Reader) (*TeamcityChangesProcessor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -19529,7 +19530,7 @@ func unmarshalTeamcityChangesProcessor(r *JSONReader) (*TeamcityChangesProcessor
 		return nil, nil
 	}
 	result := &TeamcityChangesProcessor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "addComments":
@@ -19543,13 +19544,13 @@ func unmarshalTeamcityChangesProcessor(r *JSONReader) (*TeamcityChangesProcessor
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "relatedProjects":
-			result.RelatedProjects, err = unmarshalList(r, func(r *JSONReader) (*Project, error) {
+			result.RelatedProjects, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Project, error) {
 				return unmarshalProject(r)
 			})
 		case "server":
 			result.Server, err = unmarshalTeamcityServer(r)
 		case "visibleForGroups":
-			result.VisibleForGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.VisibleForGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "$type":
@@ -19565,7 +19566,7 @@ func unmarshalTeamcityChangesProcessor(r *JSONReader) (*TeamcityChangesProcessor
 	}
 	return result, nil
 }
-func marshalTeamcityChangesProcessor(w *JsonMarshaler, v TeamcityChangesProcessor) error {
+func marshalTeamcityChangesProcessor(w *jsoncodec.Marshaler, v TeamcityChangesProcessor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19616,7 +19617,7 @@ func marshalTeamcityChangesProcessor(w *JsonMarshaler, v TeamcityChangesProcesso
 		if err = w.WriteKey("relatedProjects"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.RelatedProjects, marshalProject); err != nil {
+		if err = jsoncodec.MarshalList(w, v.RelatedProjects, marshalProject); err != nil {
 			return err
 		}
 	}
@@ -19632,7 +19633,7 @@ func marshalTeamcityChangesProcessor(w *JsonMarshaler, v TeamcityChangesProcesso
 		if err = w.WriteKey("visibleForGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.VisibleForGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -19648,7 +19649,7 @@ type TeamcityServer struct {
 	Url *string
 }
 
-func unmarshalTeamcityServer(r *JSONReader) (*TeamcityServer, error) {
+func unmarshalTeamcityServer(r *jsoncodec.Reader) (*TeamcityServer, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -19658,7 +19659,7 @@ func unmarshalTeamcityServer(r *JSONReader) (*TeamcityServer, error) {
 		return nil, nil
 	}
 	result := &TeamcityServer{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -19678,7 +19679,7 @@ func unmarshalTeamcityServer(r *JSONReader) (*TeamcityServer, error) {
 	}
 	return result, nil
 }
-func marshalTeamcityServer(w *JsonMarshaler, v TeamcityServer) error {
+func marshalTeamcityServer(w *jsoncodec.Marshaler, v TeamcityServer) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19734,7 +19735,7 @@ type Telemetry struct {
 	UsedMemory                         *string
 }
 
-func unmarshalTelemetry(r *JSONReader) (*Telemetry, error) {
+func unmarshalTelemetry(r *jsoncodec.Reader) (*Telemetry, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -19744,7 +19745,7 @@ func unmarshalTelemetry(r *JSONReader) (*Telemetry, error) {
 		return nil, nil
 	}
 	result := &Telemetry{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "allocatedMemory":
@@ -19784,7 +19785,7 @@ func unmarshalTelemetry(r *JSONReader) (*Telemetry, error) {
 		case "requestsPerSecond":
 			result.RequestsPerSecond, err = r.NextOptionalString()
 		case "startedTime":
-			result.StartedTime, err = unmarshalTime(r)
+			result.StartedTime, err = jsoncodec.UnmarshalTime(r)
 		case "textIndexSize":
 			result.TextIndexSize, err = r.NextOptionalString()
 		case "totalTransactions":
@@ -19808,7 +19809,7 @@ func unmarshalTelemetry(r *JSONReader) (*Telemetry, error) {
 	}
 	return result, nil
 }
-func marshalTelemetry(w *JsonMarshaler, v Telemetry) error {
+func marshalTelemetry(w *jsoncodec.Marshaler, v Telemetry) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -19963,7 +19964,7 @@ func marshalTelemetry(w *JsonMarshaler, v Telemetry) error {
 		if err = w.WriteKey("startedTime"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.StartedTime); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.StartedTime); err != nil {
 			return err
 		}
 	}
@@ -20028,7 +20029,7 @@ type TextCustomFieldActivityItem struct {
 	Markup       *string
 }
 
-func unmarshalTextCustomFieldActivityItem(r *JSONReader) (*TextCustomFieldActivityItem, error) {
+func unmarshalTextCustomFieldActivityItem(r *jsoncodec.Reader) (*TextCustomFieldActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20038,7 +20039,7 @@ func unmarshalTextCustomFieldActivityItem(r *JSONReader) (*TextCustomFieldActivi
 		return nil, nil
 	}
 	result := &TextCustomFieldActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
@@ -20058,7 +20059,7 @@ func unmarshalTextCustomFieldActivityItem(r *JSONReader) (*TextCustomFieldActivi
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "markup":
 			result.Markup, err = r.NextOptionalString()
 		case "$type":
@@ -20074,7 +20075,7 @@ func unmarshalTextCustomFieldActivityItem(r *JSONReader) (*TextCustomFieldActivi
 	}
 	return result, nil
 }
-func marshalTextCustomFieldActivityItem(w *JsonMarshaler, v TextCustomFieldActivityItem) error {
+func marshalTextCustomFieldActivityItem(w *jsoncodec.Marshaler, v TextCustomFieldActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20149,7 +20150,7 @@ func marshalTextCustomFieldActivityItem(w *JsonMarshaler, v TextCustomFieldActiv
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -20174,7 +20175,7 @@ type TextFieldValue struct {
 	Text         *string
 }
 
-func unmarshalTextFieldValue(r *JSONReader) (*TextFieldValue, error) {
+func unmarshalTextFieldValue(r *jsoncodec.Reader) (*TextFieldValue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20184,7 +20185,7 @@ func unmarshalTextFieldValue(r *JSONReader) (*TextFieldValue, error) {
 		return nil, nil
 	}
 	result := &TextFieldValue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -20206,7 +20207,7 @@ func unmarshalTextFieldValue(r *JSONReader) (*TextFieldValue, error) {
 	}
 	return result, nil
 }
-func marshalTextFieldValue(w *JsonMarshaler, v TextFieldValue) error {
+func marshalTextFieldValue(w *jsoncodec.Marshaler, v TextFieldValue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20251,7 +20252,7 @@ type TextIssueCustomField struct {
 	Value              *TextFieldValue
 }
 
-func unmarshalTextIssueCustomField(r *JSONReader) (*TextIssueCustomField, error) {
+func unmarshalTextIssueCustomField(r *jsoncodec.Reader) (*TextIssueCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20261,7 +20262,7 @@ func unmarshalTextIssueCustomField(r *JSONReader) (*TextIssueCustomField, error)
 		return nil, nil
 	}
 	result := &TextIssueCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -20285,7 +20286,7 @@ func unmarshalTextIssueCustomField(r *JSONReader) (*TextIssueCustomField, error)
 	}
 	return result, nil
 }
-func marshalTextIssueCustomField(w *JsonMarshaler, v TextIssueCustomField) error {
+func marshalTextIssueCustomField(w *jsoncodec.Marshaler, v TextIssueCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20346,7 +20347,7 @@ type TextMarkupActivityItem struct {
 	Markup       *string
 }
 
-func unmarshalTextMarkupActivityItem(r *JSONReader) (*TextMarkupActivityItem, error) {
+func unmarshalTextMarkupActivityItem(r *jsoncodec.Reader) (*TextMarkupActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20356,7 +20357,7 @@ func unmarshalTextMarkupActivityItem(r *JSONReader) (*TextMarkupActivityItem, er
 		return nil, nil
 	}
 	result := &TextMarkupActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
@@ -20376,7 +20377,7 @@ func unmarshalTextMarkupActivityItem(r *JSONReader) (*TextMarkupActivityItem, er
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "markup":
 			result.Markup, err = r.NextOptionalString()
 		case "$type":
@@ -20392,7 +20393,7 @@ func unmarshalTextMarkupActivityItem(r *JSONReader) (*TextMarkupActivityItem, er
 	}
 	return result, nil
 }
-func marshalTextMarkupActivityItem(w *JsonMarshaler, v TextMarkupActivityItem) error {
+func marshalTextMarkupActivityItem(w *jsoncodec.Marshaler, v TextMarkupActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20467,7 +20468,7 @@ func marshalTextMarkupActivityItem(w *JsonMarshaler, v TextMarkupActivityItem) e
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -20498,7 +20499,7 @@ type TextProjectCustomField struct {
 	Project        *Project
 }
 
-func unmarshalTextProjectCustomField(r *JSONReader) (*TextProjectCustomField, error) {
+func unmarshalTextProjectCustomField(r *jsoncodec.Reader) (*TextProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20508,7 +20509,7 @@ func unmarshalTextProjectCustomField(r *JSONReader) (*TextProjectCustomField, er
 		return nil, nil
 	}
 	result := &TextProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -20542,7 +20543,7 @@ func unmarshalTextProjectCustomField(r *JSONReader) (*TextProjectCustomField, er
 	}
 	return result, nil
 }
-func marshalTextProjectCustomField(w *JsonMarshaler, v TextProjectCustomField) error {
+func marshalTextProjectCustomField(w *jsoncodec.Marshaler, v TextProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20632,7 +20633,7 @@ type TimeTrackingUserProfile struct {
 	PeriodFormat *PeriodFieldFormat
 }
 
-func unmarshalTimeTrackingUserProfile(r *JSONReader) (*TimeTrackingUserProfile, error) {
+func unmarshalTimeTrackingUserProfile(r *jsoncodec.Reader) (*TimeTrackingUserProfile, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20642,7 +20643,7 @@ func unmarshalTimeTrackingUserProfile(r *JSONReader) (*TimeTrackingUserProfile, 
 		return nil, nil
 	}
 	result := &TimeTrackingUserProfile{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -20662,7 +20663,7 @@ func unmarshalTimeTrackingUserProfile(r *JSONReader) (*TimeTrackingUserProfile, 
 	}
 	return result, nil
 }
-func marshalTimeTrackingUserProfile(w *JsonMarshaler, v TimeTrackingUserProfile) error {
+func marshalTimeTrackingUserProfile(w *jsoncodec.Marshaler, v TimeTrackingUserProfile) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20698,7 +20699,7 @@ type TimeZoneDescriptor struct {
 	Presentation *string
 }
 
-func unmarshalTimeZoneDescriptor(r *JSONReader) (*TimeZoneDescriptor, error) {
+func unmarshalTimeZoneDescriptor(r *jsoncodec.Reader) (*TimeZoneDescriptor, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20708,7 +20709,7 @@ func unmarshalTimeZoneDescriptor(r *JSONReader) (*TimeZoneDescriptor, error) {
 		return nil, nil
 	}
 	result := &TimeZoneDescriptor{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -20730,7 +20731,7 @@ func unmarshalTimeZoneDescriptor(r *JSONReader) (*TimeZoneDescriptor, error) {
 	}
 	return result, nil
 }
-func marshalTimeZoneDescriptor(w *JsonMarshaler, v TimeZoneDescriptor) error {
+func marshalTimeZoneDescriptor(w *jsoncodec.Marshaler, v TimeZoneDescriptor) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20774,7 +20775,7 @@ type UnlimitedVisibility struct {
 	Id *string
 }
 
-func unmarshalUnlimitedVisibility(r *JSONReader) (*UnlimitedVisibility, error) {
+func unmarshalUnlimitedVisibility(r *jsoncodec.Reader) (*UnlimitedVisibility, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20784,7 +20785,7 @@ func unmarshalUnlimitedVisibility(r *JSONReader) (*UnlimitedVisibility, error) {
 		return nil, nil
 	}
 	result := &UnlimitedVisibility{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -20802,7 +20803,7 @@ func unmarshalUnlimitedVisibility(r *JSONReader) (*UnlimitedVisibility, error) {
 	}
 	return result, nil
 }
-func marshalUnlimitedVisibility(w *JsonMarshaler, v UnlimitedVisibility) error {
+func marshalUnlimitedVisibility(w *jsoncodec.Marshaler, v UnlimitedVisibility) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20840,7 +20841,7 @@ type User struct {
 	UserType     *UserType
 }
 
-func unmarshalUser(r *JSONReader) (*User, error) {
+func unmarshalUser(r *jsoncodec.Reader) (*User, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -20850,7 +20851,7 @@ func unmarshalUser(r *JSONReader) (*User, error) {
 		return nil, nil
 	}
 	result := &User{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "avatarUrl":
@@ -20876,11 +20877,11 @@ func unmarshalUser(r *JSONReader) (*User, error) {
 		case "ringId":
 			result.RingId, err = r.NextOptionalString()
 		case "savedQueries":
-			result.SavedQueries, err = unmarshalList(r, func(r *JSONReader) (*SavedQuery, error) {
+			result.SavedQueries, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*SavedQuery, error) {
 				return unmarshalSavedQuery(r)
 			})
 		case "tags":
-			result.Tags, err = unmarshalAbstractList(r, func(r *JSONReader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "userType":
@@ -20898,7 +20899,7 @@ func unmarshalUser(r *JSONReader) (*User, error) {
 	}
 	return result, nil
 }
-func marshalUser(w *JsonMarshaler, v User) error {
+func marshalUser(w *jsoncodec.Marshaler, v User) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -20997,7 +20998,7 @@ func marshalUser(w *JsonMarshaler, v User) error {
 		if err = w.WriteKey("savedQueries"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.SavedQueries, marshalSavedQuery); err != nil {
+		if err = jsoncodec.MarshalList(w, v.SavedQueries, marshalSavedQuery); err != nil {
 			return err
 		}
 	}
@@ -21005,7 +21006,7 @@ func marshalUser(w *JsonMarshaler, v User) error {
 		if err = w.WriteKey("tags"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Tags, marshalTag); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Tags, marshalTag); err != nil {
 			return err
 		}
 	}
@@ -21031,7 +21032,7 @@ type UserBundle struct {
 	Individuals     []User
 }
 
-func unmarshalUserBundle(r *JSONReader) (*UserBundle, error) {
+func unmarshalUserBundle(r *jsoncodec.Reader) (*UserBundle, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -21041,7 +21042,7 @@ func unmarshalUserBundle(r *JSONReader) (*UserBundle, error) {
 		return nil, nil
 	}
 	result := &UserBundle{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -21049,15 +21050,15 @@ func unmarshalUserBundle(r *JSONReader) (*UserBundle, error) {
 		case "isUpdateable":
 			result.IsUpdateable, err = r.NextOptionalBool()
 		case "aggregatedUsers":
-			result.AggregatedUsers, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.AggregatedUsers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "groups":
-			result.Groups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.Groups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "individuals":
-			result.Individuals, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Individuals, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -21073,7 +21074,7 @@ func unmarshalUserBundle(r *JSONReader) (*UserBundle, error) {
 	}
 	return result, nil
 }
-func marshalUserBundle(w *JsonMarshaler, v UserBundle) error {
+func marshalUserBundle(w *jsoncodec.Marshaler, v UserBundle) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -21100,7 +21101,7 @@ func marshalUserBundle(w *JsonMarshaler, v UserBundle) error {
 		if err = w.WriteKey("aggregatedUsers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.AggregatedUsers, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.AggregatedUsers, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -21108,7 +21109,7 @@ func marshalUserBundle(w *JsonMarshaler, v UserBundle) error {
 		if err = w.WriteKey("groups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Groups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Groups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -21116,7 +21117,7 @@ func marshalUserBundle(w *JsonMarshaler, v UserBundle) error {
 		if err = w.WriteKey("individuals"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Individuals, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Individuals, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -21137,7 +21138,7 @@ type UserCustomFieldDefaults struct {
 	DefaultValues  []User
 }
 
-func unmarshalUserCustomFieldDefaults(r *JSONReader) (*UserCustomFieldDefaults, error) {
+func unmarshalUserCustomFieldDefaults(r *jsoncodec.Reader) (*UserCustomFieldDefaults, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -21147,7 +21148,7 @@ func unmarshalUserCustomFieldDefaults(r *JSONReader) (*UserCustomFieldDefaults, 
 		return nil, nil
 	}
 	result := &UserCustomFieldDefaults{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -21163,7 +21164,7 @@ func unmarshalUserCustomFieldDefaults(r *JSONReader) (*UserCustomFieldDefaults, 
 		case "bundle":
 			result.Bundle, err = unmarshalUserBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -21179,7 +21180,7 @@ func unmarshalUserCustomFieldDefaults(r *JSONReader) (*UserCustomFieldDefaults, 
 	}
 	return result, nil
 }
-func marshalUserCustomFieldDefaults(w *JsonMarshaler, v UserCustomFieldDefaults) error {
+func marshalUserCustomFieldDefaults(w *jsoncodec.Marshaler, v UserCustomFieldDefaults) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -21238,7 +21239,7 @@ func marshalUserCustomFieldDefaults(w *JsonMarshaler, v UserCustomFieldDefaults)
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -21258,7 +21259,7 @@ type UserGroup struct {
 	UsersCount    *int
 }
 
-func unmarshalUserGroup(r *JSONReader) (*UserGroup, error) {
+func unmarshalUserGroup(r *jsoncodec.Reader) (*UserGroup, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -21268,7 +21269,7 @@ func unmarshalUserGroup(r *JSONReader) (*UserGroup, error) {
 		return nil, nil
 	}
 	result := &UserGroup{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "allUsersGroup":
@@ -21282,7 +21283,7 @@ func unmarshalUserGroup(r *JSONReader) (*UserGroup, error) {
 		case "ringId":
 			result.RingId, err = r.NextOptionalString()
 		case "users":
-			result.Users, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Users, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "usersCount":
@@ -21300,7 +21301,7 @@ func unmarshalUserGroup(r *JSONReader) (*UserGroup, error) {
 	}
 	return result, nil
 }
-func marshalUserGroup(w *JsonMarshaler, v UserGroup) error {
+func marshalUserGroup(w *jsoncodec.Marshaler, v UserGroup) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -21351,7 +21352,7 @@ func marshalUserGroup(w *JsonMarshaler, v UserGroup) error {
 		if err = w.WriteKey("users"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Users, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Users, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -21377,7 +21378,7 @@ type UserProfiles struct {
 	Timetracking  *TimeTrackingUserProfile
 }
 
-func unmarshalUserProfiles(r *JSONReader) (*UserProfiles, error) {
+func unmarshalUserProfiles(r *jsoncodec.Reader) (*UserProfiles, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -21387,7 +21388,7 @@ func unmarshalUserProfiles(r *JSONReader) (*UserProfiles, error) {
 		return nil, nil
 	}
 	result := &UserProfiles{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "general":
@@ -21411,7 +21412,7 @@ func unmarshalUserProfiles(r *JSONReader) (*UserProfiles, error) {
 	}
 	return result, nil
 }
-func marshalUserProfiles(w *JsonMarshaler, v UserProfiles) error {
+func marshalUserProfiles(w *jsoncodec.Marshaler, v UserProfiles) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -21471,7 +21472,7 @@ type UserProjectCustomField struct {
 	DefaultValues  []User
 }
 
-func unmarshalUserProjectCustomField(r *JSONReader) (*UserProjectCustomField, error) {
+func unmarshalUserProjectCustomField(r *jsoncodec.Reader) (*UserProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -21481,7 +21482,7 @@ func unmarshalUserProjectCustomField(r *JSONReader) (*UserProjectCustomField, er
 		return nil, nil
 	}
 	result := &UserProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -21505,7 +21506,7 @@ func unmarshalUserProjectCustomField(r *JSONReader) (*UserProjectCustomField, er
 		case "bundle":
 			result.Bundle, err = unmarshalUserBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -21521,7 +21522,7 @@ func unmarshalUserProjectCustomField(r *JSONReader) (*UserProjectCustomField, er
 	}
 	return result, nil
 }
-func marshalUserProjectCustomField(w *JsonMarshaler, v UserProjectCustomField) error {
+func marshalUserProjectCustomField(w *jsoncodec.Marshaler, v UserProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -21612,7 +21613,7 @@ func marshalUserProjectCustomField(w *JsonMarshaler, v UserProjectCustomField) e
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -21627,7 +21628,7 @@ type UserType struct {
 	Id *string
 }
 
-func unmarshalUserType(r *JSONReader) (*UserType, error) {
+func unmarshalUserType(r *jsoncodec.Reader) (*UserType, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -21637,7 +21638,7 @@ func unmarshalUserType(r *JSONReader) (*UserType, error) {
 		return nil, nil
 	}
 	result := &UserType{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -21655,7 +21656,7 @@ func unmarshalUserType(r *JSONReader) (*UserType, error) {
 	}
 	return result, nil
 }
-func marshalUserType(w *JsonMarshaler, v UserType) error {
+func marshalUserType(w *jsoncodec.Marshaler, v UserType) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -21692,7 +21693,7 @@ type UsesMarkupActivityItem struct {
 	Markup       *string
 }
 
-func unmarshalUsesMarkupActivityItem(r *JSONReader) (*UsesMarkupActivityItem, error) {
+func unmarshalUsesMarkupActivityItem(r *jsoncodec.Reader) (*UsesMarkupActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -21702,7 +21703,7 @@ func unmarshalUsesMarkupActivityItem(r *JSONReader) (*UsesMarkupActivityItem, er
 		return nil, nil
 	}
 	result := &UsesMarkupActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
@@ -21722,7 +21723,7 @@ func unmarshalUsesMarkupActivityItem(r *JSONReader) (*UsesMarkupActivityItem, er
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "markup":
 			result.Markup, err = r.NextOptionalString()
 		case "$type":
@@ -21738,7 +21739,7 @@ func unmarshalUsesMarkupActivityItem(r *JSONReader) (*UsesMarkupActivityItem, er
 	}
 	return result, nil
 }
-func marshalUsesMarkupActivityItem(w *JsonMarshaler, v UsesMarkupActivityItem) error {
+func marshalUsesMarkupActivityItem(w *jsoncodec.Marshaler, v UsesMarkupActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -21813,7 +21814,7 @@ func marshalUsesMarkupActivityItem(w *JsonMarshaler, v UsesMarkupActivityItem) e
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -21845,7 +21846,7 @@ type VcsChange struct {
 	Version    *string
 }
 
-func unmarshalVcsChange(r *JSONReader) (*VcsChange, error) {
+func unmarshalVcsChange(r *jsoncodec.Reader) (*VcsChange, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -21855,15 +21856,15 @@ func unmarshalVcsChange(r *JSONReader) (*VcsChange, error) {
 		return nil, nil
 	}
 	result := &VcsChange{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "author":
 			result.Author, err = unmarshalUser(r)
 		case "date":
-			result.Date, err = unmarshalTime(r)
+			result.Date, err = jsoncodec.UnmarshalTime(r)
 		case "fetched":
-			result.Fetched, err = unmarshalTime(r)
+			result.Fetched, err = jsoncodec.UnmarshalTime(r)
 		case "files":
 			result.Files, err = r.NextOptionalInt()
 		case "id":
@@ -21871,7 +21872,7 @@ func unmarshalVcsChange(r *JSONReader) (*VcsChange, error) {
 		case "issue":
 			result.Issue, err = unmarshalIssue(r)
 		case "processors":
-			result.Processors, err = unmarshalAbstractList(r, func(r *JSONReader) (ChangesProcessor, error) {
+			result.Processors, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (ChangesProcessor, error) {
 				return unmarshalChangesProcessor(r)
 			})
 		case "state":
@@ -21879,7 +21880,7 @@ func unmarshalVcsChange(r *JSONReader) (*VcsChange, error) {
 		case "text":
 			result.Text, err = r.NextOptionalString()
 		case "urls":
-			result.Urls, err = unmarshalList(r, func(r *JSONReader) (*string, error) {
+			result.Urls, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*string, error) {
 				return r.NextOptionalString()
 			})
 		case "version":
@@ -21897,7 +21898,7 @@ func unmarshalVcsChange(r *JSONReader) (*VcsChange, error) {
 	}
 	return result, nil
 }
-func marshalVcsChange(w *JsonMarshaler, v VcsChange) error {
+func marshalVcsChange(w *jsoncodec.Marshaler, v VcsChange) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -21916,7 +21917,7 @@ func marshalVcsChange(w *JsonMarshaler, v VcsChange) error {
 		if err = w.WriteKey("date"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Date); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Date); err != nil {
 			return err
 		}
 	}
@@ -21924,7 +21925,7 @@ func marshalVcsChange(w *JsonMarshaler, v VcsChange) error {
 		if err = w.WriteKey("fetched"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Fetched); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Fetched); err != nil {
 			return err
 		}
 	}
@@ -21956,7 +21957,7 @@ func marshalVcsChange(w *JsonMarshaler, v VcsChange) error {
 		if err = w.WriteKey("processors"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Processors, marshalChangesProcessor); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Processors, marshalChangesProcessor); err != nil {
 			return err
 		}
 	}
@@ -21980,7 +21981,7 @@ func marshalVcsChange(w *JsonMarshaler, v VcsChange) error {
 		if err = w.WriteKey("urls"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Urls, marshalstring); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Urls, jsoncodec.MarshalString); err != nil {
 			return err
 		}
 	}
@@ -22011,7 +22012,7 @@ type VcsChangeActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalVcsChangeActivityItem(r *JSONReader) (*VcsChangeActivityItem, error) {
+func unmarshalVcsChangeActivityItem(r *jsoncodec.Reader) (*VcsChangeActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -22021,11 +22022,11 @@ func unmarshalVcsChangeActivityItem(r *JSONReader) (*VcsChangeActivityItem, erro
 		return nil, nil
 	}
 	result := &VcsChangeActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*VcsChange, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*VcsChange, error) {
 				return unmarshalVcsChange(r)
 			})
 		case "author":
@@ -22037,7 +22038,7 @@ func unmarshalVcsChangeActivityItem(r *JSONReader) (*VcsChangeActivityItem, erro
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*VcsChange, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*VcsChange, error) {
 				return unmarshalVcsChange(r)
 			})
 		case "target":
@@ -22045,7 +22046,7 @@ func unmarshalVcsChangeActivityItem(r *JSONReader) (*VcsChangeActivityItem, erro
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -22059,7 +22060,7 @@ func unmarshalVcsChangeActivityItem(r *JSONReader) (*VcsChangeActivityItem, erro
 	}
 	return result, nil
 }
-func marshalVcsChangeActivityItem(w *JsonMarshaler, v VcsChangeActivityItem) error {
+func marshalVcsChangeActivityItem(w *jsoncodec.Marshaler, v VcsChangeActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -22070,7 +22071,7 @@ func marshalVcsChangeActivityItem(w *JsonMarshaler, v VcsChangeActivityItem) err
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalVcsChange); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalVcsChange); err != nil {
 			return err
 		}
 	}
@@ -22110,7 +22111,7 @@ func marshalVcsChangeActivityItem(w *JsonMarshaler, v VcsChangeActivityItem) err
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalVcsChange); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalVcsChange); err != nil {
 			return err
 		}
 	}
@@ -22134,7 +22135,7 @@ func marshalVcsChangeActivityItem(w *JsonMarshaler, v VcsChangeActivityItem) err
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -22164,7 +22165,7 @@ type VcsUnresolvedUser struct {
 	Name         *string
 }
 
-func unmarshalVcsUnresolvedUser(r *JSONReader) (*VcsUnresolvedUser, error) {
+func unmarshalVcsUnresolvedUser(r *jsoncodec.Reader) (*VcsUnresolvedUser, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -22174,7 +22175,7 @@ func unmarshalVcsUnresolvedUser(r *JSONReader) (*VcsUnresolvedUser, error) {
 		return nil, nil
 	}
 	result := &VcsUnresolvedUser{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "avatarUrl":
@@ -22200,11 +22201,11 @@ func unmarshalVcsUnresolvedUser(r *JSONReader) (*VcsUnresolvedUser, error) {
 		case "ringId":
 			result.RingId, err = r.NextOptionalString()
 		case "savedQueries":
-			result.SavedQueries, err = unmarshalList(r, func(r *JSONReader) (*SavedQuery, error) {
+			result.SavedQueries, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*SavedQuery, error) {
 				return unmarshalSavedQuery(r)
 			})
 		case "tags":
-			result.Tags, err = unmarshalAbstractList(r, func(r *JSONReader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "userType":
@@ -22224,7 +22225,7 @@ func unmarshalVcsUnresolvedUser(r *JSONReader) (*VcsUnresolvedUser, error) {
 	}
 	return result, nil
 }
-func marshalVcsUnresolvedUser(w *JsonMarshaler, v VcsUnresolvedUser) error {
+func marshalVcsUnresolvedUser(w *jsoncodec.Marshaler, v VcsUnresolvedUser) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -22323,7 +22324,7 @@ func marshalVcsUnresolvedUser(w *JsonMarshaler, v VcsUnresolvedUser) error {
 		if err = w.WriteKey("savedQueries"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.SavedQueries, marshalSavedQuery); err != nil {
+		if err = jsoncodec.MarshalList(w, v.SavedQueries, marshalSavedQuery); err != nil {
 			return err
 		}
 	}
@@ -22331,7 +22332,7 @@ func marshalVcsUnresolvedUser(w *JsonMarshaler, v VcsUnresolvedUser) error {
 		if err = w.WriteKey("tags"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Tags, marshalTag); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Tags, marshalTag); err != nil {
 			return err
 		}
 	}
@@ -22364,7 +22365,7 @@ type VersionBundle struct {
 	Values       []VersionBundleElement
 }
 
-func unmarshalVersionBundle(r *JSONReader) (*VersionBundle, error) {
+func unmarshalVersionBundle(r *jsoncodec.Reader) (*VersionBundle, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -22374,7 +22375,7 @@ func unmarshalVersionBundle(r *JSONReader) (*VersionBundle, error) {
 		return nil, nil
 	}
 	result := &VersionBundle{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -22382,7 +22383,7 @@ func unmarshalVersionBundle(r *JSONReader) (*VersionBundle, error) {
 		case "isUpdateable":
 			result.IsUpdateable, err = r.NextOptionalBool()
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*VersionBundleElement, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*VersionBundleElement, error) {
 				return unmarshalVersionBundleElement(r)
 			})
 		case "$type":
@@ -22398,7 +22399,7 @@ func unmarshalVersionBundle(r *JSONReader) (*VersionBundle, error) {
 	}
 	return result, nil
 }
-func marshalVersionBundle(w *JsonMarshaler, v VersionBundle) error {
+func marshalVersionBundle(w *jsoncodec.Marshaler, v VersionBundle) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -22425,7 +22426,7 @@ func marshalVersionBundle(w *JsonMarshaler, v VersionBundle) error {
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalVersionBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalVersionBundleElement); err != nil {
 			return err
 		}
 	}
@@ -22446,7 +22447,7 @@ type VersionBundleCustomFieldDefaults struct {
 	DefaultValues  []VersionBundleElement
 }
 
-func unmarshalVersionBundleCustomFieldDefaults(r *JSONReader) (*VersionBundleCustomFieldDefaults, error) {
+func unmarshalVersionBundleCustomFieldDefaults(r *jsoncodec.Reader) (*VersionBundleCustomFieldDefaults, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -22456,7 +22457,7 @@ func unmarshalVersionBundleCustomFieldDefaults(r *JSONReader) (*VersionBundleCus
 		return nil, nil
 	}
 	result := &VersionBundleCustomFieldDefaults{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -22472,7 +22473,7 @@ func unmarshalVersionBundleCustomFieldDefaults(r *JSONReader) (*VersionBundleCus
 		case "bundle":
 			result.Bundle, err = unmarshalVersionBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*VersionBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*VersionBundleElement, error) {
 				return unmarshalVersionBundleElement(r)
 			})
 		case "$type":
@@ -22488,7 +22489,7 @@ func unmarshalVersionBundleCustomFieldDefaults(r *JSONReader) (*VersionBundleCus
 	}
 	return result, nil
 }
-func marshalVersionBundleCustomFieldDefaults(w *JsonMarshaler, v VersionBundleCustomFieldDefaults) error {
+func marshalVersionBundleCustomFieldDefaults(w *jsoncodec.Marshaler, v VersionBundleCustomFieldDefaults) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -22547,7 +22548,7 @@ func marshalVersionBundleCustomFieldDefaults(w *JsonMarshaler, v VersionBundleCu
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalVersionBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalVersionBundleElement); err != nil {
 			return err
 		}
 	}
@@ -22572,7 +22573,7 @@ type VersionBundleElement struct {
 	StartDate     *time.Time
 }
 
-func unmarshalVersionBundleElement(r *JSONReader) (*VersionBundleElement, error) {
+func unmarshalVersionBundleElement(r *jsoncodec.Reader) (*VersionBundleElement, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -22582,7 +22583,7 @@ func unmarshalVersionBundleElement(r *JSONReader) (*VersionBundleElement, error)
 		return nil, nil
 	}
 	result := &VersionBundleElement{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "archived":
@@ -22602,11 +22603,11 @@ func unmarshalVersionBundleElement(r *JSONReader) (*VersionBundleElement, error)
 		case "ordinal":
 			result.Ordinal, err = r.NextOptionalInt()
 		case "releaseDate":
-			result.ReleaseDate, err = unmarshalTime(r)
+			result.ReleaseDate, err = jsoncodec.UnmarshalTime(r)
 		case "released":
 			result.Released, err = r.NextOptionalBool()
 		case "startDate":
-			result.StartDate, err = unmarshalTime(r)
+			result.StartDate, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -22620,7 +22621,7 @@ func unmarshalVersionBundleElement(r *JSONReader) (*VersionBundleElement, error)
 	}
 	return result, nil
 }
-func marshalVersionBundleElement(w *JsonMarshaler, v VersionBundleElement) error {
+func marshalVersionBundleElement(w *jsoncodec.Marshaler, v VersionBundleElement) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -22695,7 +22696,7 @@ func marshalVersionBundleElement(w *JsonMarshaler, v VersionBundleElement) error
 		if err = w.WriteKey("releaseDate"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.ReleaseDate); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.ReleaseDate); err != nil {
 			return err
 		}
 	}
@@ -22711,7 +22712,7 @@ func marshalVersionBundleElement(w *JsonMarshaler, v VersionBundleElement) error
 		if err = w.WriteKey("startDate"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.StartDate); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.StartDate); err != nil {
 			return err
 		}
 	}
@@ -22736,7 +22737,7 @@ type VersionProjectCustomField struct {
 	DefaultValues  []VersionBundleElement
 }
 
-func unmarshalVersionProjectCustomField(r *JSONReader) (*VersionProjectCustomField, error) {
+func unmarshalVersionProjectCustomField(r *jsoncodec.Reader) (*VersionProjectCustomField, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -22746,7 +22747,7 @@ func unmarshalVersionProjectCustomField(r *JSONReader) (*VersionProjectCustomFie
 		return nil, nil
 	}
 	result := &VersionProjectCustomField{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "canBeEmpty":
@@ -22770,7 +22771,7 @@ func unmarshalVersionProjectCustomField(r *JSONReader) (*VersionProjectCustomFie
 		case "bundle":
 			result.Bundle, err = unmarshalVersionBundle(r)
 		case "defaultValues":
-			result.DefaultValues, err = unmarshalList(r, func(r *JSONReader) (*VersionBundleElement, error) {
+			result.DefaultValues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*VersionBundleElement, error) {
 				return unmarshalVersionBundleElement(r)
 			})
 		case "$type":
@@ -22786,7 +22787,7 @@ func unmarshalVersionProjectCustomField(r *JSONReader) (*VersionProjectCustomFie
 	}
 	return result, nil
 }
-func marshalVersionProjectCustomField(w *JsonMarshaler, v VersionProjectCustomField) error {
+func marshalVersionProjectCustomField(w *jsoncodec.Marshaler, v VersionProjectCustomField) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -22877,7 +22878,7 @@ func marshalVersionProjectCustomField(w *JsonMarshaler, v VersionProjectCustomFi
 		if err = w.WriteKey("defaultValues"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.DefaultValues, marshalVersionBundleElement); err != nil {
+		if err = jsoncodec.MarshalList(w, v.DefaultValues, marshalVersionBundleElement); err != nil {
 			return err
 		}
 	}
@@ -22902,7 +22903,7 @@ type VisibilityGroupActivityItem struct {
 	TargetSubMember *string
 }
 
-func unmarshalVisibilityGroupActivityItem(r *JSONReader) (*VisibilityGroupActivityItem, error) {
+func unmarshalVisibilityGroupActivityItem(r *jsoncodec.Reader) (*VisibilityGroupActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -22912,11 +22913,11 @@ func unmarshalVisibilityGroupActivityItem(r *JSONReader) (*VisibilityGroupActivi
 		return nil, nil
 	}
 	result := &VisibilityGroupActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "author":
@@ -22928,7 +22929,7 @@ func unmarshalVisibilityGroupActivityItem(r *JSONReader) (*VisibilityGroupActivi
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "target":
@@ -22936,7 +22937,7 @@ func unmarshalVisibilityGroupActivityItem(r *JSONReader) (*VisibilityGroupActivi
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "targetSubMember":
 			result.TargetSubMember, err = r.NextOptionalString()
 		case "$type":
@@ -22952,7 +22953,7 @@ func unmarshalVisibilityGroupActivityItem(r *JSONReader) (*VisibilityGroupActivi
 	}
 	return result, nil
 }
-func marshalVisibilityGroupActivityItem(w *JsonMarshaler, v VisibilityGroupActivityItem) error {
+func marshalVisibilityGroupActivityItem(w *jsoncodec.Marshaler, v VisibilityGroupActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -22963,7 +22964,7 @@ func marshalVisibilityGroupActivityItem(w *JsonMarshaler, v VisibilityGroupActiv
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -23003,7 +23004,7 @@ func marshalVisibilityGroupActivityItem(w *JsonMarshaler, v VisibilityGroupActiv
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -23027,7 +23028,7 @@ func marshalVisibilityGroupActivityItem(w *JsonMarshaler, v VisibilityGroupActiv
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -23060,7 +23061,7 @@ type VisibilityUserActivityItem struct {
 	TargetSubMember *string
 }
 
-func unmarshalVisibilityUserActivityItem(r *JSONReader) (*VisibilityUserActivityItem, error) {
+func unmarshalVisibilityUserActivityItem(r *jsoncodec.Reader) (*VisibilityUserActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23070,11 +23071,11 @@ func unmarshalVisibilityUserActivityItem(r *JSONReader) (*VisibilityUserActivity
 		return nil, nil
 	}
 	result := &VisibilityUserActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "author":
@@ -23086,7 +23087,7 @@ func unmarshalVisibilityUserActivityItem(r *JSONReader) (*VisibilityUserActivity
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "target":
@@ -23094,7 +23095,7 @@ func unmarshalVisibilityUserActivityItem(r *JSONReader) (*VisibilityUserActivity
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "targetSubMember":
 			result.TargetSubMember, err = r.NextOptionalString()
 		case "$type":
@@ -23110,7 +23111,7 @@ func unmarshalVisibilityUserActivityItem(r *JSONReader) (*VisibilityUserActivity
 	}
 	return result, nil
 }
-func marshalVisibilityUserActivityItem(w *JsonMarshaler, v VisibilityUserActivityItem) error {
+func marshalVisibilityUserActivityItem(w *jsoncodec.Marshaler, v VisibilityUserActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -23121,7 +23122,7 @@ func marshalVisibilityUserActivityItem(w *JsonMarshaler, v VisibilityUserActivit
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -23161,7 +23162,7 @@ func marshalVisibilityUserActivityItem(w *JsonMarshaler, v VisibilityUserActivit
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -23185,7 +23186,7 @@ func marshalVisibilityUserActivityItem(w *JsonMarshaler, v VisibilityUserActivit
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -23216,7 +23217,7 @@ type VotersActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalVotersActivityItem(r *JSONReader) (*VotersActivityItem, error) {
+func unmarshalVotersActivityItem(r *jsoncodec.Reader) (*VotersActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23226,11 +23227,11 @@ func unmarshalVotersActivityItem(r *JSONReader) (*VotersActivityItem, error) {
 		return nil, nil
 	}
 	result := &VotersActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "author":
@@ -23242,7 +23243,7 @@ func unmarshalVotersActivityItem(r *JSONReader) (*VotersActivityItem, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "target":
@@ -23250,7 +23251,7 @@ func unmarshalVotersActivityItem(r *JSONReader) (*VotersActivityItem, error) {
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -23264,7 +23265,7 @@ func unmarshalVotersActivityItem(r *JSONReader) (*VotersActivityItem, error) {
 	}
 	return result, nil
 }
-func marshalVotersActivityItem(w *JsonMarshaler, v VotersActivityItem) error {
+func marshalVotersActivityItem(w *jsoncodec.Marshaler, v VotersActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -23275,7 +23276,7 @@ func marshalVotersActivityItem(w *JsonMarshaler, v VotersActivityItem) error {
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -23315,7 +23316,7 @@ func marshalVotersActivityItem(w *JsonMarshaler, v VotersActivityItem) error {
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -23339,7 +23340,7 @@ func marshalVotersActivityItem(w *JsonMarshaler, v VotersActivityItem) error {
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -23358,7 +23359,7 @@ type WIPLimit struct {
 	Min    *int
 }
 
-func unmarshalWIPLimit(r *JSONReader) (*WIPLimit, error) {
+func unmarshalWIPLimit(r *jsoncodec.Reader) (*WIPLimit, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23368,7 +23369,7 @@ func unmarshalWIPLimit(r *JSONReader) (*WIPLimit, error) {
 		return nil, nil
 	}
 	result := &WIPLimit{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "column":
@@ -23392,7 +23393,7 @@ func unmarshalWIPLimit(r *JSONReader) (*WIPLimit, error) {
 	}
 	return result, nil
 }
-func marshalWIPLimit(w *JsonMarshaler, v WIPLimit) error {
+func marshalWIPLimit(w *jsoncodec.Marshaler, v WIPLimit) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -23444,7 +23445,7 @@ type WatchFolderSharingSettings struct {
 	PermittedUsers  []User
 }
 
-func unmarshalWatchFolderSharingSettings(r *JSONReader) (*WatchFolderSharingSettings, error) {
+func unmarshalWatchFolderSharingSettings(r *jsoncodec.Reader) (*WatchFolderSharingSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23454,17 +23455,17 @@ func unmarshalWatchFolderSharingSettings(r *JSONReader) (*WatchFolderSharingSett
 		return nil, nil
 	}
 	result := &WatchFolderSharingSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "permittedGroups":
-			result.PermittedGroups, err = unmarshalList(r, func(r *JSONReader) (*UserGroup, error) {
+			result.PermittedGroups, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*UserGroup, error) {
 				return unmarshalUserGroup(r)
 			})
 		case "permittedUsers":
-			result.PermittedUsers, err = unmarshalList(r, func(r *JSONReader) (*User, error) {
+			result.PermittedUsers, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalUser(r)
 			})
 		case "$type":
@@ -23480,7 +23481,7 @@ func unmarshalWatchFolderSharingSettings(r *JSONReader) (*WatchFolderSharingSett
 	}
 	return result, nil
 }
-func marshalWatchFolderSharingSettings(w *JsonMarshaler, v WatchFolderSharingSettings) error {
+func marshalWatchFolderSharingSettings(w *jsoncodec.Marshaler, v WatchFolderSharingSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -23499,7 +23500,7 @@ func marshalWatchFolderSharingSettings(w *JsonMarshaler, v WatchFolderSharingSet
 		if err = w.WriteKey("permittedGroups"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedGroups, marshalUserGroup); err != nil {
 			return err
 		}
 	}
@@ -23507,7 +23508,7 @@ func marshalWatchFolderSharingSettings(w *JsonMarshaler, v WatchFolderSharingSet
 		if err = w.WriteKey("permittedUsers"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.PermittedUsers, marshalUser); err != nil {
+		if err = jsoncodec.MarshalList(w, v.PermittedUsers, marshalUser); err != nil {
 			return err
 		}
 	}
@@ -23530,7 +23531,7 @@ type WorkItemActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalWorkItemActivityItem(r *JSONReader) (*WorkItemActivityItem, error) {
+func unmarshalWorkItemActivityItem(r *jsoncodec.Reader) (*WorkItemActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23540,11 +23541,11 @@ func unmarshalWorkItemActivityItem(r *JSONReader) (*WorkItemActivityItem, error)
 		return nil, nil
 	}
 	result := &WorkItemActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*IssueWorkItem, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueWorkItem, error) {
 				return unmarshalIssueWorkItem(r)
 			})
 		case "author":
@@ -23556,7 +23557,7 @@ func unmarshalWorkItemActivityItem(r *JSONReader) (*WorkItemActivityItem, error)
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*IssueWorkItem, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*IssueWorkItem, error) {
 				return unmarshalIssueWorkItem(r)
 			})
 		case "target":
@@ -23564,7 +23565,7 @@ func unmarshalWorkItemActivityItem(r *JSONReader) (*WorkItemActivityItem, error)
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -23578,7 +23579,7 @@ func unmarshalWorkItemActivityItem(r *JSONReader) (*WorkItemActivityItem, error)
 	}
 	return result, nil
 }
-func marshalWorkItemActivityItem(w *JsonMarshaler, v WorkItemActivityItem) error {
+func marshalWorkItemActivityItem(w *jsoncodec.Marshaler, v WorkItemActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -23589,7 +23590,7 @@ func marshalWorkItemActivityItem(w *JsonMarshaler, v WorkItemActivityItem) error
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalIssueWorkItem); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalIssueWorkItem); err != nil {
 			return err
 		}
 	}
@@ -23629,7 +23630,7 @@ func marshalWorkItemActivityItem(w *JsonMarshaler, v WorkItemActivityItem) error
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalIssueWorkItem); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalIssueWorkItem); err != nil {
 			return err
 		}
 	}
@@ -23653,7 +23654,7 @@ func marshalWorkItemActivityItem(w *JsonMarshaler, v WorkItemActivityItem) error
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -23672,7 +23673,7 @@ type WorkItemAttribute struct {
 	WorkItem         BaseWorkItem
 }
 
-func unmarshalWorkItemAttribute(r *JSONReader) (*WorkItemAttribute, error) {
+func unmarshalWorkItemAttribute(r *jsoncodec.Reader) (*WorkItemAttribute, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23682,7 +23683,7 @@ func unmarshalWorkItemAttribute(r *JSONReader) (*WorkItemAttribute, error) {
 		return nil, nil
 	}
 	result := &WorkItemAttribute{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -23708,7 +23709,7 @@ func unmarshalWorkItemAttribute(r *JSONReader) (*WorkItemAttribute, error) {
 	}
 	return result, nil
 }
-func marshalWorkItemAttribute(w *JsonMarshaler, v WorkItemAttribute) error {
+func marshalWorkItemAttribute(w *jsoncodec.Marshaler, v WorkItemAttribute) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -23771,7 +23772,7 @@ type WorkItemAttributePrototype struct {
 	Values    []WorkItemAttributeValue
 }
 
-func unmarshalWorkItemAttributePrototype(r *JSONReader) (*WorkItemAttributePrototype, error) {
+func unmarshalWorkItemAttributePrototype(r *jsoncodec.Reader) (*WorkItemAttributePrototype, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23781,19 +23782,19 @@ func unmarshalWorkItemAttributePrototype(r *JSONReader) (*WorkItemAttributeProto
 		return nil, nil
 	}
 	result := &WorkItemAttributePrototype{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "instances":
-			result.Instances, err = unmarshalList(r, func(r *JSONReader) (*WorkItemProjectAttribute, error) {
+			result.Instances, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemProjectAttribute, error) {
 				return unmarshalWorkItemProjectAttribute(r)
 			})
 		case "name":
 			result.Name, err = r.NextOptionalString()
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*WorkItemAttributeValue, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemAttributeValue, error) {
 				return unmarshalWorkItemAttributeValue(r)
 			})
 		case "$type":
@@ -23809,7 +23810,7 @@ func unmarshalWorkItemAttributePrototype(r *JSONReader) (*WorkItemAttributeProto
 	}
 	return result, nil
 }
-func marshalWorkItemAttributePrototype(w *JsonMarshaler, v WorkItemAttributePrototype) error {
+func marshalWorkItemAttributePrototype(w *jsoncodec.Marshaler, v WorkItemAttributePrototype) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -23828,7 +23829,7 @@ func marshalWorkItemAttributePrototype(w *JsonMarshaler, v WorkItemAttributeProt
 		if err = w.WriteKey("instances"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Instances, marshalWorkItemProjectAttribute); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Instances, marshalWorkItemProjectAttribute); err != nil {
 			return err
 		}
 	}
@@ -23844,7 +23845,7 @@ func marshalWorkItemAttributePrototype(w *JsonMarshaler, v WorkItemAttributeProt
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalWorkItemAttributeValue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalWorkItemAttributeValue); err != nil {
 			return err
 		}
 	}
@@ -23863,7 +23864,7 @@ type WorkItemAttributeValue struct {
 	Prototype   *WorkItemAttributePrototype
 }
 
-func unmarshalWorkItemAttributeValue(r *JSONReader) (*WorkItemAttributeValue, error) {
+func unmarshalWorkItemAttributeValue(r *jsoncodec.Reader) (*WorkItemAttributeValue, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23873,7 +23874,7 @@ func unmarshalWorkItemAttributeValue(r *JSONReader) (*WorkItemAttributeValue, er
 		return nil, nil
 	}
 	result := &WorkItemAttributeValue{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "autoAttach":
@@ -23899,7 +23900,7 @@ func unmarshalWorkItemAttributeValue(r *JSONReader) (*WorkItemAttributeValue, er
 	}
 	return result, nil
 }
-func marshalWorkItemAttributeValue(w *JsonMarshaler, v WorkItemAttributeValue) error {
+func marshalWorkItemAttributeValue(w *jsoncodec.Marshaler, v WorkItemAttributeValue) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -23965,7 +23966,7 @@ type WorkItemAuthorActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalWorkItemAuthorActivityItem(r *JSONReader) (*WorkItemAuthorActivityItem, error) {
+func unmarshalWorkItemAuthorActivityItem(r *jsoncodec.Reader) (*WorkItemAuthorActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -23975,7 +23976,7 @@ func unmarshalWorkItemAuthorActivityItem(r *JSONReader) (*WorkItemAuthorActivity
 		return nil, nil
 	}
 	result := &WorkItemAuthorActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
@@ -23995,7 +23996,7 @@ func unmarshalWorkItemAuthorActivityItem(r *JSONReader) (*WorkItemAuthorActivity
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -24009,7 +24010,7 @@ func unmarshalWorkItemAuthorActivityItem(r *JSONReader) (*WorkItemAuthorActivity
 	}
 	return result, nil
 }
-func marshalWorkItemAuthorActivityItem(w *JsonMarshaler, v WorkItemAuthorActivityItem) error {
+func marshalWorkItemAuthorActivityItem(w *jsoncodec.Marshaler, v WorkItemAuthorActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -24084,7 +24085,7 @@ func marshalWorkItemAuthorActivityItem(w *JsonMarshaler, v WorkItemAuthorActivit
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -24107,7 +24108,7 @@ type WorkItemDurationActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalWorkItemDurationActivityItem(r *JSONReader) (*WorkItemDurationActivityItem, error) {
+func unmarshalWorkItemDurationActivityItem(r *jsoncodec.Reader) (*WorkItemDurationActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -24117,7 +24118,7 @@ func unmarshalWorkItemDurationActivityItem(r *JSONReader) (*WorkItemDurationActi
 		return nil, nil
 	}
 	result := &WorkItemDurationActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
@@ -24137,7 +24138,7 @@ func unmarshalWorkItemDurationActivityItem(r *JSONReader) (*WorkItemDurationActi
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -24151,7 +24152,7 @@ func unmarshalWorkItemDurationActivityItem(r *JSONReader) (*WorkItemDurationActi
 	}
 	return result, nil
 }
-func marshalWorkItemDurationActivityItem(w *JsonMarshaler, v WorkItemDurationActivityItem) error {
+func marshalWorkItemDurationActivityItem(w *jsoncodec.Marshaler, v WorkItemDurationActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -24226,7 +24227,7 @@ func marshalWorkItemDurationActivityItem(w *JsonMarshaler, v WorkItemDurationAct
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -24246,7 +24247,7 @@ type WorkItemProjectAttribute struct {
 	Values               []WorkItemAttributeValue
 }
 
-func unmarshalWorkItemProjectAttribute(r *JSONReader) (*WorkItemProjectAttribute, error) {
+func unmarshalWorkItemProjectAttribute(r *jsoncodec.Reader) (*WorkItemProjectAttribute, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -24256,7 +24257,7 @@ func unmarshalWorkItemProjectAttribute(r *JSONReader) (*WorkItemProjectAttribute
 		return nil, nil
 	}
 	result := &WorkItemProjectAttribute{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "id":
@@ -24270,7 +24271,7 @@ func unmarshalWorkItemProjectAttribute(r *JSONReader) (*WorkItemProjectAttribute
 		case "timeTrackingSettings":
 			result.TimeTrackingSettings, err = unmarshalProjectTimeTrackingSettings(r)
 		case "values":
-			result.Values, err = unmarshalList(r, func(r *JSONReader) (*WorkItemAttributeValue, error) {
+			result.Values, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemAttributeValue, error) {
 				return unmarshalWorkItemAttributeValue(r)
 			})
 		case "$type":
@@ -24286,7 +24287,7 @@ func unmarshalWorkItemProjectAttribute(r *JSONReader) (*WorkItemProjectAttribute
 	}
 	return result, nil
 }
-func marshalWorkItemProjectAttribute(w *JsonMarshaler, v WorkItemProjectAttribute) error {
+func marshalWorkItemProjectAttribute(w *jsoncodec.Marshaler, v WorkItemProjectAttribute) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -24337,7 +24338,7 @@ func marshalWorkItemProjectAttribute(w *JsonMarshaler, v WorkItemProjectAttribut
 		if err = w.WriteKey("values"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Values, marshalWorkItemAttributeValue); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Values, marshalWorkItemAttributeValue); err != nil {
 			return err
 		}
 	}
@@ -24353,7 +24354,7 @@ type WorkItemType struct {
 	Name         *string
 }
 
-func unmarshalWorkItemType(r *JSONReader) (*WorkItemType, error) {
+func unmarshalWorkItemType(r *jsoncodec.Reader) (*WorkItemType, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -24363,7 +24364,7 @@ func unmarshalWorkItemType(r *JSONReader) (*WorkItemType, error) {
 		return nil, nil
 	}
 	result := &WorkItemType{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "autoAttached":
@@ -24385,7 +24386,7 @@ func unmarshalWorkItemType(r *JSONReader) (*WorkItemType, error) {
 	}
 	return result, nil
 }
-func marshalWorkItemType(w *JsonMarshaler, v WorkItemType) error {
+func marshalWorkItemType(w *jsoncodec.Marshaler, v WorkItemType) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -24435,7 +24436,7 @@ type WorkItemTypeActivityItem struct {
 	Timestamp    *time.Time
 }
 
-func unmarshalWorkItemTypeActivityItem(r *JSONReader) (*WorkItemTypeActivityItem, error) {
+func unmarshalWorkItemTypeActivityItem(r *jsoncodec.Reader) (*WorkItemTypeActivityItem, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -24445,11 +24446,11 @@ func unmarshalWorkItemTypeActivityItem(r *JSONReader) (*WorkItemTypeActivityItem
 		return nil, nil
 	}
 	result := &WorkItemTypeActivityItem{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = unmarshalList(r, func(r *JSONReader) (*WorkItemType, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemType, error) {
 				return unmarshalWorkItemType(r)
 			})
 		case "author":
@@ -24461,7 +24462,7 @@ func unmarshalWorkItemTypeActivityItem(r *JSONReader) (*WorkItemTypeActivityItem
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = unmarshalList(r, func(r *JSONReader) (*WorkItemType, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*WorkItemType, error) {
 				return unmarshalWorkItemType(r)
 			})
 		case "target":
@@ -24469,7 +24470,7 @@ func unmarshalWorkItemTypeActivityItem(r *JSONReader) (*WorkItemTypeActivityItem
 		case "targetMember":
 			result.TargetMember, err = r.NextOptionalString()
 		case "timestamp":
-			result.Timestamp, err = unmarshalTime(r)
+			result.Timestamp, err = jsoncodec.UnmarshalTime(r)
 		case "$type":
 			_, _ = r.NextValue()
 		default:
@@ -24483,7 +24484,7 @@ func unmarshalWorkItemTypeActivityItem(r *JSONReader) (*WorkItemTypeActivityItem
 	}
 	return result, nil
 }
-func marshalWorkItemTypeActivityItem(w *JsonMarshaler, v WorkItemTypeActivityItem) error {
+func marshalWorkItemTypeActivityItem(w *jsoncodec.Marshaler, v WorkItemTypeActivityItem) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -24494,7 +24495,7 @@ func marshalWorkItemTypeActivityItem(w *JsonMarshaler, v WorkItemTypeActivityIte
 		if err = w.WriteKey("added"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Added, marshalWorkItemType); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Added, marshalWorkItemType); err != nil {
 			return err
 		}
 	}
@@ -24534,7 +24535,7 @@ func marshalWorkItemTypeActivityItem(w *JsonMarshaler, v WorkItemTypeActivityIte
 		if err = w.WriteKey("removed"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.Removed, marshalWorkItemType); err != nil {
+		if err = jsoncodec.MarshalList(w, v.Removed, marshalWorkItemType); err != nil {
 			return err
 		}
 	}
@@ -24558,7 +24559,7 @@ func marshalWorkItemTypeActivityItem(w *JsonMarshaler, v WorkItemTypeActivityIte
 		if err = w.WriteKey("timestamp"); err != nil {
 			return err
 		}
-		if err = marshalTime(w, *v.Timestamp); err != nil {
+		if err = jsoncodec.MarshalTime(w, *v.Timestamp); err != nil {
 			return err
 		}
 	}
@@ -24576,7 +24577,7 @@ type WorkTimeSettings struct {
 	WorkDays       []int
 }
 
-func unmarshalWorkTimeSettings(r *JSONReader) (*WorkTimeSettings, error) {
+func unmarshalWorkTimeSettings(r *jsoncodec.Reader) (*WorkTimeSettings, error) {
 	tok, err := r.Peek()
 	if err != nil {
 		return nil, err
@@ -24586,7 +24587,7 @@ func unmarshalWorkTimeSettings(r *JSONReader) (*WorkTimeSettings, error) {
 		return nil, nil
 	}
 	result := &WorkTimeSettings{}
-	err = r.NextObjectDo(func(key string, r *JSONReader) error {
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
 		var err error
 		switch key {
 		case "daysAWeek":
@@ -24598,7 +24599,7 @@ func unmarshalWorkTimeSettings(r *JSONReader) (*WorkTimeSettings, error) {
 		case "minutesADay":
 			result.MinutesADay, err = r.NextOptionalInt()
 		case "workDays":
-			result.WorkDays, err = unmarshalList(r, func(r *JSONReader) (*int, error) {
+			result.WorkDays, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*int, error) {
 				return r.NextOptionalInt()
 			})
 		case "$type":
@@ -24614,7 +24615,7 @@ func unmarshalWorkTimeSettings(r *JSONReader) (*WorkTimeSettings, error) {
 	}
 	return result, nil
 }
-func marshalWorkTimeSettings(w *JsonMarshaler, v WorkTimeSettings) error {
+func marshalWorkTimeSettings(w *jsoncodec.Marshaler, v WorkTimeSettings) error {
 	var err error
 	if err = w.ObjectStart(); err != nil {
 		return err
@@ -24657,7 +24658,7 @@ func marshalWorkTimeSettings(w *JsonMarshaler, v WorkTimeSettings) error {
 		if err = w.WriteKey("workDays"); err != nil {
 			return err
 		}
-		if err = marshalList(w, v.WorkDays, marshalint); err != nil {
+		if err = jsoncodec.MarshalList(w, v.WorkDays, jsoncodec.MarshalInt); err != nil {
 			return err
 		}
 	}

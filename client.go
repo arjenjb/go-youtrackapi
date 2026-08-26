@@ -6,6 +6,8 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+
+	"github.com/arjenjb/go-youtrackapi/internal/jsoncodec"
 )
 
 type Client struct {
@@ -20,7 +22,7 @@ type Upload struct {
 	Reader   io.Reader
 }
 
-func makeDecodedCall[T any](client *http.Client, req *http.Request, decode func(*JSONReader) (T, error)) (T, error) {
+func makeDecodedCall[T any](client *http.Client, req *http.Request, decode func(*jsoncodec.Reader) (T, error)) (T, error) {
 	var zero T
 	resp, err := client.Do(req)
 	if err != nil {
@@ -30,18 +32,18 @@ func makeDecodedCall[T any](client *http.Client, req *http.Request, decode func(
 	if err := checkResponse(resp); err != nil {
 		return zero, err
 	}
-	return decode(NewJsonReader(resp.Body))
+	return decode(jsoncodec.NewReader(resp.Body))
 }
 
-func makeDecodedListCall[T any](client *http.Client, req *http.Request, decode func(*JSONReader) (*T, error)) ([]T, error) {
-	return makeDecodedCall(client, req, func(reader *JSONReader) ([]T, error) {
-		return unmarshalList(reader, decode)
+func makeDecodedListCall[T any](client *http.Client, req *http.Request, decode func(*jsoncodec.Reader) (*T, error)) ([]T, error) {
+	return makeDecodedCall(client, req, func(reader *jsoncodec.Reader) ([]T, error) {
+		return jsoncodec.UnmarshalList(reader, decode)
 	})
 }
 
-func makeDecodedAbstractListCall[T any](client *http.Client, req *http.Request, decode func(*JSONReader) (T, error)) ([]T, error) {
-	return makeDecodedCall(client, req, func(reader *JSONReader) ([]T, error) {
-		return unmarshalAbstractList(reader, decode)
+func makeDecodedAbstractListCall[T any](client *http.Client, req *http.Request, decode func(*jsoncodec.Reader) (T, error)) ([]T, error) {
+	return makeDecodedCall(client, req, func(reader *jsoncodec.Reader) ([]T, error) {
+		return jsoncodec.UnmarshalAbstractList(reader, decode)
 	})
 }
 

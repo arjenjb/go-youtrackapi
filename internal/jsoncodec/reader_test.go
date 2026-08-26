@@ -1,4 +1,4 @@
-package youtrackapi
+package jsoncodec
 
 import (
 	"strings"
@@ -9,7 +9,7 @@ import (
 
 func TestJsonReader_Buffering(t *testing.T) {
 	input := `1 2 3 4 5`
-	j := NewJsonReader(strings.NewReader(input))
+	j := NewReader(strings.NewReader(input))
 
 	requireNextToken(t, j, Token{Type: Int, IntValue: 1})
 	requireNextToken(t, j, Token{Type: Int, IntValue: 2})
@@ -25,32 +25,32 @@ func TestJsonReader_Buffering(t *testing.T) {
 	requireNextToken(t, j, Token{Type: EOF})
 }
 
-func requireNextToken(t *testing.T, j *JSONReader, expected Token) {
+func requireNextToken(t *testing.T, j *Reader, expected Token) {
 	got, err := j.Next()
 	require.NoError(t, err)
 	require.Equal(t, expected, *got)
 }
 
 func TestJsonReader_True(t *testing.T) {
-	j := NewJsonReader(strings.NewReader("true"))
+	j := NewReader(strings.NewReader("true"))
 	tok, err := j.Next()
 	require.NoError(t, err)
 	require.Equal(t, Bool, tok.Type)
 	requireNextEOF(t, j)
 }
 
-func requireNextEOF(t *testing.T, j *JSONReader) {
+func requireNextEOF(t *testing.T, j *Reader) {
 	requireNextType(t, j, EOF)
 }
 
-func requireNextType(t *testing.T, j *JSONReader, tp TokenType) {
+func requireNextType(t *testing.T, j *Reader, tp TokenType) {
 	tok, err := j.Next()
 	require.NoError(t, err)
 	require.Equal(t, tp, tok.Type)
 }
 
 func TestJsonReader_False(t *testing.T) {
-	j := NewJsonReader(strings.NewReader("false"))
+	j := NewReader(strings.NewReader("false"))
 	requireNextType(t, j, Bool)
 	requireNextType(t, j, EOF)
 }
@@ -109,7 +109,7 @@ func TestJsonReader_List(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.input, func(t *testing.T) {
 
-			j := NewJsonReader(strings.NewReader(tt.input))
+			j := NewReader(strings.NewReader(tt.input))
 			got := []TokenType{}
 
 			for {

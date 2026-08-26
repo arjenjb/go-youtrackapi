@@ -1,11 +1,11 @@
-package youtrackapi
+package jsoncodec
 
 import (
 	"fmt"
 	"time"
 )
 
-func determineTypeDiscriminator(r *JSONReader, s string) (string, error) {
+func DetermineTypeDiscriminator(r *Reader, s string) (string, error) {
 	r.Buffer()
 	defer r.Rewind()
 
@@ -66,31 +66,31 @@ func determineTypeDiscriminator(r *JSONReader, s string) (string, error) {
 	}
 }
 
-func marshalstring(w *JsonMarshaler, s string) error {
+func MarshalString(w *Marshaler, s string) error {
 	return w.WriteString(s)
 }
 
-func marshalbool(w *JsonMarshaler, value bool) error {
+func MarshalBool(w *Marshaler, value bool) error {
 	return w.WriteBool(value)
 }
 
-func marshalint(w *JsonMarshaler, value int) error {
+func MarshalInt(w *Marshaler, value int) error {
 	return w.WriteInt(value)
 }
 
-func marshalfloat64(w *JsonMarshaler, value float64) error {
+func MarshalFloat64(w *Marshaler, value float64) error {
 	return w.WriteFloat64(value)
 }
 
-func marshalany(w *JsonMarshaler, value any) error {
+func MarshalAny(w *Marshaler, value any) error {
 	return w.WriteValue(value)
 }
 
-func marshalTime(w *JsonMarshaler, t time.Time) error {
+func MarshalTime(w *Marshaler, t time.Time) error {
 	return w.WriteInt(int(t.UnixMilli()))
 }
 
-func unmarshalTime(r *JSONReader) (*time.Time, error) {
+func UnmarshalTime(r *Reader) (*time.Time, error) {
 	i, err := r.NextOptionalInt()
 	if err != nil {
 		return nil, err
@@ -102,9 +102,9 @@ func unmarshalTime(r *JSONReader) (*time.Time, error) {
 	return &t, nil
 }
 
-func unmarshalAbstractList[T any](r *JSONReader, f func(r *JSONReader) (T, error)) ([]T, error) {
+func UnmarshalAbstractList[T any](r *Reader, f func(r *Reader) (T, error)) ([]T, error) {
 	var result []T
-	err := r.NextListDo(func(r *JSONReader) error {
+	err := r.NextListDo(func(r *Reader) error {
 		el, err := f(r)
 		if err != nil {
 			return err
@@ -116,7 +116,7 @@ func unmarshalAbstractList[T any](r *JSONReader, f func(r *JSONReader) (T, error
 	return result, err
 }
 
-func marshalList[T any](w *JsonMarshaler, coll []T, f func(*JsonMarshaler, T) error) error {
+func MarshalList[T any](w *Marshaler, coll []T, f func(*Marshaler, T) error) error {
 	err := w.ArrayStart()
 	if err != nil {
 		return err
@@ -130,9 +130,9 @@ func marshalList[T any](w *JsonMarshaler, coll []T, f func(*JsonMarshaler, T) er
 	return w.ArrayEnd()
 }
 
-func unmarshalList[T any](r *JSONReader, f func(*JSONReader) (*T, error)) ([]T, error) {
+func UnmarshalList[T any](r *Reader, f func(*Reader) (*T, error)) ([]T, error) {
 	var result []T
-	err := r.NextListDo(func(r *JSONReader) error {
+	err := r.NextListDo(func(r *Reader) error {
 		el, err := f(r)
 		if err != nil {
 			return err

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/arjenjb/go-youtrackapi/model"
+	"github.com/arjenjb/go-youtrackapi/internal/codegen"
 )
 
 func TestDistillModel(t *testing.T) {
@@ -61,7 +61,7 @@ func TestDistillModel(t *testing.T) {
 		t.Fatalf("Child extends %q, want Base", child.Extends)
 	}
 	items := findField(t, child, "items")
-	if items.Type == nil || items.Type.Kind != model.TypeDescriptorKindList || items.Type.Elems[0].Name != "Base" {
+	if items.Type == nil || items.Type.Kind != codegen.TypeDescriptorKindList || items.Type.Elems[0].Name != "Base" {
 		t.Fatalf("unexpected items descriptor: %#v", items.Type)
 	}
 	value := findField(t, child, "value")
@@ -100,7 +100,7 @@ func TestNormalizeDescription(t *testing.T) {
 	}
 }
 
-func findStruct(t *testing.T, document *model.Document, name string) *model.StructDescriptor {
+func findStruct(t *testing.T, document *codegen.Document, name string) *codegen.StructDescriptor {
 	t.Helper()
 	for _, descriptor := range document.Structs {
 		if descriptor.Name == name {
@@ -111,7 +111,7 @@ func findStruct(t *testing.T, document *model.Document, name string) *model.Stru
 	return nil
 }
 
-func findField(t *testing.T, descriptor *model.StructDescriptor, name string) *model.FieldDescriptor {
+func findField(t *testing.T, descriptor *codegen.StructDescriptor, name string) *codegen.FieldDescriptor {
 	t.Helper()
 	for _, field := range descriptor.Fields {
 		if field.Name == name {

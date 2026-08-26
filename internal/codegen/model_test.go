@@ -1,4 +1,4 @@
-package model
+package codegen
 
 import (
 	"github.com/stretchr/testify/require"
