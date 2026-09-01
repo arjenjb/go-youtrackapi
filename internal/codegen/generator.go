@@ -5,6 +5,7 @@ import (
 	. "github.com/arjenjb/go-youtrackapi/internal/codegen/bst"
 	"go/ast"
 	"go/token"
+	"sort"
 	"strings"
 )
 
@@ -568,6 +569,19 @@ func (g *Generator) generateInterfaceUnmarshaller(s *StructDescriptor, children 
 	varReader := Ident("r")
 
 	var cases []ast.Stmt
+	mappedDiscriminators := make([]string, 0, len(s.DiscriminatorMappings))
+	for discriminator := range s.DiscriminatorMappings {
+		mappedDiscriminators = append(mappedDiscriminators, discriminator)
+	}
+	sort.Strings(mappedDiscriminators)
+	for _, discriminator := range mappedDiscriminators {
+		cases = append(cases, &ast.CaseClause{
+			List: Exprs(String(discriminator)),
+			Body: Stmts(
+				Return(Call(Ident("unmarshal"+s.DiscriminatorMappings[discriminator]), varReader)),
+			),
+		})
+	}
 
 	for _, each := range children {
 		cases = append(cases, &ast.CaseClause{

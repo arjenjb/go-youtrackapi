@@ -76,11 +76,12 @@ func (d Document) ChildrenOf(parent StructDescriptor) []StructDescriptor {
 }
 
 type StructDescriptor struct {
-	Name        string
-	Description string
-	Extends     string
-	Abstract    bool
-	Fields      NamedList[*FieldDescriptor]
+	Name                  string
+	Description           string
+	Extends               string
+	Abstract              bool
+	DiscriminatorMappings map[string]string
+	Fields                NamedList[*FieldDescriptor]
 }
 
 type TypeDescriptorKind uint8
