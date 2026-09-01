@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-09-01
+
 ### Changed
 
 - Generated `Tag` as the concrete model defined by YouTrack instead of an abstract interface. Callers now construct and inspect `Tag` values directly rather than using the deprecated `IssueTag` implementation.
@@ -26,5 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Preserved a pager's offset after a failed page request so retrying no longer skips results.
 - Improved client JSON handling for exponent-form numbers, Unicode surrogate pairs, trailing whitespace, malformed values, invalid marshaler state, and writer errors.
 
-[unreleased]: https://github.com/arjenjb/go-youtrackapi/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/arjenjb/go-youtrackapi/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/arjenjb/go-youtrackapi/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/arjenjb/go-youtrackapi/compare/v0.1.0...v0.1.1
