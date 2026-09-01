@@ -39,6 +39,59 @@ func TestGeneratedListProjects(t *testing.T) {
 	}
 }
 
+func TestGeneratedListTagsDecodesCurrentTagType(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet || r.URL.Path != "/tags" {
+			t.Errorf("request = %s %s", r.Method, r.URL.Path)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		io.WriteString(w, `[{"$type":"Tag","id":"tag-1","name":"support"}]`)
+	}))
+	defer server.Close()
+
+	client := NewClient(server.URL, nil)
+	tags, err := client.ListTags(context.Background(), ListTagsRequest{Fields: "id,name"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(tags) != 1 {
+		t.Fatalf("tags = %#v", tags)
+	}
+	if tags[0].Id == nil || *tags[0].Id != "tag-1" || tags[0].Name == nil || *tags[0].Name != "support" {
+		t.Fatalf("tag = %#v", tags[0])
+	}
+}
+
+func TestGeneratedCreateTagUsesCurrentTagType(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost || r.URL.Path != "/tags" {
+			t.Errorf("request = %s %s", r.Method, r.URL.Path)
+		}
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(string(body), `"$type":"Tag"`) || !strings.Contains(string(body), `"name":"support"`) {
+			t.Errorf("body = %s", body)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		io.WriteString(w, `{"$type":"Tag","id":"tag-1","name":"support"}`)
+	}))
+	defer server.Close()
+
+	client := NewClient(server.URL, nil)
+	tag, err := client.CreateTag(context.Background(), CreateTagRequest{
+		Fields: "id,name",
+		Tag:    Tag{Name: stringPointer("support")},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tag.Id == nil || *tag.Id != "tag-1" {
+		t.Fatalf("tag = %#v", tag)
+	}
+}
+
 func TestGeneratedCreateProject(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost || r.URL.Path != "/admin/projects" {
@@ -134,8 +187,8 @@ func TestGeneratedGetIssueDecodesRichResponse(t *testing.T) {
 	if len(issue.Tags) != 1 {
 		t.Fatalf("tags = %#v", issue.Tags)
 	}
-	tag, ok := issue.Tags[0].(*IssueTag)
-	if !ok || tag.Name == nil || *tag.Name != "backend" {
+	tag := issue.Tags[0]
+	if tag.Name == nil || *tag.Name != "backend" {
 		t.Fatalf("tag = %#v", issue.Tags[0])
 	}
 	if len(issue.CustomFields) != 1 {

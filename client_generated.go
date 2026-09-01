@@ -4954,7 +4954,7 @@ func (c *Client) ListTagsAtArticlesByIDTags(ctx context.Context, r ListTagsAtArt
 		values.Set("fields", r.Fields)
 	}
 	req := c.makeRequest(ctx, http.MethodGet, path, values)
-	return makeDecodedAbstractListCall(c.client, req, unmarshalTag)
+	return makeDecodedListCall(c.client, req, unmarshalTag)
 }
 
 // CreateTagAtArticlesByIDTagsRequest contains parameters for CreateTagAtArticlesByIDTags.
@@ -4974,7 +4974,7 @@ type CreateTagAtArticlesByIDTagsRequest struct {
 // This sub-resource lets you work with the tags that are added to the specific article.
 //
 // Response: single Tag.
-func (c *Client) CreateTagAtArticlesByIDTags(ctx context.Context, r CreateTagAtArticlesByIDTagsRequest) (Tag, error) {
+func (c *Client) CreateTagAtArticlesByIDTags(ctx context.Context, r CreateTagAtArticlesByIDTagsRequest) (*Tag, error) {
 	path := "" + "/" + "articles" + "/" + url.PathEscape(r.ID) + "/" + "tags"
 	values := make(url.Values)
 	if r.Fields != "" {
@@ -5003,7 +5003,7 @@ type GetTagAtArticlesByIDTagsByTagIDRequest struct {
 // This sub-resource lets you work with the tags that are added to the specific article.
 //
 // Response: single Tag.
-func (c *Client) GetTagAtArticlesByIDTagsByTagID(ctx context.Context, r GetTagAtArticlesByIDTagsByTagIDRequest) (Tag, error) {
+func (c *Client) GetTagAtArticlesByIDTagsByTagID(ctx context.Context, r GetTagAtArticlesByIDTagsByTagIDRequest) (*Tag, error) {
 	path := "" + "/" + "articles" + "/" + url.PathEscape(r.ID) + "/" + "tags" + "/" + url.PathEscape(r.TagID)
 	values := make(url.Values)
 	if r.Fields != "" {
@@ -6697,7 +6697,7 @@ func (c *Client) ListTagsAtIssuesByIDTags(ctx context.Context, r ListTagsAtIssue
 		values.Set("fields", r.Fields)
 	}
 	req := c.makeRequest(ctx, http.MethodGet, path, values)
-	return makeDecodedAbstractListCall(c.client, req, unmarshalTag)
+	return makeDecodedListCall(c.client, req, unmarshalTag)
 }
 
 // CreateTagAtIssuesByIDTagsRequest contains parameters for CreateTagAtIssuesByIDTags.
@@ -6717,7 +6717,7 @@ type CreateTagAtIssuesByIDTagsRequest struct {
 // This sub-resource lets you work with the tags that are added to the specific issue.
 //
 // Response: single Tag.
-func (c *Client) CreateTagAtIssuesByIDTags(ctx context.Context, r CreateTagAtIssuesByIDTagsRequest) (Tag, error) {
+func (c *Client) CreateTagAtIssuesByIDTags(ctx context.Context, r CreateTagAtIssuesByIDTagsRequest) (*Tag, error) {
 	path := "" + "/" + "issues" + "/" + url.PathEscape(r.ID) + "/" + "tags"
 	values := make(url.Values)
 	if r.Fields != "" {
@@ -6746,7 +6746,7 @@ type GetTagAtIssuesByIDTagsByTagIDRequest struct {
 // This sub-resource lets you work with the tags that are added to the specific issue.
 //
 // Response: single Tag.
-func (c *Client) GetTagAtIssuesByIDTagsByTagID(ctx context.Context, r GetTagAtIssuesByIDTagsByTagIDRequest) (Tag, error) {
+func (c *Client) GetTagAtIssuesByIDTagsByTagID(ctx context.Context, r GetTagAtIssuesByIDTagsByTagIDRequest) (*Tag, error) {
 	path := "" + "/" + "issues" + "/" + url.PathEscape(r.ID) + "/" + "tags" + "/" + url.PathEscape(r.TagID)
 	values := make(url.Values)
 	if r.Fields != "" {
@@ -7463,7 +7463,7 @@ func (c *Client) ListTags(ctx context.Context, r ListTagsRequest) ([]Tag, error)
 		values.Set("query", r.Query)
 	}
 	req := c.makeRequest(ctx, http.MethodGet, path, values)
-	return makeDecodedAbstractListCall(c.client, req, unmarshalTag)
+	return makeDecodedListCall(c.client, req, unmarshalTag)
 }
 
 // CreateTagRequest contains parameters for CreateTag.
@@ -7481,7 +7481,7 @@ type CreateTagRequest struct {
 // This resource lets you access and work with tags in YouTrack.
 //
 // Response: single Tag.
-func (c *Client) CreateTag(ctx context.Context, r CreateTagRequest) (Tag, error) {
+func (c *Client) CreateTag(ctx context.Context, r CreateTagRequest) (*Tag, error) {
 	path := "" + "/" + "tags"
 	values := make(url.Values)
 	if r.Fields != "" {
@@ -7508,7 +7508,7 @@ type GetTagRequest struct {
 // This resource lets you access and work with tags in YouTrack.
 //
 // Response: single Tag.
-func (c *Client) GetTag(ctx context.Context, r GetTagRequest) (Tag, error) {
+func (c *Client) GetTag(ctx context.Context, r GetTagRequest) (*Tag, error) {
 	path := "" + "/" + "tags" + "/" + url.PathEscape(r.ID)
 	values := make(url.Values)
 	if r.Fields != "" {
@@ -7535,7 +7535,7 @@ type UpdateTagRequest struct {
 // This resource lets you access and work with tags in YouTrack.
 //
 // Response: single Tag.
-func (c *Client) UpdateTag(ctx context.Context, r UpdateTagRequest) (Tag, error) {
+func (c *Client) UpdateTag(ctx context.Context, r UpdateTagRequest) (*Tag, error) {
 	path := "" + "/" + "tags" + "/" + url.PathEscape(r.ID)
 	values := make(url.Values)
 	if r.Fields != "" {
@@ -7955,7 +7955,7 @@ func (c *Client) ListTagsAtUsersByIDTags(ctx context.Context, r ListTagsAtUsersB
 		values.Set("fields", r.Fields)
 	}
 	req := c.makeRequest(ctx, http.MethodGet, path, values)
-	return makeDecodedAbstractListCall(c.client, req, unmarshalTag)
+	return makeDecodedListCall(c.client, req, unmarshalTag)
 }
 
 // ListIssueWorkItemsRequest contains parameters for ListIssueWorkItems.

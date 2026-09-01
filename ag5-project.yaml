@@ -1,0 +1,21 @@
+# AG5 project configuration.
+#
+# `ag5 release` uses this file to test, build and publish this project.
+# Uncomment and adjust the sections you need.
+
+test:
+  - runner: go
+
+# build:
+#   - type: go-docker
+#     image: my-service
+#     ark:
+#       name: my-service
+#       terraform:
+#         path: services/my-service
+#       tags:
+#         - any-realm
+
+# Determine the next version yourself instead of bumping the latest git tag
+# version:
+#   exec: ./version.sh

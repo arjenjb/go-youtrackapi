@@ -980,6 +980,8 @@ func marshalIssueFolder(w *jsoncodec.Marshaler, v IssueFolder) error {
 		return marshalSavedQuery(w, vt)
 	case StarWatchFolder:
 		return marshalStarWatchFolder(w, vt)
+	case Tag:
+		return marshalTag(w, vt)
 	case IssueTag:
 		return marshalIssueTag(w, vt)
 	default:
@@ -1248,32 +1250,6 @@ func marshalSwimlaneSettings(w *jsoncodec.Marshaler, v SwimlaneSettings) error {
 	}
 }
 
-// Tag: `WatchFolder` is a common abstract ancestor for saved searches and tags.
-type Tag interface {
-	WatchFolder
-}
-
-func unmarshalTag(r *jsoncodec.Reader) (Tag, error) {
-	t, err := jsoncodec.DetermineTypeDiscriminator(r, "$type")
-	if err != nil {
-		return nil, err
-	}
-	switch t {
-	case "IssueTag":
-		return unmarshalIssueTag(r)
-	default:
-		return nil, fmt.Errorf("unknown type %s", t)
-	}
-}
-func marshalTag(w *jsoncodec.Marshaler, v Tag) error {
-	switch vt := v.(type) {
-	case IssueTag:
-		return marshalIssueTag(w, vt)
-	default:
-		return fmt.Errorf("unknown type %T", v)
-	}
-}
-
 // VcsHostingChangesProcessor: The basic entity that represents a VCS integration configured for a
 // project.
 type VcsHostingChangesProcessor interface {
@@ -1524,6 +1500,8 @@ func marshalWatchFolder(w *jsoncodec.Marshaler, v WatchFolder) error {
 		return marshalSavedQuery(w, vt)
 	case StarWatchFolder:
 		return marshalStarWatchFolder(w, vt)
+	case Tag:
+		return marshalTag(w, vt)
 	case IssueTag:
 		return marshalIssueTag(w, vt)
 	default:
@@ -2650,7 +2628,7 @@ func unmarshalArticle(r *jsoncodec.Reader) (*Article, error) {
 		case "project":
 			result.Project, err = unmarshalProject(r)
 		case "tags":
-			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "updated":
@@ -8918,7 +8896,7 @@ func unmarshalIssue(r *jsoncodec.Reader) (*Issue, error) {
 		case "summary":
 			result.Summary, err = r.NextOptionalString()
 		case "tags":
-			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "updated":
@@ -11919,7 +11897,7 @@ func unmarshalMe(r *jsoncodec.Reader) (*Me, error) {
 				return unmarshalSavedQuery(r)
 			})
 		case "tags":
-			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "userType":
@@ -19282,6 +19260,172 @@ func marshalSystemSettings(w *jsoncodec.Marshaler, v SystemSettings) error {
 	return nil
 }
 
+// Tag: `WatchFolder` is a common abstract ancestor for saved searches and tags.
+type Tag struct {
+	Id                    *string
+	Name                  *string
+	Owner                 *User
+	ReadSharingSettings   *WatchFolderSharingSettings
+	UpdateSharingSettings *WatchFolderSharingSettings
+	UpdateableBy          *UserGroup
+	VisibleFor            *UserGroup
+	Color                 *FieldStyle
+	Issues                []Issue
+	TagSharingSettings    *TagSharingSettings
+	UntagOnResolve        *bool
+}
+
+func unmarshalTag(r *jsoncodec.Reader) (*Tag, error) {
+	tok, err := r.Peek()
+	if err != nil {
+		return nil, err
+	}
+	if tok.IsNull() {
+		r.Next()
+		return nil, nil
+	}
+	result := &Tag{}
+	err = r.NextObjectDo(func(key string, r *jsoncodec.Reader) error {
+		var err error
+		switch key {
+		case "id":
+			result.Id, err = r.NextOptionalString()
+		case "name":
+			result.Name, err = r.NextOptionalString()
+		case "owner":
+			result.Owner, err = unmarshalUser(r)
+		case "readSharingSettings":
+			result.ReadSharingSettings, err = unmarshalWatchFolderSharingSettings(r)
+		case "updateSharingSettings":
+			result.UpdateSharingSettings, err = unmarshalWatchFolderSharingSettings(r)
+		case "updateableBy":
+			result.UpdateableBy, err = unmarshalUserGroup(r)
+		case "visibleFor":
+			result.VisibleFor, err = unmarshalUserGroup(r)
+		case "color":
+			result.Color, err = unmarshalFieldStyle(r)
+		case "issues":
+			result.Issues, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Issue, error) {
+				return unmarshalIssue(r)
+			})
+		case "tagSharingSettings":
+			result.TagSharingSettings, err = unmarshalTagSharingSettings(r)
+		case "untagOnResolve":
+			result.UntagOnResolve, err = r.NextOptionalBool()
+		case "$type":
+			_, _ = r.NextValue()
+		default:
+			val, _ := r.NextValue()
+			slog.Warn("Unsupported field", "key", key, "value", val)
+		}
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+func marshalTag(w *jsoncodec.Marshaler, v Tag) error {
+	var err error
+	if err = w.ObjectStart(); err != nil {
+		return err
+	}
+	w.WriteKey("$type")
+	w.WriteString("Tag")
+	if v.Id != nil {
+		if err = w.WriteKey("id"); err != nil {
+			return err
+		}
+		if err = w.WriteString(*v.Id); err != nil {
+			return err
+		}
+	}
+	if v.Name != nil {
+		if err = w.WriteKey("name"); err != nil {
+			return err
+		}
+		if err = w.WriteString(*v.Name); err != nil {
+			return err
+		}
+	}
+	if v.Owner != nil {
+		if err = w.WriteKey("owner"); err != nil {
+			return err
+		}
+		if err = marshalUser(w, *v.Owner); err != nil {
+			return err
+		}
+	}
+	if v.ReadSharingSettings != nil {
+		if err = w.WriteKey("readSharingSettings"); err != nil {
+			return err
+		}
+		if err = marshalWatchFolderSharingSettings(w, *v.ReadSharingSettings); err != nil {
+			return err
+		}
+	}
+	if v.UpdateSharingSettings != nil {
+		if err = w.WriteKey("updateSharingSettings"); err != nil {
+			return err
+		}
+		if err = marshalWatchFolderSharingSettings(w, *v.UpdateSharingSettings); err != nil {
+			return err
+		}
+	}
+	if v.UpdateableBy != nil {
+		if err = w.WriteKey("updateableBy"); err != nil {
+			return err
+		}
+		if err = marshalUserGroup(w, *v.UpdateableBy); err != nil {
+			return err
+		}
+	}
+	if v.VisibleFor != nil {
+		if err = w.WriteKey("visibleFor"); err != nil {
+			return err
+		}
+		if err = marshalUserGroup(w, *v.VisibleFor); err != nil {
+			return err
+		}
+	}
+	if v.Color != nil {
+		if err = w.WriteKey("color"); err != nil {
+			return err
+		}
+		if err = marshalFieldStyle(w, *v.Color); err != nil {
+			return err
+		}
+	}
+	if v.Issues != nil {
+		if err = w.WriteKey("issues"); err != nil {
+			return err
+		}
+		if err = jsoncodec.MarshalList(w, v.Issues, marshalIssue); err != nil {
+			return err
+		}
+	}
+	if v.TagSharingSettings != nil {
+		if err = w.WriteKey("tagSharingSettings"); err != nil {
+			return err
+		}
+		if err = marshalTagSharingSettings(w, *v.TagSharingSettings); err != nil {
+			return err
+		}
+	}
+	if v.UntagOnResolve != nil {
+		if err = w.WriteKey("untagOnResolve"); err != nil {
+			return err
+		}
+		if err = w.WriteBool(*v.UntagOnResolve); err != nil {
+			return err
+		}
+	}
+	if err = w.ObjectEnd(); err != nil {
+		return err
+	}
+	return nil
+}
+
 // TagSharingSettings: Stores users and groups that have access to a tag.
 type TagSharingSettings struct {
 	Id              *string
@@ -19389,7 +19533,7 @@ func unmarshalTagsActivityItem(r *jsoncodec.Reader) (*TagsActivityItem, error) {
 		var err error
 		switch key {
 		case "added":
-			result.Added, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
+			result.Added, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "author":
@@ -19401,7 +19545,7 @@ func unmarshalTagsActivityItem(r *jsoncodec.Reader) (*TagsActivityItem, error) {
 		case "id":
 			result.Id, err = r.NextOptionalString()
 		case "removed":
-			result.Removed, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
+			result.Removed, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "target":
@@ -20881,7 +21025,7 @@ func unmarshalUser(r *jsoncodec.Reader) (*User, error) {
 				return unmarshalSavedQuery(r)
 			})
 		case "tags":
-			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "userType":
@@ -22205,7 +22349,7 @@ func unmarshalVcsUnresolvedUser(r *jsoncodec.Reader) (*VcsUnresolvedUser, error)
 				return unmarshalSavedQuery(r)
 			})
 		case "tags":
-			result.Tags, err = jsoncodec.UnmarshalAbstractList(r, func(r *jsoncodec.Reader) (Tag, error) {
+			result.Tags, err = jsoncodec.UnmarshalList(r, func(r *jsoncodec.Reader) (*Tag, error) {
 				return unmarshalTag(r)
 			})
 		case "userType":

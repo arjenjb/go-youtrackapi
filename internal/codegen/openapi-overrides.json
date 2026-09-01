@@ -28,7 +28,6 @@
     "SimpleValueActivityItem",
     "SingleValueActivityItem",
     "SwimlaneSettings",
-    "Tag",
     "VcsHostingChangesProcessor",
     "VcsHostingServer",
     "VcsServer",
