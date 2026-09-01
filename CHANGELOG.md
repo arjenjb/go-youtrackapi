@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Generated `Tag` as the concrete model defined by YouTrack instead of an abstract interface. Callers now construct and inspect `Tag` values directly rather than using the deprecated `IssueTag` implementation.
+
+### Fixed
+
+- Current `$type: "Tag"` responses now decode, and tag request payloads use the current discriminator.
+
 ## [0.1.1] - 2026-08-26
 
 ### Changed
