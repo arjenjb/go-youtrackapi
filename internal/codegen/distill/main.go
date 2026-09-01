@@ -12,7 +12,6 @@ import (
 	"go/token"
 	"html"
 	"io"
-	"maps"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -43,9 +42,8 @@ type schema struct {
 }
 
 type overrides struct {
-	AbstractTypes         []string                     `json:"abstractTypes"`
-	DiscriminatorMappings map[string]map[string]string `json:"discriminatorMappings"`
-	FieldTypes            map[string]string            `json:"fieldTypes"`
+	AbstractTypes []string          `json:"abstractTypes"`
+	FieldTypes    map[string]string `json:"fieldTypes"`
 }
 
 func main() {
@@ -166,11 +164,10 @@ func distillModel(document openAPIDocument, config overrides) (*codegen.Document
 
 		fieldNames := sortedKeys(properties)
 		typeDescriptor := &codegen.StructDescriptor{
-			Name:                  name,
-			Description:           normalizeDescription(schemaDescriptionFor(name, document.Components.Schemas, nil)),
-			Extends:               extends,
-			Abstract:              abstract[name],
-			DiscriminatorMappings: maps.Clone(config.DiscriminatorMappings[name]),
+			Name:        name,
+			Description: normalizeDescription(schemaDescriptionFor(name, document.Components.Schemas, nil)),
+			Extends:     extends,
+			Abstract:    abstract[name],
 		}
 		for _, fieldName := range fieldNames {
 			if fieldName == "$type" {
@@ -204,37 +201,7 @@ func distillModel(document openAPIDocument, config overrides) (*codegen.Document
 			return nil, fmt.Errorf("field type override %q does not exist", name)
 		}
 	}
-	for name, mappings := range config.DiscriminatorMappings {
-		base := findStructDescriptor(result, name)
-		if base == nil {
-			return nil, fmt.Errorf("discriminator mapping type %q does not exist", name)
-		}
-		if !base.Abstract {
-			return nil, fmt.Errorf("discriminator mapping type %q is not abstract", name)
-		}
-		children := make(map[string]bool)
-		for _, child := range result.AllChildrenOf(*base) {
-			children[child.Name] = true
-		}
-		for discriminator, target := range mappings {
-			if discriminator == "" {
-				return nil, fmt.Errorf("discriminator mapping for %q has an empty discriminator", name)
-			}
-			if !children[target] {
-				return nil, fmt.Errorf("discriminator mapping %q.%s targets non-child type %q", name, discriminator, target)
-			}
-		}
-	}
 	return result, nil
-}
-
-func findStructDescriptor(document *codegen.Document, name string) *codegen.StructDescriptor {
-	for _, descriptor := range document.Structs {
-		if descriptor.Name == name {
-			return descriptor
-		}
-	}
-	return nil
 }
 
 func schemaDescription(s schema) string {

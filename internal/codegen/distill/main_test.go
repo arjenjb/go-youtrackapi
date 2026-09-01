@@ -38,9 +38,6 @@ func TestDistillModel(t *testing.T) {
 	}
 	got, err := distillModel(openAPI, overrides{
 		AbstractTypes: []string{"Base"},
-		DiscriminatorMappings: map[string]map[string]string{
-			"Base": {"Base": "Child"},
-		},
 		FieldTypes: map[string]string{
 			"Child.value": "Time",
 		},
@@ -55,9 +52,6 @@ func TestDistillModel(t *testing.T) {
 	base := findStruct(t, got, "Base")
 	if !base.Abstract || len(base.Fields) != 1 || base.Fields[0].Name != "id" || base.Fields[0].Type != nil {
 		t.Fatalf("unexpected Base descriptor: %#v", base)
-	}
-	if base.DiscriminatorMappings["Base"] != "Child" {
-		t.Fatalf("unexpected Base discriminator mappings: %#v", base.DiscriminatorMappings)
 	}
 	if base.Description != "Represents a <base> resource." || base.Fields[0].Description != "The stable ID." {
 		t.Fatalf("descriptions were not preserved: %#v", base)

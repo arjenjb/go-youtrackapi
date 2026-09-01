@@ -28,7 +28,6 @@
     "SimpleValueActivityItem",
     "SingleValueActivityItem",
     "SwimlaneSettings",
-    "Tag",
     "VcsHostingChangesProcessor",
     "VcsHostingServer",
     "VcsServer",
@@ -36,11 +35,6 @@
     "VisibilityActivityItem",
     "WatchFolder"
   ],
-  "discriminatorMappings": {
-    "Tag": {
-      "Tag": "IssueTag"
-    }
-  },
   "fieldTypes": {
     "ActivityItem.timestamp": "Time",
     "Article.created": "Time",
